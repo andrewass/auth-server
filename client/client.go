@@ -1,6 +1,6 @@
 package client
 
 type Client struct {
-	ClientId     string `json:"clientId:"`
+	ClientId     string `json:"clientId"`
 	ClientSecret string `json:"clientSecret"`
 }

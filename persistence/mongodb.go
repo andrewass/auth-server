@@ -3,6 +3,7 @@ package persistence
 import (
 	"context"
 	"fmt"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -10,8 +11,8 @@ import (
 
 func ConnectToDatabase() {
 	credentials := options.Credential{
-		Username: "mongoUser",
-		Password: "mongoPassword",
+		Username: viper.Get("MONGO_DB_USERNAME").(string),
+		Password: viper.Get("MONGO_DB_PASSWORD").(string),
 	}
 	ctx := context.TODO()
 	opts := options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(credentials)
