@@ -1,18 +1,23 @@
 package client
 
+import (
+	"auth-server/client/dto"
+)
+
 var clients = []Client{
 	{ClientId: "firstId", ClientSecret: "firstSecret"},
 	{ClientId: "secId", ClientSecret: "secSecret"},
 }
 
-func GetClient(clientId string) Client {
-	return clients[0]
+func getClient(clientId string) Client {
+	return findClient(clientId)
 }
 
-func GetAllClients() []Client {
+func getAllClients() []Client {
 	return clients
 }
 
-func AddClient() {
-
+func addClient(request dto.AddClientRequest) dto.AddClientResponse {
+	saveClient(Client{ClientId: "2323fdsf"})
+	return dto.AddClientResponse{}
 }

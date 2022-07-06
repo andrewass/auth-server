@@ -1,4 +1,4 @@
-package persistence
+package common
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
+
+var Database *mongo.Database
 
 func ConnectToDatabase() {
 	credentials := options.Credential{
@@ -22,7 +24,7 @@ func ConnectToDatabase() {
 		panic(err)
 	}
 	ping(client, ctx)
-	createDatabase(ctx, client)
+	createDatabase(client)
 }
 
 func ping(client *mongo.Client, ctx context.Context) {
@@ -32,7 +34,7 @@ func ping(client *mongo.Client, ctx context.Context) {
 	fmt.Println("MongoDB - connected successfully")
 }
 
-func createDatabase(ctx context.Context, client *mongo.Client) {
-	database := client.Database("authDatabase")
-	database.Collection("clients")
+func createDatabase(client *mongo.Client) {
+	Database = client.Database("authDatabase")
+	Database.Collection("client")
 }
