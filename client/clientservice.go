@@ -2,6 +2,7 @@ package client
 
 import (
 	"auth-server/client/dto"
+	"math/rand"
 )
 
 var clients = []Client{
@@ -9,15 +10,32 @@ var clients = []Client{
 	{ClientId: "secId", ClientSecret: "secSecret"},
 }
 
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
 func getClient(clientId string) Client {
 	return findClient(clientId)
 }
 
-func getAllClients() []Client {
-	return clients
+func addClient(request dto.AddClientRequest) dto.AddClientResponse {
+	client := Client{
+		ClientId:     generateRandomString(),
+		ClientSecret: generateRandomString(),
+	}
+	saveClient(client)
+	return mapToAddClientResponse(client)
 }
 
-func addClient(request dto.AddClientRequest) dto.AddClientResponse {
-	saveClient(Client{ClientId: "2323fdsf"})
-	return dto.AddClientResponse{}
+func mapToAddClientResponse(client Client) dto.AddClientResponse {
+	return dto.AddClientResponse{
+		ClientId:     client.ClientId,
+		ClientSecret: client.ClientSecret,
+	}
+}
+
+func generateRandomString() string {
+	b := make([]rune, 30)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }

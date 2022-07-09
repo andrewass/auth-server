@@ -4,6 +4,7 @@ import (
 	"auth-server/authorization"
 	"auth-server/client"
 	"auth-server/common"
+	"auth-server/discovery"
 	"auth-server/token"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -28,6 +29,7 @@ func configurePersistenceLayer() {
 
 func configureRoutes() {
 	router := gin.Default()
+	discovery.SetUpDiscoveryRoutes(router)
 	client.SetUpClientRoutes(router)
 	authorization.SetUpAuthorizationRoutes(router)
 	token.SetUpTokenRoutes(router)

@@ -9,8 +9,9 @@ import (
 )
 
 func SetUpClientRoutes(router *gin.Engine) {
-	router.GET("/client", getClientHandler)
-	router.GET("/clients", getAllClientsHandler)
+	//Get a previous registered OAuth 2.0 client / OpenID relying party.
+	router.GET("/clients", getClientHandler)
+	//Registers a new OAuth 2.0 client / OpenID relying party.
 	router.POST("/clients", addClientHandler)
 }
 
@@ -18,10 +19,6 @@ func getClientHandler(context *gin.Context) {
 	var clientId = context.Query("clientId")
 	var client = getClient(clientId)
 	context.JSON(http.StatusOK, client)
-}
-
-func getAllClientsHandler(context *gin.Context) {
-
 }
 
 func addClientHandler(context *gin.Context) {

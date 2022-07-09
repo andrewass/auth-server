@@ -22,6 +22,6 @@ func saveClient(client Client) {
 	ctx := context.TODO()
 	_, err := common.Database.Collection(clientCollection).InsertOne(ctx, client)
 	if err != nil {
-		return
+		panic(err)
 	}
 }
