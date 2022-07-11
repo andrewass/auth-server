@@ -9,7 +9,7 @@ func SetUpDiscoveryRoutes(router *gin.Engine) {
 	//Discover the OpenID Connect endpoints, capabilities, supported cryptographic algorithms and features.
 	router.GET("/.well-known/openid-configuration", getOpenIdConfigHandler)
 	//Discover the OAuth 2.0 endpoints, capabilities, supported cryptographic algorithms and features.
-	router.POST("/.well-known/oauth-authorization-server", getOauthConfigHandler)
+	router.GET("/.well-known/oauth-authorization-server", getOauthConfigHandler)
 }
 
 func getOpenIdConfigHandler(context *gin.Context) {

@@ -12,8 +12,8 @@ var clients = []Client{
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func getClient(clientId string) Client {
-	return findClient(clientId)
+func getClients() []Client {
+	return getAllClients()
 }
 
 func addClient(request dto.AddClientRequest) dto.AddClientResponse {

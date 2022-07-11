@@ -8,14 +8,17 @@ import (
 
 const clientCollection = "client"
 
-func findClient(clientId string) Client {
+func getAllClients() []Client {
 	ctx := context.TODO()
-	var client Client
-	err := common.Database.Collection(clientCollection).FindOne(ctx, bson.M{"client_id": clientId}).Decode(client)
+	response, err := common.Database.Collection(clientCollection).Find(ctx, bson.D{})
 	if err == nil {
 		panic(err)
 	}
-	return client
+	var clients []Client
+	if err = response.Decode(clients); err != nil {
+		panic(err)
+	}
+	return clients
 }
 
 func saveClient(client Client) {

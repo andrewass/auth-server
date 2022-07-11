@@ -9,28 +9,32 @@ import (
 )
 
 func SetUpClientRoutes(router *gin.Engine) {
-	//Get a previous registered OAuth 2.0 client / OpenID relying party.
-	router.GET("/clients", getClientHandler)
+	//Get all registered OAuth 2.0 clients / OpenID relying parties.
+	router.GET("/clients", getClientsHandler)
 	//Registers a new OAuth 2.0 client / OpenID relying party.
 	router.POST("/clients", addClientHandler)
 }
 
-func getClientHandler(context *gin.Context) {
-	var clientId = context.Query("clientId")
-	var client = getClient(clientId)
-	context.JSON(http.StatusOK, client)
+func getClientsHandler(ctx *gin.Context) {
+	validateMasterAccessToken(ctx)
+	var client = getClients()
+	ctx.JSON(http.StatusOK, client)
 }
 
-func addClientHandler(context *gin.Context) {
-	token := strings.Split(context.GetHeader("Authorization"), " ")
-	if !common.ValidateMasterAccessToken(token[1]) {
-		context.Status(http.StatusUnauthorized)
-		return
-	}
+func addClientHandler(ctx *gin.Context) {
+	validateMasterAccessToken(ctx)
 	request := dto.AddClientRequest{}
-	if err := context.BindJSON(&request); err != nil {
+	if err := ctx.BindJSON(&request); err != nil {
 		panic(err)
 	}
 	addClient(request)
-	context.Status(http.StatusOK)
+	ctx.Status(http.StatusOK)
+}
+
+func validateMasterAccessToken(ctx *gin.Context) {
+	token := strings.Split(ctx.GetHeader("Authorization"), " ")
+	if !common.ValidateMasterAccessToken(token[1]) {
+		ctx.Status(http.StatusUnauthorized)
+		return
+	}
 }
