@@ -1,4 +1,8 @@
+import {useNavigate} from "react-router-dom";
+
 const SignUp = () => {
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -24,7 +28,9 @@ const SignUp = () => {
                 </div>
             </form>
             <div>
-                <button>Sign in with existing account</button>
+                <button onClick={() => navigate("/sign-in")}>
+                    Sign in with existing account
+                </button>
             </div>
         </>
     )
