@@ -1,31 +1,31 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 
 const SignIn = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
-    const submitSignIn = () => {
+    const redirectUri = searchParams.get("redirect_uri")
 
+    const submitSignIn = () => {
     }
 
     return (
         <>
-            <form>
+            <form onSubmit={submitSignIn}>
                 <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" name="firstname"
-                           onChange={(e) => setUsername(e.target.value)}/>
+                    <label>Username</label>
+                    <input type="text" onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password"
-                           onChange={(e) => setPassword(e.target.value)}/>
+                    <label>Password</label>
+                    <input type="password" onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div>
-                    <button type="submit" onClick={submitSignIn}>Sign In</button>
+                    <button type="submit">Sign In</button>
                 </div>
             </form>
             <div>

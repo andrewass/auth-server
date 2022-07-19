@@ -1,27 +1,42 @@
 import {useNavigate} from "react-router-dom";
+import React, {useState} from "react";
+import {signUpUser} from "../api/authentication";
 
 const SignUp = () => {
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmedPassword, setConfirmedPassword] = useState("")
+
+    const submitSignUp = (event: React.FormEvent<HTMLElement>) => {
+        event.preventDefault()
+        if (password !== confirmedPassword) {
+            alert("Password mismatch")
+        } else {
+            signUpUser({username, email, password})
+        }
+    }
 
     return (
         <>
-            <form>
+            <form onSubmit={submitSignUp}>
                 <div>
-                    <label htmlFor="username">Username</label>
-                    <input type="text" name="firstname"/>
+                    <label>Username</label>
+                    <input type="text" onChange={(e) => setUsername(e.target.value)}/>
                 </div>
                 <div>
-                    <label htmlFor="email">E-Mail</label>
-                    <input type="email" name="email"/>
+                    <label>E-Mail</label>
+                    <input type="email" onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <div>
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password"/>
+                    <label>Password</label>
+                    <input type="password" onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div>
-                    <label htmlFor="confirmPassword">Confirm Password</label>
-                    <input type="password" name="confirmPassword"/>
+                    <label>Confirm Password</label>
+                    <input type="password" onChange={(e) => setConfirmedPassword(e.target.value)}/>
                 </div>
                 <div>
                     <button type="submit">Sign Up</button>

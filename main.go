@@ -6,6 +6,8 @@ import (
 	"auth-server/common"
 	"auth-server/discovery"
 	"auth-server/token"
+	"auth-server/user"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -29,6 +31,8 @@ func configurePersistenceLayer() {
 
 func configureRoutes() {
 	router := gin.Default()
+	router.Use(cors.Default())
+	user.SetUpUserRoutes(router)
 	discovery.SetUpDiscoveryRoutes(router)
 	client.SetUpClientRoutes(router)
 	authorization.SetUpAuthorizationRoutes(router)

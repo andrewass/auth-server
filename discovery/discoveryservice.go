@@ -15,9 +15,10 @@ func getOauthConfig() dto.ConfigResponse {
 
 func getConfig() dto.ConfigResponse {
 	baseUrl := viper.Get("BASE_URL").(string)
+	frontEndUrl := viper.Get("FRONTEND_URL").(string)
 	return dto.ConfigResponse{
 		RegistrationEndpoint:  baseUrl + "/clients",
-		AuthorizationEndpoint: baseUrl + "/login",
+		AuthorizationEndpoint: frontEndUrl + "/sign-in",
 		TokenEndpoint:         baseUrl + "/token",
 		IntrospectionEndpoint: baseUrl + "/token/introspect",
 	}
