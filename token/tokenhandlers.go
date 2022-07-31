@@ -18,7 +18,7 @@ func introspectTokenHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	var response = IntrospectToken(request)
+	var response = introspectToken(request)
 	context.JSON(http.StatusOK, response)
 }
 
@@ -28,6 +28,6 @@ func revokeTokenHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	RevokeToken(request)
+	revokeToken(request)
 	context.Status(http.StatusOK)
 }

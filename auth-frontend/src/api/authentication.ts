@@ -1,8 +1,8 @@
 
-export const signUpUser = (data: any) => {
+export const signUpUser = (data: any) : Promise<Response> => {
     const url = "http://localhost:8089/user/sign-up"
-    const response = fetch(url, {
+    return fetch(url, {
         method: "POST",
-        body: data
+        body: JSON.stringify(data)
     })
 }

@@ -1,20 +1,21 @@
 package user
 
 import (
+	"auth-server/user/dto"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func SetUpUserRoutes(router *gin.Engine) {
-	router.POST("/user/sign-up", getOpenIdConfigHandler)
+	router.POST("/user/sign-up", signUpUserHandler)
 }
 
-func getOpenIdConfigHandler(context *gin.Context) {
-	response := "fdf"
-	context.JSON(http.StatusOK, response)
-}
-
-func getOauthConfigHandler(context *gin.Context) {
-	response := "fdf"
-	context.JSON(http.StatusOK, response)
+func signUpUserHandler(context *gin.Context) {
+	request := dto.SignUpUserRequest{}
+	err := context.BindJSON(&request)
+	if err != nil {
+		panic(err)
+	}
+	email := signUpUser(request)
+	context.JSON(http.StatusOK, email)
 }

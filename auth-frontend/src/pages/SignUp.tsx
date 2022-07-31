@@ -5,7 +5,6 @@ import {signUpUser} from "../api/authentication";
 const SignUp = () => {
     const navigate = useNavigate()
 
-    const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
@@ -15,17 +14,17 @@ const SignUp = () => {
         if (password !== confirmedPassword) {
             alert("Password mismatch")
         } else {
-            signUpUser({username, email, password})
+            signUpUser({email, password})
+                .then(response => {
+                    navigate("/confirmation", {state: })
+                })
+                .catch(error => console.log(error))
         }
     }
 
     return (
         <>
             <form onSubmit={submitSignUp}>
-                <div>
-                    <label>Username</label>
-                    <input type="text" onChange={(e) => setUsername(e.target.value)}/>
-                </div>
                 <div>
                     <label>E-Mail</label>
                     <input type="email" onChange={(e) => setEmail(e.target.value)}/>

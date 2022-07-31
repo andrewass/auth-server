@@ -5,7 +5,7 @@ const SignIn = () => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
 
-    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const redirectUri = searchParams.get("redirect_uri")
@@ -17,8 +17,8 @@ const SignIn = () => {
         <>
             <form onSubmit={submitSignIn}>
                 <div>
-                    <label>Username</label>
-                    <input type="text" onChange={(e) => setUsername(e.target.value)}/>
+                    <label>E-mail</label>
+                    <input type="text" onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 <div>
                     <label>Password</label>
