@@ -1,10 +1,12 @@
-import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
-import {signUpUser} from "../api/authentication";
+import {signUpUser} from "../../api/authentication";
 
-const SignUp = () => {
-    const navigate = useNavigate()
+interface Props {
+    setDisplaySignUp: (value: boolean) => void
+    redirectToConfirmation: () => void
+}
 
+const SignUp = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
@@ -15,9 +17,7 @@ const SignUp = () => {
             alert("Password mismatch")
         } else {
             signUpUser({email, password})
-                .then(response => {
-                    navigate("/confirmation", {state: })
-                })
+                .then(() => redirectToConfirmation())
                 .catch(error => console.log(error))
         }
     }
@@ -42,7 +42,7 @@ const SignUp = () => {
                 </div>
             </form>
             <div>
-                <button onClick={() => navigate("/sign-in")}>
+                <button onClick={() => setDisplaySignUp(false)}>
                     Sign in with existing account
                 </button>
             </div>

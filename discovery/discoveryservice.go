@@ -18,7 +18,7 @@ func getConfig() dto.ConfigResponse {
 	frontEndUrl := viper.Get("FRONTEND_URL").(string)
 	return dto.ConfigResponse{
 		RegistrationEndpoint:  baseUrl + "/clients",
-		AuthorizationEndpoint: frontEndUrl + "/sign-in",
+		AuthorizationEndpoint: frontEndUrl + "/authentication",
 		TokenEndpoint:         baseUrl + "/token",
 		IntrospectionEndpoint: baseUrl + "/token/introspect",
 	}

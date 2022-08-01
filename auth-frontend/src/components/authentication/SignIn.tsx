@@ -1,7 +1,12 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 
-const SignIn = () => {
+interface Props {
+    setDisplaySignUp: (value: boolean) => void
+    redirectToConfirmation: () => void
+}
+
+const SignIn = ({setDisplaySignUp}: Props) => {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
 
@@ -29,7 +34,7 @@ const SignIn = () => {
                 </div>
             </form>
             <div>
-                <button onClick={() => navigate("/sign-up")}>
+                <button onClick={() => setDisplaySignUp(true)}>
                     Create new account
                 </button>
             </div>
