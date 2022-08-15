@@ -3,6 +3,7 @@ package client
 import (
 	"auth-server/client/dto"
 	"math/rand"
+	"time"
 )
 
 var clients = []Client{
@@ -16,13 +17,25 @@ func getClients() []Client {
 	return getAllClients()
 }
 
-func addClient(request dto.AddClientRequest) dto.AddClientResponse {
+func addClient(request dto.AddClientRequest) Client {
 	client := Client{
-		ClientId:     generateRandomString(),
-		ClientSecret: generateRandomString(),
+		ClientId:                generateRandomString(),
+		ClientSecret:            generateRandomString(),
+		ClientIdIssuedAt:        time.Now().Unix(),
+		LogoUri:                 request.LogoUri,
+		ApplicationType:         request.ApplicationType,
+		ClientName:              request.ClientName,
+		ClientUri:               request.ClientUri,
+		InitiateLoginUri:        request.InitiateLoginUri,
+		TokenEndpointAuthMethod: request.TokenEndpointAuthMethod,
+		RedirectUris:            request.RedirectUris,
+		ResponseTypes:           request.ResponseTypes,
+		GrantTypes:              request.GrantTypes,
+		PostLogoutRedirectUris:  request.PostLogoutRedirectUris,
 	}
 	saveClient(client)
-	return mapToAddClientResponse(client)
+
+	return client
 }
 
 func mapToAddClientResponse(client Client) dto.AddClientResponse {

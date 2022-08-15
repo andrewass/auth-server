@@ -11,7 +11,7 @@ import (
 func SetUpClientRoutes(router *gin.Engine) {
 	//Get all registered OAuth 2.0 clients / OpenID relying parties.
 	router.GET("/clients", getClientsHandler)
-	//Registers a new OAuth 2.0 client / OpenID relying party.
+	//Registers a new OAuth 2.0 client / OpenID relying on party.
 	router.POST("/clients", addClientHandler)
 }
 
