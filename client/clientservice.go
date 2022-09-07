@@ -38,13 +38,6 @@ func addClient(request dto.AddClientRequest) Client {
 	return client
 }
 
-func mapToAddClientResponse(client Client) dto.AddClientResponse {
-	return dto.AddClientResponse{
-		ClientId:     client.ClientId,
-		ClientSecret: client.ClientSecret,
-	}
-}
-
 func generateRandomString() string {
 	b := make([]rune, 30)
 	for i := range b {

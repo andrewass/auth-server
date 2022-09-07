@@ -27,8 +27,8 @@ func addClientHandler(ctx *gin.Context) {
 	if err := ctx.BindJSON(&request); err != nil {
 		panic(err)
 	}
-	addClient(request)
-	ctx.Status(http.StatusOK)
+	client := addClient(request)
+	ctx.JSON(http.StatusOK, mapToAddClientResponse(client))
 }
 
 func validateMasterAccessToken(ctx *gin.Context) {
@@ -36,5 +36,23 @@ func validateMasterAccessToken(ctx *gin.Context) {
 	if !common.ValidateMasterAccessToken(token[1]) {
 		ctx.Status(http.StatusUnauthorized)
 		return
+	}
+}
+
+func mapToAddClientResponse(client Client) dto.AddClientResponse {
+	return dto.AddClientResponse{
+		ClientId:                client.ClientId,
+		ClientSecret:            client.ClientSecret,
+		ClientIdIssuedAt:        client.ClientIdIssuedAt,
+		LogoUri:                 client.LogoUri,
+		ApplicationType:         client.ApplicationType,
+		ClientName:              client.ClientName,
+		ClientUri:               client.ClientUri,
+		InitiateLoginUri:        client.InitiateLoginUri,
+		TokenEndpointAuthMethod: client.TokenEndpointAuthMethod,
+		RedirectUris:            client.RedirectUris,
+		ResponseTypes:           client.ResponseTypes,
+		GrantTypes:              client.GrantTypes,
+		PostLogoutRedirectUris:  client.PostLogoutRedirectUris,
 	}
 }

@@ -9,7 +9,6 @@ import (
 func SetUpTokenRoutes(router *gin.Engine) {
 	router.POST("/token/introspect", introspectTokenHandler)
 	router.POST("token/revoke", revokeTokenHandler)
-
 }
 
 func introspectTokenHandler(context *gin.Context) {

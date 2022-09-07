@@ -1,21 +1,20 @@
-import {useNavigate, useSearchParams} from "react-router-dom";
-import {useState} from "react";
+import React, {useState} from "react";
+import {signInUser} from "../../api/authentication";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
     redirectToConfirmation: () => void
 }
 
-const SignIn = ({setDisplaySignUp}: Props) => {
-    const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
-
+const SignIn = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const redirectUri = searchParams.get("redirect_uri")
-
-    const submitSignIn = () => {
+    const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
+        event.preventDefault()
+        signInUser({email, password})
+            .then(() => redirectToConfirmation())
+            .catch(error => console.log(error))
     }
 
     return (

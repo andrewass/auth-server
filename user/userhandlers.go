@@ -7,7 +7,18 @@ import (
 )
 
 func SetUpUserRoutes(router *gin.Engine) {
+	router.POST("/user/sign-in", signInUserHandler)
 	router.POST("/user/sign-up", signUpUserHandler)
+}
+
+func signInUserHandler(context *gin.Context) {
+	request := dto.SignInUserRequest{}
+	err := context.BindJSON(&request)
+	if err != nil {
+		panic(err)
+	}
+	email := signInUser(request)
+	context.JSON(http.StatusOK, email)
 }
 
 func signUpUserHandler(context *gin.Context) {

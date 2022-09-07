@@ -20,13 +20,13 @@ const Authentication = () => {
 
     if (displaySignUp) {
         return (
-            <div id="authentication">
+            <div>
                 <SignUp setDisplaySignUp={setDisplaySignUp} redirectToConfirmation={redirectToConfirmation}/>
             </div>
         )
     } else {
         return (
-            <div id="authentication">
+            <div>
                 <SignIn setDisplaySignUp={setDisplaySignUp} redirectToConfirmation={redirectToConfirmation} />
             </div>
         )

@@ -31,12 +31,12 @@ func existsUserByEmail(email string) bool {
 }
 
 func extractUserFromSingleResult(result *mongo.SingleResult) *User {
-	var storedUser *User
-	if err := result.Decode(storedUser); err != nil {
+	var storedUser User
+	if err := result.Decode(&storedUser); err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil
 		}
 		panic(err)
 	}
-	return storedUser
+	return &storedUser
 }
