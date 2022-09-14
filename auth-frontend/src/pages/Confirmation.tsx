@@ -1,21 +1,27 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 
 interface CustomizedState {
     redirectUri: string
+    state: string
 }
 
 const Confirmation = () => {
     const location = useLocation()
-    const navigate = useNavigate()
+    const locationState = location.state as CustomizedState
+    const {redirectUri, state} = locationState
 
-    const state = location.state as CustomizedState
-    const {redirectUri} = state
-
-    const navigateToRedirectUri = () => {
-        window.location.replace(redirectUri)
+    const createAuthorizationCode = () => {
+        return "dsfdsfasdgrtwewe"
     }
 
-    return(
+    const navigateToRedirectUri = () => {
+        const url = new URL(redirectUri)
+        url.searchParams.append("code", createAuthorizationCode())
+        url.searchParams.append("state",state)
+        window.location.replace(url)
+    }
+
+    return (
         <>
             <button onClick={() => navigateToRedirectUri()}>Confirm</button>
         </>

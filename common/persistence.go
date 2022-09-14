@@ -17,7 +17,7 @@ func ConnectToDatabase() {
 		Password: viper.Get("MONGO_DB_PASSWORD").(string),
 	}
 	ctx := context.TODO()
-	opts := options.Client().ApplyURI("mongodb://localhost:27017").SetAuth(credentials)
+	opts := options.Client().ApplyURI("mongodb://mongodb:27017").SetAuth(credentials)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

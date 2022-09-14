@@ -9,11 +9,13 @@ const Authentication = () => {
     const [displaySignUp, setDisplaySignUp] = useState(false)
 
     const[redirectUri] = useState(searchParams.get("redirect_uri"))
+    const [state] = useState(searchParams.get("state"));
 
     const redirectToConfirmation = () => {
         navigate("/confirmation", {
             state: {
-                redirectUri: redirectUri
+                redirectUri: redirectUri,
+                state: state
             }
         })
     }

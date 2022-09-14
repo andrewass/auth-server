@@ -14,7 +14,7 @@ const SignUp = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
     const submitSignUp = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()
         if (password !== confirmedPassword) {
-            alert("Password mismatch")
+            console.log("Password mismatch")
         } else {
             signUpUser({email, password})
                 .then(() => redirectToConfirmation())
