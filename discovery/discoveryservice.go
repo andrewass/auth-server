@@ -1,8 +1,8 @@
 package discovery
 
 import (
+	"auth-server/authorization"
 	"auth-server/discovery/dto"
-	"auth-server/resources"
 	"github.com/spf13/viper"
 )
 
@@ -16,7 +16,7 @@ func getOauthConfig() dto.WellKnownEndpointsResponse {
 
 func getJwks() dto.JWKResponse {
 	return dto.JWKResponse{
-		Keys: resources.GetJwks(),
+		Keys: authorization.GetJwks(),
 	}
 }
 

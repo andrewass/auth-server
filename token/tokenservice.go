@@ -4,7 +4,8 @@ import (
 	"auth-server/authorization"
 	"auth-server/token/dto"
 	"github.com/golang-jwt/jwt"
-	"log"
+	"github.com/spf13/viper"
+	"time"
 )
 
 func getToken(request dto.GetTokenRequest) dto.GetTokenResponse {
@@ -29,18 +30,23 @@ func revokeToken(request dto.RevokeTokenRequest) {
 
 func createAccessToken() string {
 	claims := jwt.StandardClaims{
-		ExpiresAt: 15000,
-		Issuer:    "test",
+		ExpiresAt: getExpirationTime(),
+		Issuer:    viper.Get("AUTH_SERVER_SERVICE").(string),
 		Subject:   "1234567890",
-		NotBefore: 34234534565,
+		NotBefore: getCurrentTime(),
 		Audience:  "test-audience",
 	}
 	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	signedString, _ := token.SignedString(key)
 
-	signedString, err := token.SignedString(key)
-	if err != nil {
-		log.Println(err)
-	}
 	return signedString
+}
+
+func getCurrentTime() int64 {
+	return time.Now().Local().Unix()
+}
+
+func getExpirationTime() int64 {
+	return time.Now().Local().Add(time.Hour * 1).Unix()
 }

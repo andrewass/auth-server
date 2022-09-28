@@ -1,6 +1,8 @@
 package dto
 
-import "auth-server/resources"
+import (
+	"auth-server/authorization"
+)
 
 type WellKnownEndpointsResponse struct {
 	Issuer                string `json:"issuer"`
@@ -12,5 +14,5 @@ type WellKnownEndpointsResponse struct {
 }
 
 type JWKResponse struct {
-	Keys []resources.JWK `json:"keys"`
+	Keys []authorization.JWK `json:"keys"`
 }
