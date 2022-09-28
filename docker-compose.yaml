@@ -17,7 +17,8 @@ services:
   auth-server:
     image: auth-server
     container_name: auth-server
-    build: .
+    build:
+      context: .
     depends_on:
       - mongodb
     restart: on-failure
@@ -27,7 +28,7 @@ services:
 networks:
   default:
     external: true
-    name: stock-analyzer_default
+    name: compose_network
 
 volumes:
   mongo-volume:

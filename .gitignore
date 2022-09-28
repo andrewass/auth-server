@@ -13,3 +13,5 @@
 .idea/**/dbnavigator.xml
 
 .idea/dataSources.xml
+
+certs/**

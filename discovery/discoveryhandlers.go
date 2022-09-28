@@ -11,7 +11,7 @@ func SetUpDiscoveryRoutes(router *gin.Engine) {
 	//Discover the OAuth 2.0 endpoints, capabilities, supported cryptographic algorithms and features.
 	router.GET("/.well-known/oauth-authorization-server", getOauthConfigHandler)
 	//Get the JWK set
-	router.GET("/.well-known/jwks", getJwksHandler)
+	router.GET("/.well-known/jwks.json", getJwksHandler)
 }
 
 func getOpenIdConfigHandler(context *gin.Context) {

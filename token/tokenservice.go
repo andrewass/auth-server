@@ -1,7 +1,10 @@
 package token
 
 import (
+	"auth-server/authorization"
 	"auth-server/token/dto"
+	"github.com/golang-jwt/jwt"
+	"log"
 )
 
 func getToken(request dto.GetTokenRequest) dto.GetTokenResponse {
@@ -25,5 +28,19 @@ func revokeToken(request dto.RevokeTokenRequest) {
 }
 
 func createAccessToken() string {
-	return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+	claims := jwt.StandardClaims{
+		ExpiresAt: 15000,
+		Issuer:    "test",
+		Subject:   "1234567890",
+		NotBefore: 34234534565,
+		Audience:  "test-audience",
+	}
+	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+
+	signedString, err := token.SignedString(key)
+	if err != nil {
+		log.Println(err)
+	}
+	return signedString
 }
