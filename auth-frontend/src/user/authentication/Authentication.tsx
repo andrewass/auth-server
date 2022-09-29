@@ -1,6 +1,6 @@
 import {useState} from "react";
-import SignUp from "../components/authentication/SignUp";
-import SignIn from "../components/authentication/SignIn";
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 const Authentication = () => {

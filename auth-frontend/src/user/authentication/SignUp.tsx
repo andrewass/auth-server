@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {signUpUser} from "../../api/authentication";
+import {signUpUser} from "../userApi";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
