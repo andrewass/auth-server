@@ -5,7 +5,7 @@ interface CustomizedState {
     state: string
 }
 
-const Confirmation = () => {
+const ClientUserConfirmation = () => {
     const location = useLocation()
     const locationState = location.state as CustomizedState
     const {redirectUri, state} = locationState
@@ -28,4 +28,4 @@ const Confirmation = () => {
     )
 }
 
-export default Confirmation
+export default ClientUserConfirmation

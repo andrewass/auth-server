@@ -3,10 +3,10 @@ import {signUpUser} from "../userApi";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
-    redirectToConfirmation: () => void
+    redirectToPage: () => void
 }
 
-const SignUp = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
+const SignUp = ({setDisplaySignUp, redirectToPage}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
@@ -17,7 +17,7 @@ const SignUp = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
             console.log("Password mismatch")
         } else {
             signUpUser({email, password})
-                .then(() => redirectToConfirmation())
+                .then(() => redirectToPage())
                 .catch(error => console.log(error))
         }
     }

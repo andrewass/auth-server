@@ -3,7 +3,7 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
-const Authentication = () => {
+const ClientUserAuthentication = () => {
     const [searchParams] = useSearchParams()
     const navigate = useNavigate()
     const [displaySignUp, setDisplaySignUp] = useState(false)
@@ -23,16 +23,16 @@ const Authentication = () => {
     if (displaySignUp) {
         return (
             <div>
-                <SignUp setDisplaySignUp={setDisplaySignUp} redirectToConfirmation={redirectToConfirmation}/>
+                <SignUp setDisplaySignUp={setDisplaySignUp} redirectToPage={redirectToConfirmation}/>
             </div>
         )
     } else {
         return (
             <div>
-                <SignIn setDisplaySignUp={setDisplaySignUp} redirectToConfirmation={redirectToConfirmation} />
+                <SignIn setDisplaySignUp={setDisplaySignUp} redirectToPage={redirectToConfirmation} />
             </div>
         )
     }
 }
 
-export default Authentication
+export default ClientUserAuthentication

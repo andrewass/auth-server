@@ -4,17 +4,17 @@ import {Button, FormControl, FormLabel, Input} from "@chakra-ui/react";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
-    redirectToConfirmation: () => void
+    redirectToPage: () => void
 }
 
-const SignIn = ({setDisplaySignUp, redirectToConfirmation}: Props) => {
+const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()
         signInUser({email, password})
-            .then(() => redirectToConfirmation())
+            .then(() => redirectToPage())
             .catch(error => console.log(error))
     }
 
