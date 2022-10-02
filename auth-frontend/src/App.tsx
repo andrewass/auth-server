@@ -1,22 +1,19 @@
-import React from 'react';
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import ClientUserConfirmation from "./user/confirmation/ClientUserConfirmation";
-import ClientUserAuthentication from "./user/authentication/ClientUserAuthentication";
+import {BrowserRouter as Router} from "react-router-dom";
 import {ChakraProvider} from "@chakra-ui/react";
-import ClientRegistration from "./client/registration/ClientRegistration";
+import {oidcConfig} from "./config/oidcConfig";
+import {AuthProvider} from 'react-oidc-context';
+import BodyRoutes from "./BodyRoutes";
 
-function App() {
+const App = () => {
     return (
-        <ChakraProvider>
-            <Router>
-                <Routes>
-                    <Route path="/authentication" element={<ClientUserAuthentication/>}/>
-                    <Route path="/confirmation" element={<ClientUserConfirmation/>}/>
-                    <Route path="/client-registration" element={<ClientRegistration/>}/>
-                </Routes>
-            </Router>
-        </ChakraProvider>
+        <AuthProvider {...oidcConfig}>
+            <ChakraProvider>
+                <Router>
+                    <BodyRoutes/>
+                </Router>
+            </ChakraProvider>
+        </AuthProvider>
     )
 }
 
-export default App;
+export default App
