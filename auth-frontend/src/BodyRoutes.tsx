@@ -2,9 +2,8 @@ import {Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./config/ProtectedRoute";
 import UserAccount from "./user/account/UserAccount";
 import ClientRegistration from "./client/registration/ClientRegistration";
-import ClientUserAuthentication from "./user/authentication/ClientUserAuthentication";
-import ClientUserConfirmation from "./user/confirmation/ClientUserConfirmation";
 import UserAuthentication from "./user/authentication/UserAuthentication";
+import UserConfirmation from "./user/confirmation/UserConfirmation";
 
 const BodyRoutes = () => {
 
@@ -28,13 +27,10 @@ const BodyRoutes = () => {
                 }
             />
 
-            <Route path="/client-authentication" element={<ClientUserAuthentication/>}/>
-            <Route path="/confirmation" element={<ClientUserConfirmation/>}/>
-            <Route path="/user-authentication" element={<UserAuthentication/>}/>
+            <Route path="/authentication" element={<UserAuthentication/>}/>
+            <Route path="/confirmation" element={<UserConfirmation/>}/>
         </Routes>
     )
-
-
 }
 
 export default BodyRoutes

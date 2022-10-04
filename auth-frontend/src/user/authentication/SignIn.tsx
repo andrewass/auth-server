@@ -23,13 +23,13 @@ const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
             <form onSubmit={submitSignIn}>
                 <FormControl isRequired>
                     <FormLabel>Email</FormLabel>
-                    <Input type="email" placeholder="test@test.com" size="lg"
+                    <Input type="email" placeholder="test@test.com" size="lg" autoComplete="off"
                            onChange={event => setEmail(event.currentTarget.value)}
                     />
                 </FormControl>
                 <FormControl isRequired mt={6}>
                     <FormLabel>Password</FormLabel>
-                    <Input type="password" placeholder="*******" size="lg"
+                    <Input type="password" placeholder="*******" size="lg" autoComplete="off"
                            onChange={event => setPassword(event.currentTarget.value)}/>
                 </FormControl>
                 <Button variant="outline" colorScheme="teal" type="submit" width="full" mt={4}>
