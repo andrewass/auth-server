@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {signInUser} from "../userApi";
-import {Button, FormControl, FormLabel, Input} from "@chakra-ui/react";
+import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
@@ -19,8 +19,8 @@ const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
     }
 
     return (
-        <>
-            <form onSubmit={submitSignIn}>
+        <form onSubmit={submitSignIn}>
+            <Stack maxWidth={500} margin="auto" spacing={5} marginTop={90}>
                 <FormControl isRequired>
                     <FormLabel>Email</FormLabel>
                     <Input type="email" placeholder="test@test.com" size="lg" autoComplete="off"
@@ -35,12 +35,11 @@ const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
                 <Button variant="outline" colorScheme="teal" type="submit" width="full" mt={4}>
                     Sign In
                 </Button>
-                <Button variant="outline" colorScheme="teal" width="full"
-                        onClick={() => setDisplaySignUp(true)} mt={4}>
+                <Button variant="outline" colorScheme="teal" onClick={() => setDisplaySignUp(true)} mt={4}>
                     Create new account
                 </Button>
-            </form>
-        </>
+            </Stack>
+        </form>
     )
 }
 

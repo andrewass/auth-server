@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {signUpUser} from "../userApi";
+import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
@@ -23,30 +24,32 @@ const SignUp = ({setDisplaySignUp, redirectToPage}: Props) => {
     }
 
     return (
-        <>
-            <form onSubmit={submitSignUp}>
-                <div>
-                    <label>E-Mail</label>
-                    <input type="email" onChange={(e) => setEmail(e.target.value)}/>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" onChange={(e) => setPassword(e.target.value)}/>
-                </div>
-                <div>
-                    <label>Confirm Password</label>
-                    <input type="password" onChange={(e) => setConfirmedPassword(e.target.value)}/>
-                </div>
-                <div>
-                    <button type="submit">Sign Up</button>
-                </div>
-            </form>
-            <div>
-                <button onClick={() => setDisplaySignUp(false)}>
-                    Sign in with existing account
-                </button>
-            </div>
-        </>
+        <form onSubmit={submitSignUp}>
+            <Stack maxWidth={500} margin="auto" spacing={5} marginTop={90}>
+                <FormControl isRequired>
+                    <FormLabel>Email</FormLabel>
+                    <Input type="email" placeholder="test@test.com" size="lg" autoComplete="off"
+                           onChange={event => setEmail(event.currentTarget.value)}
+                    />
+                </FormControl>
+                <FormControl isRequired mt={6}>
+                    <FormLabel>Password</FormLabel>
+                    <Input type="password" placeholder="*******" size="lg" autoComplete="off"
+                           onChange={event => setPassword(event.currentTarget.value)}/>
+                </FormControl>
+                <FormControl isRequired mt={6}>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <Input type="password" placeholder="*******" size="lg" autoComplete="off"
+                           onChange={event => setConfirmedPassword(event.currentTarget.value)}/>
+                </FormControl>
+                <Button variant="outline" colorScheme="teal" type="submit" mt={4}>
+                    Sign Up
+                </Button>
+                <Button variant="outline" colorScheme="teal" onClick={() => setDisplaySignUp(false)} mt={4}>
+                    Sign in to existing account
+                </Button>
+            </Stack>
+        </form>
     )
 }
 

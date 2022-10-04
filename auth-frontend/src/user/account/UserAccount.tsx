@@ -1,6 +1,7 @@
 import {Flex, IconButton, Spacer, Tab, TabList, TabPanel, TabPanels, Tabs} from "@chakra-ui/react";
 import {BiLogOut} from "react-icons/bi";
 import {useAuth} from "react-oidc-context";
+import ClientRegistrationForm from "../../client/registration/ClientRegistrationForm";
 
 const UserAccount = () => {
 
@@ -14,7 +15,9 @@ const UserAccount = () => {
                     <Tab>User settings</Tab>
                 </TabList>
                 <TabPanels>
-                    <TabPanel></TabPanel>
+                    <TabPanel>
+                        <ClientRegistrationForm/>
+                    </TabPanel>
                     <TabPanel></TabPanel>
                 </TabPanels>
             </Tabs>
