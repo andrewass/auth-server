@@ -1,14 +1,21 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
+import {useAxiosWrapper} from "../../config/axiosWrapper";
+import {registerClientConfig} from "../clientApi";
 
 const ClientRegistrationForm = () => {
     const [clientName, setClientName] = useState("")
     const [applicationType] = useState([])
     const [redirectUris, setRedirectUris] = useState<string[]>([])
     const [tokenEndpointAuthMethod] = useState()
+    const {post} = useAxiosWrapper()
 
-    const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
 
+    const registerClient = () => {
+        post(registerClientConfig({
+            "clientName": clientName,
+            "redirectUris": redirectUris
+        })).catch(error => console.log(error))
     }
 
     const removeRedirectUri = (index: number) => {
@@ -24,8 +31,15 @@ const ClientRegistrationForm = () => {
     }
 
     return (
-        <form onSubmit={submitSignIn}>
+        <form onSubmit={registerClient}>
             <Stack maxWidth={1000} margin="auto" spacing={5} marginTop={15}>
+                <FormControl>
+                    <FormLabel>Client name</FormLabel>
+                    <Input type="text" placeholder="client name" autoComplete="off"
+                           onChange={event => setClientName(event.currentTarget.value)}
+                    />
+                </FormControl>
+
                 <FormControl>
                     <FormLabel>Application types</FormLabel>
                     <Select placeholder='Select application types'>
@@ -49,8 +63,8 @@ const ClientRegistrationForm = () => {
                 </FormControl>
 
                 <FormControl>
-                    <Button variant="outline" type="submit" colorScheme="teal" onSubmit={submitSignIn}>
-                        Sign In
+                    <Button variant="outline" type="submit" colorScheme="teal" onSubmit={registerClient}>
+                        Register client
                     </Button>
                 </FormControl>
             </Stack>
