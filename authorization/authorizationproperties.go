@@ -28,7 +28,6 @@ func configureJWK() {
 	publicJwk := newJwk.(jwk.RSAPublicKey)
 	exponent := base64.URLEncoding.EncodeToString(publicJwk.E())
 	modulo := base64.URLEncoding.EncodeToString(publicJwk.N())
-	println("Finished and E is " + exponent + " and N is " + modulo)
 
 	customJwk = JWK{
 		E:   exponent,

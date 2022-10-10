@@ -32,7 +32,11 @@ func configurePersistenceLayer() {
 
 func configureRoutes() {
 	router := gin.Default()
-	router.Use(cors.Default())
+	config := cors.DefaultConfig()
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization"}
+	config.AllowAllOrigins = true
+	router.Use(cors.New(config))
+
 	user.SetUpUserRoutes(router)
 	discovery.SetUpDiscoveryRoutes(router)
 	client.SetUpClientRoutes(router)

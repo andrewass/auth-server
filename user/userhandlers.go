@@ -17,8 +17,8 @@ func signInUserHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	email := signInUser(request)
-	context.JSON(http.StatusOK, email)
+	signInUser(request)
+	context.Status(http.StatusOK)
 }
 
 func signUpUserHandler(context *gin.Context) {
@@ -27,6 +27,6 @@ func signUpUserHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	email := signUpUser(request)
-	context.JSON(http.StatusOK, email)
+	signUpUser(request)
+	context.Status(http.StatusOK)
 }

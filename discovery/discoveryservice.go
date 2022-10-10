@@ -29,6 +29,6 @@ func getConfig() dto.WellKnownEndpointsResponse {
 		AuthorizationEndpoint: frontEndUrl + "/authentication",
 		TokenEndpoint:         baseUrl + "/token",
 		IntrospectionEndpoint: baseUrl + "/token/introspect",
-		JwksUri:               baseUrl + "/.well-known/jwks",
+		JwksUri:               baseUrl + "/.well-known/jwks.json",
 	}
 }

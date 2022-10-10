@@ -9,13 +9,12 @@ import (
 
 const userCollection = "user"
 
-func saveUser(user User) string {
+func saveUser(user User) {
 	ctx := context.TODO()
-	result, err := common.Database.Collection(userCollection).InsertOne(ctx, user)
+	_, err := common.Database.Collection(userCollection).InsertOne(ctx, user)
 	if err != nil {
 		panic(err)
 	}
-	return result.InsertedID.(string)
 }
 
 func findUserByEmail(email string) *User {

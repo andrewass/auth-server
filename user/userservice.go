@@ -5,15 +5,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func signInUser(request dto.SignInUserRequest) string {
+func signInUser(request dto.SignInUserRequest) {
 	existingUser := findUserByEmail(request.Email)
 	if existingUser == nil || !matchingPassword(request.Password, existingUser.Password) {
 		panic("User not found or incorrect password")
 	}
-	return existingUser.Email
 }
 
-func signUpUser(request dto.SignUpUserRequest) string {
+func signUpUser(request dto.SignUpUserRequest) {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(request.Password), 8)
 	newUser := User{
 		Email:    request.Email,
@@ -21,7 +20,6 @@ func signUpUser(request dto.SignUpUserRequest) string {
 	}
 	verifyNotPreviouslyExistingUser(newUser)
 	saveUser(newUser)
-	return request.Email
 }
 
 func matchingPassword(password, hash string) bool {

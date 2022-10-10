@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {signUpUser} from "../userApi";
+import {signUpUser} from "../api/userApi";
 import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
@@ -17,7 +17,7 @@ const SignUp = ({setDisplaySignUp, redirectToPage}: Props) => {
         if (password !== confirmedPassword) {
             console.log("Password mismatch")
         } else {
-            signUpUser({email, password})
+            signUpUser(email, password)
                 .then(() => redirectToPage())
                 .catch(error => console.log(error))
         }

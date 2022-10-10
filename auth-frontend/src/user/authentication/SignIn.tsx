@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {signInUser} from "../userApi";
+import {signInUser} from "../api/userApi";
 import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
@@ -13,7 +13,7 @@ const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
 
     const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()
-        signInUser({email, password})
+        signInUser(email, password)
             .then(() => redirectToPage())
             .catch(error => console.log(error))
     }

@@ -1,7 +1,11 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
-import {registerClientConfig} from "../clientApi";
+import {registerClientConfig} from "../api/clientApi";
+
+export interface RegisterClientData {
+
+}
 
 const ClientRegistrationForm = () => {
     const [clientName, setClientName] = useState("")
@@ -13,8 +17,8 @@ const ClientRegistrationForm = () => {
 
     const registerClient = () => {
         post(registerClientConfig({
-            "clientName": clientName,
-            "redirectUris": redirectUris
+            "client_name": clientName,
+            "redirect_uris": redirectUris
         })).catch(error => console.log(error))
     }
 
@@ -31,7 +35,7 @@ const ClientRegistrationForm = () => {
     }
 
     return (
-        <form onSubmit={registerClient}>
+        <form>
             <Stack maxWidth={1000} margin="auto" spacing={5} marginTop={15}>
                 <FormControl>
                     <FormLabel>Client name</FormLabel>
@@ -63,7 +67,7 @@ const ClientRegistrationForm = () => {
                 </FormControl>
 
                 <FormControl>
-                    <Button variant="outline" type="submit" colorScheme="teal" onSubmit={registerClient}>
+                    <Button variant="outline" type="button" colorScheme="teal" onClick={registerClient}>
                         Register client
                     </Button>
                 </FormControl>
