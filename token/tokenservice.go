@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-func getToken(request dto.GetTokenRequest) dto.GetTokenResponse {
-	return dto.GetTokenResponse{
+func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
+	return dto.GetTokensResponse{
 		AccessToken: createAccessToken(),
-		IdToken:     createAccessToken(),
+		IdToken:     createIdToken(),
 		TokenType:   "Bearer",
 		ExpiresIn:   324355346,
 		Scope:       "email",
@@ -35,6 +35,23 @@ func createAccessToken() string {
 		Subject:   "1234567890",
 		NotBefore: getCurrentTime(),
 		Audience:  "test-audience",
+	}
+	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	signedString, _ := token.SignedString(key)
+
+	return signedString
+}
+
+func createIdToken() string {
+
+	claims := CustomIdClaims{"", jwt.StandardClaims{
+		ExpiresAt: getExpirationTime(),
+		Issuer:    viper.Get("AUTH_SERVER_SERVICE").(string),
+		Subject:   "1234567890-id",
+		NotBefore: getCurrentTime(),
+		Audience:  "test-audience-id-token",
+	},
 	}
 	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)

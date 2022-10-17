@@ -7,14 +7,14 @@ import (
 )
 
 func SetUpAuthorizationRoutes(router *gin.Engine) {
-	router.GET("/authorize", authorizeClientHandler)
+	router.GET("/authorize", authorizeUserHandler)
 }
 
-func authorizeClientHandler(context *gin.Context) {
+func authorizeUserHandler(context *gin.Context) {
 	request := dto.AuthorizeRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
-	var response = AuthorizeClient(request)
+	var response = authorizeClient(request)
 	context.JSON(http.StatusOK, response)
 }

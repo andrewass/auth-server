@@ -7,18 +7,18 @@ import (
 )
 
 func SetUpTokenRoutes(router *gin.Engine) {
-	router.POST("/token", getTokenHandler)
+	router.POST("/token", getTokensHandler)
 	router.POST("/token/introspect", introspectTokenHandler)
 	router.POST("token/revoke", revokeTokenHandler)
 }
 
-func getTokenHandler(context *gin.Context) {
+func getTokensHandler(context *gin.Context) {
 	var request dto.GetTokenRequest
 	err := context.Bind(&request)
 	if err != nil {
 		panic(err)
 	}
-	response := getToken(request)
+	response := getTokens(request)
 	context.JSON(http.StatusOK, response)
 }
 

@@ -1,5 +1,5 @@
-export interface RegisterClientDto {
-    redirectUris: string[],
-    email: string;
-    password: string;
+
+export interface RegisterClientRequest {
+    redirectUris: string[]
+    clientName: string
 }

@@ -1,6 +1,6 @@
 package dto
 
-type GetTokenResponse struct {
+type GetTokensResponse struct {
 	AccessToken string `json:"access_token"`
 	IdToken     string `json:"id_token"`
 	TokenType   string `json:"token_type"`

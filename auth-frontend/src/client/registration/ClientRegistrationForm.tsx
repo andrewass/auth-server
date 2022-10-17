@@ -17,9 +17,10 @@ const ClientRegistrationForm = () => {
 
     const registerClient = () => {
         post(registerClientConfig({
-            "client_name": clientName,
-            "redirect_uris": redirectUris
-        })).catch(error => console.log(error))
+                redirectUris: redirectUris,
+                clientName: clientName
+            }
+        )).catch(error => console.log(error))
     }
 
     const removeRedirectUri = (index: number) => {
@@ -29,13 +30,13 @@ const ClientRegistrationForm = () => {
 
     const addUriIfSpaceIsPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === " " && event.target.value !== "") {
-            setRedirectUris([...redirectUris].concat([event.target.value]))
+            setRedirectUris([...redirectUris].concat([event.target.value.trim()]))
             event.target.value = "";
         }
     }
 
     return (
-        <form>
+        <form onSubmit={registerClient}>
             <Stack maxWidth={1000} margin="auto" spacing={5} marginTop={15}>
                 <FormControl>
                     <FormLabel>Client name</FormLabel>
@@ -67,7 +68,7 @@ const ClientRegistrationForm = () => {
                 </FormControl>
 
                 <FormControl>
-                    <Button variant="outline" type="button" colorScheme="teal" onClick={registerClient}>
+                    <Button variant="outline" type="submit" colorScheme="teal" onClick={registerClient}>
                         Register client
                     </Button>
                 </FormControl>
