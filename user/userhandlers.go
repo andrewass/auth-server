@@ -14,6 +14,7 @@ func SetUpUserRoutes(router *gin.Engine) {
 func signInUserHandler(context *gin.Context) {
 	request := dto.SignInUserRequest{}
 	err := context.BindJSON(&request)
+
 	if err != nil {
 		panic(err)
 	}

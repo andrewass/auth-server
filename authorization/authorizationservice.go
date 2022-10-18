@@ -4,6 +4,6 @@ import (
 	"auth-server/authorization/dto"
 )
 
-func authorizeClient(request dto.AuthorizeRequest) string {
-	return "reponse"
+func authorizeUser(request dto.AuthorizeRequest) string {
+	return "response"
 }

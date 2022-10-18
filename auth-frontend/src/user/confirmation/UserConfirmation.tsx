@@ -21,6 +21,11 @@ const UserConfirmation = () => {
         window.location.replace(url)
     }
 
+    const postConfirmationToServer = () => {
+
+    }
+
+
     return (
         <>
             <button onClick={() => navigateToRedirectUri()}>Confirm</button>
