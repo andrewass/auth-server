@@ -1,34 +1,19 @@
-import {useLocation} from "react-router-dom";
-
-interface CustomizedState {
-    redirectUri: string
-    state: string
-}
+import {createSearchParams, useNavigate, useSearchParams} from "react-router-dom";
 
 const UserConfirmation = () => {
-    const location = useLocation()
-    const locationState = location.state as CustomizedState
-    const {redirectUri, state} = locationState
-
-    const createAuthorizationCode = () => {
-        return "dsfdsfasdgrtwewe"
-    }
-
-    const navigateToRedirectUri = () => {
-        const url = new URL(redirectUri)
-        url.searchParams.append("code", createAuthorizationCode())
-        url.searchParams.append("state",state)
-        window.location.replace(url)
-    }
+    const navigate = useNavigate()
+    const [searchParams] = useSearchParams();
 
     const postConfirmationToServer = () => {
-
+        navigate({
+            pathname: "/authentication",
+            search: `?${createSearchParams(searchParams)}`
+        })
     }
-
 
     return (
         <>
-            <button onClick={() => navigateToRedirectUri()}>Confirm</button>
+            <button onClick={() => postConfirmationToServer()}>Confirm</button>
         </>
     )
 }

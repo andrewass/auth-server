@@ -1,4 +1,3 @@
-import {AxiosRequestConfig} from "axios";
 import {AUTH_SERVER_URL} from "../../config/properties";
 import {AuthorizeUserRequest} from "./userDto";
 
@@ -19,16 +18,13 @@ export const signInUser = (email: string, password: string): Promise<Response> =
 }
 
 export const postConfirmation = (request: AuthorizeUserRequest) => {
-    const url = AUTH_SERVER_URL + "/authorization-confirmation"
     return {
-        method: "post"
-    }
-}
-
-export const attachClientToUser = (requestData: AxiosRequestConfig) => {
-    return {
+        url: AUTH_SERVER_URL + "/authorization-confirmation",
         method: "post",
-        url: AUTH_SERVER_URL + "/user/add-client",
-        data: requestData
+        data: {
+            "client_id": request.clientId,
+            "redirect_uri": request.redirectUri,
+            "state": request.state
+        }
     }
 }
