@@ -4,17 +4,17 @@ import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
-    redirectToPage: () => void
+    postProcessSignIn: (email: string) => void
 }
 
-const SignIn = ({setDisplaySignUp, redirectToPage}: Props) => {
+const SignIn = ({setDisplaySignUp, postProcessSignIn}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()
         signInUser(email, password)
-            .then(() => redirectToPage())
+            .then(() => postProcessSignIn(email))
             .catch(error => console.log(error))
     }
 

@@ -10,7 +10,7 @@ import (
 
 func SetUpAuthorizationRoutes(router *gin.Engine) {
 	router.GET("/authorize", authorizeUserHandler)
-	router.POST("/authorization-confirmation", authorizationConfirmationHandler)
+	router.POST("/authorization-response", authorizationResponseHandler)
 }
 
 func authorizeUserHandler(context *gin.Context) {
@@ -23,24 +23,13 @@ func authorizeUserHandler(context *gin.Context) {
 	context.Redirect(http.StatusFound, frontendUrl)
 }
 
-func authorizationConfirmationHandler(context *gin.Context) {
-	var request dto.AuthorizationConfirmationRequest
+func authorizationResponseHandler(context *gin.Context) {
+	var request dto.AuthorizationCodeRequest
 	err := context.BindJSON(&request)
 	if err != nil {
 		panic(err)
 	}
-	redirectUrl := constructResponseRedirectUrl(request)
-	context.JSON(200, redirectUrl)
-}
 
-func constructResponseRedirectUrl(request dto.AuthorizationConfirmationRequest) string {
-	redirectUrl, _ := url.Parse(request.RedirectUri)
-	values := redirectUrl.Query()
-	values.Add("code", "fdsfsdtgertewtfdgfgyh")
-	values.Add("state", request.State)
-	redirectUrl.RawQuery = values.Encode()
-
-	return redirectUrl.String()
 }
 
 func constructFrontendUrl(request dto.AuthorizeRequest) string {

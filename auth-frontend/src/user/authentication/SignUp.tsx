@@ -4,10 +4,10 @@ import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {
     setDisplaySignUp: (value: boolean) => void
-    redirectToPage: () => void
+    postProcessSignUp: (email: string) => void
 }
 
-const SignUp = ({setDisplaySignUp, redirectToPage}: Props) => {
+const SignUp = ({setDisplaySignUp, postProcessSignUp}: Props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmedPassword, setConfirmedPassword] = useState("")
@@ -18,7 +18,7 @@ const SignUp = ({setDisplaySignUp, redirectToPage}: Props) => {
             console.log("Password mismatch")
         } else {
             signUpUser(email, password)
-                .then(() => redirectToPage())
+                .then(() => postProcessSignUp(email))
                 .catch(error => console.log(error))
         }
     }
