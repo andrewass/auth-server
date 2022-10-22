@@ -10,6 +10,14 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
+func GetchAuthorizationCode(clientId string, code string) AuthCode {
+	return getAuthorizationCode(clientId, code)
+}
+
+func DeleteAuthorizationCode(authCode AuthCode) {
+	deleteAuthorizationCode(authCode)
+}
+
 func createFrontendUrl(request dto.AuthorizeRequest) string {
 	frontendUrl, _ := url.Parse(viper.Get("FRONTEND_URL").(string) + "/confirmation")
 	values := frontendUrl.Query()

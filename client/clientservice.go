@@ -13,6 +13,10 @@ var clients = []Client{
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
+func VerifyClient(clientId string, clientSecret string) {
+
+}
+
 func getClients() []Client {
 	return getAllClients()
 }

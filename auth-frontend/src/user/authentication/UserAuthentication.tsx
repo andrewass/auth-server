@@ -13,10 +13,10 @@ const UserAuthentication = () => {
     const clientId = String(searchParams.get("client_id"))
     const {post} = useAxiosWrapper()
 
-    const postProcessAuthentication = (email: string) => {
+    const postProcessAuthentication = async (email: string) => {
         const url = new URL(String(redirectUri))
-        const authorizationCode = post(getAuthorizationResponse(email, clientId))
-        url.searchParams.append("code", String(authorizationCode))
+        const response = await post(getAuthorizationResponse(email, clientId))
+        url.searchParams.append("code", response.code)
         url.searchParams.append("state", String(state))
         window.location.replace(url)
     }

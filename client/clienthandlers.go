@@ -15,26 +15,26 @@ func SetUpClientRoutes(router *gin.Engine) {
 	router.POST("/clients", addClientHandler)
 }
 
-func getClientsHandler(ctx *gin.Context) {
-	validateMasterAccessToken(ctx)
+func getClientsHandler(context *gin.Context) {
+	validateMasterAccessToken(context)
 	var client = getClients()
-	ctx.JSON(http.StatusOK, client)
+	context.JSON(http.StatusOK, client)
 }
 
-func addClientHandler(ctx *gin.Context) {
-	validateMasterAccessToken(ctx)
+func addClientHandler(context *gin.Context) {
+	validateMasterAccessToken(context)
 	request := dto.AddClientRequest{}
-	if err := ctx.BindJSON(&request); err != nil {
+	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
 	client := addClient(request)
-	ctx.JSON(http.StatusOK, mapToAddClientResponse(client))
+	context.JSON(http.StatusOK, mapToAddClientResponse(client))
 }
 
-func validateMasterAccessToken(ctx *gin.Context) {
-	token := strings.Split(ctx.GetHeader("Authorization"), " ")
+func validateMasterAccessToken(context *gin.Context) {
+	token := strings.Split(context.GetHeader("Authorization"), " ")
 	if !common.ValidateMasterAccessToken(token[1]) {
-		ctx.Status(http.StatusUnauthorized)
+		context.Status(http.StatusUnauthorized)
 		return
 	}
 }

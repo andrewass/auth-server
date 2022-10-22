@@ -9,6 +9,8 @@ import (
 )
 
 func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
+	persistedCode := authorization.GetchAuthorizationCode(request.ClientId, request.Code)
+	authorization.DeleteAuthorizationCode(persistedCode)
 	return dto.GetTokensResponse{
 		AccessToken: createAccessToken(),
 		IdToken:     createIdToken(),
