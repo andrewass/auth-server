@@ -11,5 +11,6 @@ type AuthorizeRequest struct {
 }
 
 type AuthorizationCodeRequest struct {
-	Email string `json:"email" form:"email"`
+	Email    string `json:"email"`
+	ClientId string `json:"client_id"`
 }

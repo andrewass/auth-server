@@ -10,13 +10,14 @@ const UserAuthentication = () => {
     const [displaySignUp, setDisplaySignUp] = useState(false)
     const redirectUri = searchParams.get("redirect_uri")
     const state = searchParams.get("state")
+    const clientId = String(searchParams.get("client_id"))
     const {post} = useAxiosWrapper()
 
     const postProcessAuthentication = (email: string) => {
         const url = new URL(String(redirectUri))
-        const authorizationResponse = post(getAuthorizationResponse(email))
-        url.searchParams.append("code", "dsfjasklrjelwkjrk3j24hjk3h24kjh423sdfsdfdsf")
-        url.searchParams.append("state",String(state))
+        const authorizationCode = post(getAuthorizationResponse(email, clientId))
+        url.searchParams.append("code", String(authorizationCode))
+        url.searchParams.append("state", String(state))
         window.location.replace(url)
     }
 

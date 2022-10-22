@@ -16,10 +16,13 @@ export const signInUser = (email: string, password: string): Promise<Response> =
     })
 }
 
-export const getAuthorizationResponse = (email: string) => {
+export const getAuthorizationResponse = (email: string, clientId: string) => {
     return {
         url: AUTH_SERVER_URL + "/authorization-response",
         method: "post",
-        data: {email}
+        data: {
+            "email": email,
+            "client_id": clientId
+        }
     }
 }
