@@ -27,7 +27,7 @@ services:
 
 networks:
   default:
-    external: true
+    external: false
     name: compose_network
 
 volumes:

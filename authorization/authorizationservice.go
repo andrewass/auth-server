@@ -10,12 +10,12 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func GetchAuthorizationCode(clientId string, code string) AuthCode {
-	return getAuthorizationCode(clientId, code)
-}
-
 func DeleteAuthorizationCode(authCode AuthCode) {
 	deleteAuthorizationCode(authCode)
+}
+
+func GetPersistedAuthorizationCode(clientId string, code string) AuthCode {
+	return getAuthorizationCode(clientId, code)
 }
 
 func createFrontendUrl(request dto.AuthorizeRequest) string {
@@ -34,7 +34,7 @@ func createAndSaveAuthorizationCode(email string, clientId string) string {
 	authorizationCode := AuthCode{
 		Code:           code,
 		ClientId:       clientId,
-		UserId:         email,
+		UserEmail:      email,
 		ExpirationTime: time.Now().Local().Add(time.Minute * 10).Unix(),
 	}
 	saveAuthorizationCode(authorizationCode)

@@ -9,15 +9,26 @@ import (
 )
 
 func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
-	persistedCode := authorization.GetchAuthorizationCode(request.ClientId, request.Code)
+	persistedCode := authorization.GetPersistedAuthorizationCode(request.ClientId, request.Code)
+	codeIsValid := isValidAuthorizationCode(persistedCode, request.ClientId, request.Code)
+	userEmail := persistedCode.UserEmail
 	authorization.DeleteAuthorizationCode(persistedCode)
+	if !codeIsValid {
+		panic("Invalid authorization code")
+	}
 	return dto.GetTokensResponse{
 		AccessToken: createAccessToken(),
-		IdToken:     createIdToken(),
+		IdToken:     createIdToken(userEmail),
 		TokenType:   "Bearer",
 		ExpiresIn:   324355346,
 		Scope:       "email",
 	}
+}
+
+func isValidAuthorizationCode(persistedCode authorization.AuthCode, clientId string, requestCode string) bool {
+	return persistedCode.ClientId != clientId ||
+		persistedCode.Code != requestCode ||
+		persistedCode.ExpirationTime < time.Now().Local().Unix()
 }
 
 func introspectToken(request dto.IntrospectTokenRequest) dto.IntrospectTokenResponse {
@@ -45,9 +56,9 @@ func createAccessToken() string {
 	return signedString
 }
 
-func createIdToken() string {
+func createIdToken(email string) string {
 
-	claims := CustomIdClaims{"", jwt.StandardClaims{
+	claims := CustomIdClaims{email, jwt.StandardClaims{
 		ExpiresAt: getExpirationTime(),
 		Issuer:    viper.Get("AUTH_SERVER_SERVICE").(string),
 		Subject:   "1234567890-id",
