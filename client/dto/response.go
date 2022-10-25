@@ -1,6 +1,6 @@
 package dto
 
-type AddClientResponse struct {
+type ClientResponse struct {
 	ClientId                string   `json:"client_id"`
 	ClientSecret            string   `json:"client_secret"`
 	ClientIdIssuedAt        int64    `json:"client_id_issued_at"`

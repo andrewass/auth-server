@@ -17,8 +17,8 @@ func VerifyClient(clientId string, clientSecret string) {
 
 }
 
-func getClients() []Client {
-	return getAllClients()
+func getClients(email string) []Client {
+	return getAllClients(email)
 }
 
 func addClient(request dto.AddClientRequest) Client {

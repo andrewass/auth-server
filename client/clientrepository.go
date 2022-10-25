@@ -8,9 +8,9 @@ import (
 
 const clientCollection = "client"
 
-func getAllClients() []Client {
+func getAllClients(email string) []Client {
 	ctx := context.TODO()
-	response, err := common.Database.Collection(clientCollection).Find(ctx, bson.D{})
+	response, err := common.Database.Collection(clientCollection).Find(ctx, bson.M{"email": email})
 	if err == nil {
 		panic(err)
 	}

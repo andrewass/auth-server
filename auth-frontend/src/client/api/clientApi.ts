@@ -1,4 +1,4 @@
-import {AUTH_SERVER_URL} from "../../config/properties";
+import {AUTH_SERVER_URL, SESSION_STORAGE_KEY} from "../../config/properties";
 import {RegisterClientRequest} from "./clientDto";
 
 const registerClientConfig = (request: RegisterClientRequest) => {
@@ -12,6 +12,18 @@ const registerClientConfig = (request: RegisterClientRequest) => {
     }
 }
 
+const getRegisteredClientsConfig = () => {
+    const response: any = sessionStorage.getItem(SESSION_STORAGE_KEY)
+    const responseJson = JSON.parse(response)
+    const {profile} = responseJson
+
+    return {
+        method: "get",
+        url: AUTH_SERVER_URL + "/clients",
+        params: {"email": profile.email}
+    }
+}
+
 export {
-    registerClientConfig
+    registerClientConfig, getRegisteredClientsConfig
 }

@@ -2,10 +2,8 @@ package client
 
 import (
 	"auth-server/client/dto"
-	"auth-server/common"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strings"
 )
 
 func SetUpClientRoutes(router *gin.Engine) {
@@ -16,31 +14,26 @@ func SetUpClientRoutes(router *gin.Engine) {
 }
 
 func getClientsHandler(context *gin.Context) {
-	validateMasterAccessToken(context)
-	var client = getClients()
-	context.JSON(http.StatusOK, client)
+	email := context.Query("email")
+	var clients = getClients(email)
+	mappedClients := make([]dto.ClientResponse, len(clients))
+	for i, client := range clients {
+		mappedClients[i] = mapToClientResponse(client)
+	}
+	context.JSON(http.StatusOK, mappedClients)
 }
 
 func addClientHandler(context *gin.Context) {
-	validateMasterAccessToken(context)
 	request := dto.AddClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
 	client := addClient(request)
-	context.JSON(http.StatusOK, mapToAddClientResponse(client))
+	context.JSON(http.StatusOK, mapToClientResponse(client))
 }
 
-func validateMasterAccessToken(context *gin.Context) {
-	token := strings.Split(context.GetHeader("Authorization"), " ")
-	if !common.ValidateMasterAccessToken(token[1]) {
-		context.Status(http.StatusUnauthorized)
-		return
-	}
-}
-
-func mapToAddClientResponse(client Client) dto.AddClientResponse {
-	return dto.AddClientResponse{
+func mapToClientResponse(client Client) dto.ClientResponse {
+	return dto.ClientResponse{
 		ClientId:                client.ClientId,
 		ClientSecret:            client.ClientSecret,
 		ClientIdIssuedAt:        client.ClientIdIssuedAt,
