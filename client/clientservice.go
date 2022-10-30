@@ -2,6 +2,7 @@ package client
 
 import (
 	"auth-server/client/dto"
+	"github.com/spf13/viper"
 	"math/rand"
 	"time"
 )
@@ -12,13 +13,15 @@ var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 func AddAdminClient() {
 	adminClients := getClients("admin@admin.com")
 	if len(adminClients) == 0 {
-		addClient(dto.AddClientRequest{
+		adminClient := addClient(dto.AddClientRequest{
 			UserEmail:  "admin@admin.com",
 			ClientName: "adminClient",
 			ClientUri:  "http://localhost:8090",
 		})
+		adminClient.ClientId = viper.Get("CLIENT_ID").(string)
+		adminClient.ClientSecret = viper.Get("CLIENT_ID").(string)
+		adminClient.ClientType = internal
 	}
-
 }
 
 func VerifyClient(clientId string, clientSecret string) {
@@ -39,7 +42,8 @@ func addClient(request dto.AddClientRequest) Client {
 	client := Client{
 		ClientId:                generateRandomString(),
 		ClientSecret:            generateRandomString(),
-		ClientIdIssuedAt:        time.Now().Unix(),
+		ClientIdIssuedAt:        time.Now(),
+		ClientType:              external,
 		LogoUri:                 request.LogoUri,
 		ApplicationType:         request.ApplicationType,
 		ClientName:              request.ClientName,
@@ -54,6 +58,11 @@ func addClient(request dto.AddClientRequest) Client {
 	saveClient(client)
 
 	return client
+}
+
+func updateClient(request dto.UpdateClientRequest) Client {
+	client := getClientById(request.ClientID)
+	return *client
 }
 
 func generateRandomString() string {

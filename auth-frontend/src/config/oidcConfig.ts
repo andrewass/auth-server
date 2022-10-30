@@ -2,7 +2,7 @@ import {User} from "oidc-client-ts";
 
 export const oidcConfig = {
     authority: "http://localhost:8089",
-    client_id: "myClientId",
+    client_id: "XVlBzgbaiCMRAjWwhTHctcuAxhxKQF",
     redirect_uri: "http://localhost:8090/account"
 };
 

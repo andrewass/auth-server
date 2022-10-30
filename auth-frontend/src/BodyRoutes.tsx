@@ -9,8 +9,7 @@ const BodyRoutes = () => {
 
     return (
         <Routes>
-            <Route
-                path="*"
+            <Route path="*"
                 element={
                     <ProtectedRoute>
                         <UserAccount/>
@@ -18,8 +17,7 @@ const BodyRoutes = () => {
                 }
             />
 
-            <Route
-                path="/client-registration"
+            <Route path="/client-registration"
                 element={
                     <ProtectedRoute>
                         <ClientRegistration/>

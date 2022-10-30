@@ -1,5 +1,7 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.19-alpine
+
+##Build
+FROM golang:1.19.2-alpine
 
 WORKDIR /app
 
@@ -15,5 +17,3 @@ RUN go build -o /docker-auth-server
 EXPOSE 8089
 
 CMD ["/docker-auth-server"]
-
-
