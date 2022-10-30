@@ -13,7 +13,7 @@ const UserAuthentication = () => {
     const clientId = String(searchParams.get("client_id"))
     const {post} = useAxiosWrapper()
 
-    const postProcessAuthentication = async (email: string) => {
+    const postProcessAuthenticationWithAuthCode = async (email: string) => {
         const url = new URL(String(redirectUri))
         const response = await post(getAuthorizationResponse(email, clientId))
         url.searchParams.append("code", response.code)
@@ -24,13 +24,13 @@ const UserAuthentication = () => {
     if (displaySignUp) {
         return (
             <div>
-                <SignUp setDisplaySignUp={setDisplaySignUp} postProcessSignUp={postProcessAuthentication}/>
+                <SignUp setDisplaySignUp={setDisplaySignUp} postProcessSignUp={postProcessAuthenticationWithAuthCode}/>
             </div>
         )
     } else {
         return (
             <div>
-                <SignIn setDisplaySignUp={setDisplaySignUp} postProcessSignIn={postProcessAuthentication}/>
+                <SignIn setDisplaySignUp={setDisplaySignUp} postProcessSignIn={postProcessAuthenticationWithAuthCode}/>
             </div>
         )
     }

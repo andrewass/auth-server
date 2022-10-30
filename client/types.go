@@ -1,6 +1,7 @@
 package client
 
 type Client struct {
+	UserEmail               string   `json:"user_email" bson:"user_email"`
 	ClientId                string   `json:"clientId" bson:"client_id"`
 	ClientSecret            string   `json:"clientSecret" bson:"client_secret"`
 	ClientIdIssuedAt        int64    `json:"client_id_issued_at" bson:"client_id_issued_at"`

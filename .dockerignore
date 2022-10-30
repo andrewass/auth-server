@@ -1,0 +1,6 @@
+.idea
+auth-frontend
+README.md
+auth-frontend.iml
+.gitignore
+docker-compose.yaml

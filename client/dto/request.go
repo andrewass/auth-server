@@ -1,6 +1,7 @@
 package dto
 
 type AddClientRequest struct {
+	UserEmail               string   `json:"user_email"`
 	LogoUri                 string   `json:"logo_uri"`
 	ApplicationType         string   `json:"application_type"`
 	ClientName              string   `json:"client_name" binding:"required"`

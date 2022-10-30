@@ -43,6 +43,9 @@ func configureRoutes() {
 	authorization.SetUpAuthorizationRoutes(router)
 	token.SetUpTokenRoutes(router)
 
+	//For testing during development only
+	client.AddAdminClient()
+
 	if err := router.Run(":8089"); err != nil {
 		panic(err)
 	}

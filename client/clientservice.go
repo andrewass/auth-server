@@ -6,15 +6,29 @@ import (
 	"time"
 )
 
-var clients = []Client{
-	{ClientId: "firstId", ClientSecret: "firstSecret"},
-	{ClientId: "secId", ClientSecret: "secSecret"},
-}
-
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func VerifyClient(clientId string, clientSecret string) {
+// AddAdminClient For testing during development only
+func AddAdminClient() {
+	adminClients := getClients("admin@admin.com")
+	if len(adminClients) == 0 {
+		addClient(dto.AddClientRequest{
+			UserEmail:  "admin@admin.com",
+			ClientName: "adminClient",
+			ClientUri:  "http://localhost:8090",
+		})
+	}
 
+}
+
+func VerifyClient(clientId string, clientSecret string) {
+	client := getClientById(clientId)
+	if client == nil {
+		panic("Client not found")
+	}
+	if client.ClientSecret != clientSecret {
+		panic("Received client secret is incorrect")
+	}
 }
 
 func getClients(email string) []Client {
