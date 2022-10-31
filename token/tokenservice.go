@@ -2,6 +2,7 @@ package token
 
 import (
 	"auth-server/authorization"
+	"auth-server/common"
 	"auth-server/token/dto"
 	"github.com/golang-jwt/jwt"
 	"github.com/spf13/viper"
@@ -49,7 +50,7 @@ func createAccessToken() string {
 		NotBefore: getCurrentTime(),
 		Audience:  "test-audience",
 	}
-	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
+	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	signedString, _ := token.SignedString(key)
 
@@ -66,7 +67,7 @@ func createIdToken(email string) string {
 		Audience:  "test-audience-id-token",
 	},
 	}
-	key, _ := jwt.ParseRSAPrivateKeyFromPEM(authorization.GetPrivateKey())
+	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	signedString, _ := token.SignedString(key)
 

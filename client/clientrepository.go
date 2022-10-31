@@ -19,7 +19,7 @@ func getClientById(clientId string) *Client {
 func getAllClients(email string) []Client {
 	ctx := context.TODO()
 	var clients []Client
-	response, err := common.Database.Collection(clientCollection).Find(ctx, bson.M{"email": email})
+	response, err := common.Database.Collection(clientCollection).Find(ctx, bson.M{"user_email": email})
 	if err != nil {
 		panic(err)
 	}
@@ -29,9 +29,17 @@ func getAllClients(email string) []Client {
 	return clients
 }
 
-func saveClient(client Client) {
+func saveNewClient(client Client) {
 	ctx := context.TODO()
 	_, err := common.Database.Collection(clientCollection).InsertOne(ctx, client)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func saveUpdatedClient(client Client) {
+	ctx := context.TODO()
+	_, err := common.Database.Collection(clientCollection).ReplaceOne(ctx, bson.M{"_id": client.ID}, client)
 	if err != nil {
 		panic(err)
 	}

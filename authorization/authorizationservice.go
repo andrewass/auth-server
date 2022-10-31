@@ -2,6 +2,7 @@ package authorization
 
 import (
 	"auth-server/authorization/dto"
+	"auth-server/client"
 	"github.com/spf13/viper"
 	"math/rand"
 	"net/url"
@@ -19,7 +20,7 @@ func GetPersistedAuthorizationCode(clientId string, code string) AuthCode {
 }
 
 func createFrontendUrl(request dto.AuthorizeRequest) string {
-	frontendUrl, _ := url.Parse(viper.Get("FRONTEND_URL").(string) + "/confirmation")
+	frontendUrl, _ := decideFrontendUrl(request.ClientId)
 	values := frontendUrl.Query()
 	values.Add("client_id", request.ClientId)
 	values.Add("state", request.State)
@@ -27,6 +28,14 @@ func createFrontendUrl(request dto.AuthorizeRequest) string {
 	frontendUrl.RawQuery = values.Encode()
 
 	return frontendUrl.String()
+}
+
+func decideFrontendUrl(clientId string) (*url.URL, error) {
+	requestedClient := client.GetClient(clientId)
+	if requestedClient.ClientType == client.Internal {
+		return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication")
+	}
+	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/confirmation")
 }
 
 func createAndSaveAuthorizationCode(email string, clientId string) string {

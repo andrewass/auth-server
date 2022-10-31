@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	authorization.ConfigureKeys()
+	common.ConfigureKeys()
 	configureEnvironmentVariables()
 	configurePersistenceLayer()
 	configureRoutes()

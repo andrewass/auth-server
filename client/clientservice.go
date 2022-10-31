@@ -14,24 +14,18 @@ func AddAdminClient() {
 	adminClients := getClients("admin@admin.com")
 	if len(adminClients) == 0 {
 		adminClient := addClient(dto.AddClientRequest{
-			UserEmail:  "admin@admin.com",
-			ClientName: "adminClient",
-			ClientUri:  "http://localhost:8090",
+			UserEmail: "admin@admin.com",
+			ClientUri: viper.Get("FRONTEND_URL").(string),
 		})
 		adminClient.ClientId = viper.Get("CLIENT_ID").(string)
-		adminClient.ClientSecret = viper.Get("CLIENT_ID").(string)
-		adminClient.ClientType = internal
+		adminClient.ClientSecret = viper.Get("CLIENT_SECRET").(string)
+		adminClient.ClientType = Internal
+		saveUpdatedClient(adminClient)
 	}
 }
 
-func VerifyClient(clientId string, clientSecret string) {
-	client := getClientById(clientId)
-	if client == nil {
-		panic("Client not found")
-	}
-	if client.ClientSecret != clientSecret {
-		panic("Received client secret is incorrect")
-	}
+func GetClient(clientId string) Client {
+	return *getClientById(clientId)
 }
 
 func getClients(email string) []Client {
@@ -43,7 +37,8 @@ func addClient(request dto.AddClientRequest) Client {
 		ClientId:                generateRandomString(),
 		ClientSecret:            generateRandomString(),
 		ClientIdIssuedAt:        time.Now(),
-		ClientType:              external,
+		ClientType:              External,
+		UserEmail:               request.UserEmail,
 		LogoUri:                 request.LogoUri,
 		ApplicationType:         request.ApplicationType,
 		ClientName:              request.ClientName,
@@ -55,14 +50,15 @@ func addClient(request dto.AddClientRequest) Client {
 		GrantTypes:              request.GrantTypes,
 		PostLogoutRedirectUris:  request.PostLogoutRedirectUris,
 	}
-	saveClient(client)
+	saveNewClient(client)
 
 	return client
 }
 
 func updateClient(request dto.UpdateClientRequest) Client {
-	client := getClientById(request.ClientID)
-	return *client
+	client := *getClientById(request.ClientID)
+	saveUpdatedClient(client)
+	return client
 }
 
 func generateRandomString() string {
