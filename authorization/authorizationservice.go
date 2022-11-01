@@ -25,6 +25,8 @@ func createFrontendUrl(request dto.AuthorizeRequest) string {
 	values.Add("client_id", request.ClientId)
 	values.Add("state", request.State)
 	values.Add("redirect_uri", request.RedirectUri)
+	values.Add("code_challenge", request.CodeChallenge)
+	values.Add("code_challenge_method", request.CodeChallengeMethod)
 	frontendUrl.RawQuery = values.Encode()
 
 	return frontendUrl.String()
@@ -38,13 +40,15 @@ func decideFrontendUrl(clientId string) (*url.URL, error) {
 	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/confirmation")
 }
 
-func createAndSaveAuthorizationCode(email string, clientId string) string {
+func createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string {
 	code := generateRandomString()
 	authorizationCode := AuthCode{
-		Code:           code,
-		ClientId:       clientId,
-		UserEmail:      email,
-		ExpirationTime: time.Now().Local().Add(time.Minute * 10).Unix(),
+		Code:                code,
+		CodeChallenge:       request.CodeChallenge,
+		CodeChallengeMethod: request.CodeChallengeMethod,
+		ClientId:            request.ClientId,
+		UserEmail:           request.Email,
+		ExpirationTime:      time.Now().Add(time.Minute * 10).Unix(),
 	}
 	saveAuthorizationCode(authorizationCode)
 	return code

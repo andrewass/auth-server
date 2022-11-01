@@ -11,10 +11,10 @@ import (
 
 func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
 	persistedCode := authorization.GetPersistedAuthorizationCode(request.ClientId, request.Code)
-	codeIsValid := isValidAuthorizationCode(persistedCode, request.ClientId, request.Code)
+	codeIsInvalid := isInvalidAuthorizationCode(persistedCode, request.ClientId, request.Code)
 	userEmail := persistedCode.UserEmail
 	authorization.DeleteAuthorizationCode(persistedCode)
-	if !codeIsValid {
+	if codeIsInvalid {
 		panic("Invalid authorization code")
 	}
 	return dto.GetTokensResponse{
@@ -26,10 +26,10 @@ func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
 	}
 }
 
-func isValidAuthorizationCode(persistedCode authorization.AuthCode, clientId string, requestCode string) bool {
+func isInvalidAuthorizationCode(persistedCode authorization.AuthCode, clientId string, requestCode string) bool {
 	return persistedCode.ClientId != clientId ||
 		persistedCode.Code != requestCode ||
-		persistedCode.ExpirationTime < time.Now().Local().Unix()
+		persistedCode.ExpirationTime < time.Now().Unix()
 }
 
 func introspectToken(request dto.IntrospectTokenRequest) dto.IntrospectTokenResponse {
@@ -75,9 +75,9 @@ func createIdToken(email string) string {
 }
 
 func getCurrentTime() int64 {
-	return time.Now().Local().Unix()
+	return time.Now().Unix()
 }
 
 func getExpirationTime() int64 {
-	return time.Now().Local().Add(time.Hour * 1).Unix()
+	return time.Now().Add(time.Hour * 1).Unix()
 }

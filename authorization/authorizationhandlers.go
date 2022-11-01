@@ -27,6 +27,6 @@ func authorizationCodeResponseHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	authorizationCode := createAndSaveAuthorizationCode(request.Email, request.ClientId)
+	authorizationCode := createAndSaveAuthorizationCode(request)
 	context.JSON(http.StatusOK, gin.H{"code": authorizationCode})
 }
