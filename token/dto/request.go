@@ -6,6 +6,7 @@ type GetTokenRequest struct {
 	Code         string `json:"code" form:"code"`
 	CodeVerifier string `json:"code_verifier" form:"code_verifier"`
 	ClientId     string `json:"client_id" form:"client_id"`
+	ClientSecret string `json:"client_secret" form:"client_secret"`
 }
 
 type IntrospectTokenRequest struct {

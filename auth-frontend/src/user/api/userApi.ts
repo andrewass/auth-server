@@ -16,13 +16,17 @@ export const signInUser = (email: string, password: string): Promise<Response> =
     })
 }
 
-export const getAuthorizationResponse = (email: string, clientId: string) => {
+export const getAuthorizationResponse = (
+    email: string, clientId: string, codeChallenge: string, codeChallengeMethod: string
+) => {
     return {
         url: AUTH_SERVER_URL + "/authorization-response",
         method: "post",
         data: {
             "email": email,
-            "client_id": clientId
+            "client_id": clientId,
+            "code_challenge": codeChallenge,
+            "code_challenge_method": codeChallengeMethod
         }
     }
 }

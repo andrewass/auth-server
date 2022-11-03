@@ -45,7 +45,7 @@ func createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string
 	authorizationCode := AuthCode{
 		Code:                code,
 		CodeChallenge:       request.CodeChallenge,
-		CodeChallengeMethod: request.CodeChallengeMethod,
+		CodeChallengeMethod: CodeChallengeMethod(request.CodeChallengeMethod),
 		ClientId:            request.ClientId,
 		UserEmail:           request.Email,
 		ExpirationTime:      time.Now().Add(time.Minute * 10).Unix(),

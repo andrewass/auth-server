@@ -11,11 +11,16 @@ const UserAuthentication = () => {
     const redirectUri = searchParams.get("redirect_uri")
     const state = searchParams.get("state")
     const clientId = String(searchParams.get("client_id"))
+    const codeChallenge = String(searchParams.get("code_challenge"))
+    const codeChallengeMethod = String(searchParams.get("code_challenge_method"))
+
     const {post} = useAxiosWrapper()
 
     const postProcessAuthenticationWithAuthCode = async (email: string) => {
         const url = new URL(String(redirectUri))
-        const response = await post(getAuthorizationResponse(email, clientId))
+        const response = await post(getAuthorizationResponse(
+            email, clientId, codeChallenge, codeChallengeMethod
+        ))
         url.searchParams.append("code", response.code)
         url.searchParams.append("state", String(state))
         window.location.replace(url)
