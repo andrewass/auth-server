@@ -35,9 +35,9 @@ func createFrontendUrl(request dto.AuthorizeRequest) string {
 func decideFrontendUrl(clientId string) (*url.URL, error) {
 	requestedClient := client.GetClient(clientId)
 	if requestedClient.ClientType == client.Internal {
-		return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication")
+		return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/internal")
 	}
-	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/confirmation")
+	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/external")
 }
 
 func createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string {

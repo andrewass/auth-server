@@ -37,6 +37,9 @@ func validateRequest(persistedCode authorization.AuthCode, request dto.GetTokenR
 	if persistedCode.ExpirationTime < time.Now().Unix() {
 		panic("Expired authorization code")
 	}
+	if request.ClientSecret == "" && request.CodeVerifier == "" {
+		panic("Request must contain either client secret or code verifier")
+	}
 	validateClientSecret(request.ClientId, request.ClientSecret)
 	validateCodeChallenge(persistedCode, request.CodeVerifier)
 }

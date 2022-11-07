@@ -68,7 +68,7 @@ const ClientRegistrationForm = () => {
                 </FormControl>
 
                 <FormControl>
-                    <Button variant="outline" type="submit" colorScheme="teal" onClick={registerClient}>
+                    <Button variant="outline" type="submit" colorScheme="teal">
                         Register client
                     </Button>
                 </FormControl>

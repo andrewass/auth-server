@@ -2,8 +2,8 @@ import {Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./config/ProtectedRoute";
 import UserAccount from "./user/account/UserAccount";
 import ClientRegistration from "./client/registration/ClientRegistration";
-import UserAuthentication from "./user/authentication/UserAuthentication";
-import UserConfirmation from "./user/confirmation/UserConfirmation";
+import InternalAuthentication from "./user/authentication/InternalAuthentication";
+import ExternalAuthentication from "./user/authentication/ExternalAuthentication";
 
 const BodyRoutes = () => {
 
@@ -24,9 +24,8 @@ const BodyRoutes = () => {
                     </ProtectedRoute>
                 }
             />
-
-            <Route path="/authentication" element={<UserAuthentication/>}/>
-            <Route path="/confirmation" element={<UserConfirmation/>}/>
+            <Route path="/authentication/internal" element={<InternalAuthentication/>}/>
+            <Route path="/authentication/external" element={<ExternalAuthentication/>}/>
         </Routes>
     )
 }

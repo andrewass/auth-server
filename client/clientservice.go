@@ -3,6 +3,7 @@ package client
 import (
 	"auth-server/client/dto"
 	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"math/rand"
 	"time"
 )
@@ -34,6 +35,7 @@ func getClients(email string) []Client {
 
 func addClient(request dto.AddClientRequest) Client {
 	client := Client{
+		ID:                      primitive.NewObjectID(),
 		ClientId:                generateRandomString(),
 		ClientSecret:            generateRandomString(),
 		ClientIdIssuedAt:        time.Now(),
