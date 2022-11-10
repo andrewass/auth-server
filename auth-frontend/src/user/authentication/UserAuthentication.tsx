@@ -3,7 +3,7 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import {useSearchParams} from "react-router-dom";
 import {getAuthorizationResponse} from "../api/userApi";
-import {useAxiosWrapper} from "../../config/axiosWrapper";
+import {useAxiosWrapper} from "../../common/axiosWrapper";
 
 const UserAuthentication = () => {
     const [searchParams] = useSearchParams()

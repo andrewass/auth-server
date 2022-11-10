@@ -16,4 +16,5 @@ type ClientResponse struct {
 	ResponseTypes           []string  `json:"response_types"`
 	GrantTypes              []string  `json:"grant_types"`
 	PostLogoutRedirectUris  []string  `json:"post_logout_redirect_uris"`
+	UserEmail               string    `json:"user_email"`
 }

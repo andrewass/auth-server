@@ -1,4 +1,4 @@
-import {AUTH_SERVER_URL} from "../../config/properties";
+import {AUTH_SERVER_URL} from "../../common/properties";
 
 export const signUpUser = (email: string, password: string): Promise<Response> => {
     const url = AUTH_SERVER_URL + "/user/sign-up"

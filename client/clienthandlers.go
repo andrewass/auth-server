@@ -55,5 +55,6 @@ func mapToClientResponse(client Client) dto.ClientResponse {
 		ResponseTypes:           client.ResponseTypes,
 		GrantTypes:              client.GrantTypes,
 		PostLogoutRedirectUris:  client.PostLogoutRedirectUris,
+		UserEmail:               client.UserEmail,
 	}
 }

@@ -1,5 +1,5 @@
 import ClientRegistrationForm from "./registration/ClientRegistrationForm";
-import ClientList from "./presentation/ClientList";
+import {ClientList} from "./presentation/ClientList";
 import {HStack} from "@chakra-ui/react";
 
 const Clients = () => {

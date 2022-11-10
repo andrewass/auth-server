@@ -1,5 +1,5 @@
 import {Route, Routes} from "react-router-dom";
-import ProtectedRoute from "./config/ProtectedRoute";
+import ProtectedRoute from "./common/ProtectedRoute";
 import UserAccount from "./user/account/UserAccount";
 import ClientRegistration from "./client/registration/ClientRegistration";
 import InternalAuthentication from "./user/authentication/InternalAuthentication";

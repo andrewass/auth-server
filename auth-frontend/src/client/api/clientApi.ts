@@ -1,5 +1,6 @@
-import {AUTH_SERVER_URL, SESSION_STORAGE_KEY} from "../../config/properties";
+import {AUTH_SERVER_URL} from "../../common/properties";
 import {RegisterClientRequest} from "./clientDto";
+import {getSessionEmail} from "../../common/oidcConfig";
 
 const registerClientConfig = (request: RegisterClientRequest) => {
     return {
@@ -7,20 +8,17 @@ const registerClientConfig = (request: RegisterClientRequest) => {
         url: AUTH_SERVER_URL + "/clients",
         data: {
             "redirect_uris": request.redirectUris,
-            "client_name": request.clientName
+            "client_name": request.clientName,
+            "user_email": request.userEmail
         }
     }
 }
 
 const getRegisteredClientsConfig = () => {
-    const response: any = sessionStorage.getItem(SESSION_STORAGE_KEY)
-    const responseJson = JSON.parse(response)
-    const {profile} = responseJson
-
     return {
         method: "get",
         url: AUTH_SERVER_URL + "/clients",
-        params: {"email": profile.email}
+        params: {"email": getSessionEmail()}
     }
 }
 

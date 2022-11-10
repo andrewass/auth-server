@@ -1,7 +1,8 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
-import {useAxiosWrapper} from "../../config/axiosWrapper";
+import {useAxiosWrapper} from "../../common/axiosWrapper";
 import {registerClientConfig} from "../api/clientApi";
+import {getSessionEmail} from "../../common/oidcConfig";
 
 export interface RegisterClientData {
 
@@ -17,6 +18,7 @@ const ClientRegistrationForm = () => {
 
     const registerClient = () => {
         post(registerClientConfig({
+                userEmail: getSessionEmail(),
                 redirectUris: redirectUris,
                 clientName: clientName
             }
