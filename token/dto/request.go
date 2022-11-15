@@ -1,5 +1,7 @@
 package dto
 
+import "auth-server/token"
+
 type GetTokenRequest struct {
 	GrantType    string `json:"grant_type" form:"grant_type"`
 	RedirectUri  string `json:"redirect_uri" form:"redirect_uri"`
@@ -10,11 +12,11 @@ type GetTokenRequest struct {
 }
 
 type IntrospectTokenRequest struct {
-	Token         string `json:"token"`
-	TokenTypeHint string `json:"token_type_hint"`
+	Token         string         `json:"token"`
+	TokenTypeHint token.TypeHint `json:"token_type_hint"`
 }
 
 type RevokeTokenRequest struct {
-	Token         string `json:"token"`
-	TokenTypeHint string `json:"token_type_hint"`
+	Token         string         `json:"token"`
+	TokenTypeHint token.TypeHint `json:"token_type_hint"`
 }

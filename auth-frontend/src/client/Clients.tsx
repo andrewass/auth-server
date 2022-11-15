@@ -1,14 +1,18 @@
-import ClientRegistrationForm from "./registration/ClientRegistrationForm";
 import {ClientList} from "./presentation/ClientList";
-import {HStack} from "@chakra-ui/react";
+import {Box, HStack} from "@chakra-ui/react";
+import ClientRegistration from "./registration/ClientRegistration";
+import NavigationBar from "../navigation/NavigationBar";
 
 const Clients = () => {
 
     return (
-        <HStack spacing="250px">
-            <ClientRegistrationForm/>
-            <ClientList/>
-        </HStack>
+        <Box>
+            <NavigationBar/>
+            <HStack spacing="250px" justify="center" marginTop="100px">
+                <ClientRegistration/>
+                <ClientList/>
+            </HStack>
+        </Box>
     )
 }
 

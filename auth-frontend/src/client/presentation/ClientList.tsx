@@ -3,16 +3,25 @@ import {useAxiosWrapper} from "../../common/axiosWrapper";
 import {getRegisteredClientsConfig} from "../api/clientApi";
 import {Client, mapToClient} from "./client";
 import {ClientRow} from "./ClientRow";
-import {Stack} from "@chakra-ui/react";
+import {Heading, List, Stack} from "@chakra-ui/react";
+import {useNavigate} from "react-router-dom";
 
 
-export function ClientList(){
+export function ClientList() {
     const {get} = useAxiosWrapper()
+    const [name, setName] = useState(1)
     const [clientList, setClientList] = useState<Client[]>([])
+    const navigate = useNavigate()
+
+    const navigateToDetails = (client: Client) => {
+        navigate("/client/details",)
+    }
 
     const getRegisteredClients = async () => {
         const response = await get(getRegisteredClientsConfig())
-        response.map((entry: any) => clientList.push(mapToClient(entry)))
+        const clients: Client[] = []
+        response.map((clientResponse: any) => clients.push(mapToClient(clientResponse)))
+        setClientList(clients)
     }
 
     useEffect(() => {
@@ -21,8 +30,11 @@ export function ClientList(){
     }, [])
 
     return (
-        <Stack maxWidth={500} margin="auto" spacing={15}>
-            {clientList.map(client => <ClientRow client={client} />)}
+        <Stack>
+            <Heading as="h6" size="s">Registered clients : </Heading>
+            <List maxWidth={500} spacing={15}>
+                {clientList.map(client => <ClientRow client={client} navigateToDetails={navigateToDetails}/>)}
+            </List>
         </Stack>
     )
 }

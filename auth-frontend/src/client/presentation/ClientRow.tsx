@@ -1,13 +1,20 @@
 import {Client} from "./client";
+import {Box, ListItem} from "@chakra-ui/react";
 
 
-type Props = {
-    client : Client
+interface Props {
+    client: Client
+    navigateToDetails: (client: Client) => void
 }
 
-export function ClientRow({client}: Props){
+export function ClientRow({client, navigateToDetails}: Props) {
 
-    return(
-        <p>A Row : {client.email}</p>
+
+    return (
+        <ListItem onClick={() => navigateToDetails(client)}>
+            <Box>
+                Client : {client.email}
+            </Box>
+        </ListItem>
     )
 }
