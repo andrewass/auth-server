@@ -24,11 +24,10 @@ func deleteAuthorizationCode(code AuthCode) {
 	}
 }
 
-func getAuthorizationCode(clientId string, code string) AuthCode {
+func getAuthorizationCode(code string) AuthCode {
 	ctx := context.TODO()
 	var authCode AuthCode
-	err := common.Database.Collection(authorizationCodeCollection).FindOne(
-		ctx, bson.M{"client_id": clientId, "code": code}).Decode(&authCode)
+	err := common.Database.Collection(authorizationCodeCollection).FindOne(ctx, bson.M{"code": code}).Decode(&authCode)
 	if err != nil {
 		panic(err)
 	}

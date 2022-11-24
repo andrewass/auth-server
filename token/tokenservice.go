@@ -4,7 +4,7 @@ import (
 	"auth-server/authorization"
 	"auth-server/client"
 	"auth-server/common"
-	"auth-server/token/dto"
+	"auth-server/token/types"
 	"crypto/sha256"
 	"encoding/base64"
 	"github.com/golang-jwt/jwt"
@@ -12,36 +12,18 @@ import (
 	"time"
 )
 
-func getTokens(request dto.GetTokenRequest) dto.GetTokensResponse {
-	persistedCode := authorization.GetPersistedAuthorizationCode(request.ClientId, request.Code)
+func getTokens(request types.GetTokenRequest) types.GetTokensResponse {
+	persistedCode := authorization.GetPersistedAuthorizationCode(request.Code)
 	authorization.DeleteAuthorizationCode(persistedCode)
-	validateRequest(persistedCode, request)
 	userEmail := persistedCode.UserEmail
 
-	return dto.GetTokensResponse{
+	return types.GetTokensResponse{
 		AccessToken: createAccessToken(),
-		IdToken:     createIdToken(userEmail),
+		IdToken:     createIdToken(userEmail, persistedCode.ClientId),
 		TokenType:   "Bearer",
 		ExpiresIn:   324355346,
 		Scope:       "email",
 	}
-}
-
-func validateRequest(persistedCode authorization.AuthCode, request dto.GetTokenRequest) {
-	if persistedCode.ClientId != request.ClientId {
-		panic("Client id mismatch. Expected : " + persistedCode.ClientId + " , Received : " + request.ClientId)
-	}
-	if persistedCode.Code != request.Code {
-		panic("Authorization code mismatch. Expected " + persistedCode.Code + " , Received : " + request.Code)
-	}
-	if persistedCode.ExpirationTime < time.Now().Unix() {
-		panic("Expired authorization code")
-	}
-	if request.ClientSecret == "" && request.CodeVerifier == "" {
-		panic("Request must contain either client secret or code verifier")
-	}
-	validateClientSecret(request.ClientId, request.ClientSecret)
-	validateCodeChallenge(persistedCode, request.CodeVerifier)
 }
 
 func validateClientSecret(clientId string, secret string) {
@@ -68,10 +50,11 @@ func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string
 func createAccessToken() string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-		Issuer:    viper.Get("AUTH_SERVER_SERVICE").(string),
+		Issuer:    viper.Get("BASE_URL").(string),
 		Subject:   "1234567890",
 		NotBefore: time.Now().Unix(),
 		Audience:  "test-audience",
+		IssuedAt:  time.Now().Unix(),
 	}
 	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
@@ -80,15 +63,19 @@ func createAccessToken() string {
 	return signedString
 }
 
-func createIdToken(email string) string {
+func createIdToken(email string, clientId string) string {
 
-	claims := CustomIdClaims{email, jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-		Issuer:    viper.Get("AUTH_SERVER_SERVICE").(string),
-		Subject:   "1234567890-id",
-		NotBefore: time.Now().Unix(),
-		Audience:  "test-audience-id-token",
-	}}
+	claims := types.CustomIdClaims{
+		Email: email,
+		Id:    email,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
+			Issuer:    viper.Get("BASE_URL").(string),
+			Subject:   "1234567890-id",
+			NotBefore: time.Now().Unix(),
+			Audience:  clientId,
+			IssuedAt:  time.Now().Unix(),
+		}}
 	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
 	signedString, _ := token.SignedString(key)
@@ -96,12 +83,12 @@ func createIdToken(email string) string {
 	return signedString
 }
 
-func introspectToken(request dto.IntrospectTokenRequest) dto.IntrospectTokenResponse {
-	return dto.IntrospectTokenResponse{
+func introspectToken(request types.IntrospectTokenRequest) types.IntrospectTokenResponse {
+	return types.IntrospectTokenResponse{
 		Active:   true,
 		Username: "testuser",
 	}
 }
 
-func revokeToken(request dto.RevokeTokenRequest) {
+func revokeToken(request types.RevokeTokenRequest) {
 }

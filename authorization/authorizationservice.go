@@ -15,8 +15,8 @@ func DeleteAuthorizationCode(authCode AuthCode) {
 	deleteAuthorizationCode(authCode)
 }
 
-func GetPersistedAuthorizationCode(clientId string, code string) AuthCode {
-	return getAuthorizationCode(clientId, code)
+func GetPersistedAuthorizationCode(code string) AuthCode {
+	return getAuthorizationCode(code)
 }
 
 func createFrontendUrl(request dto.AuthorizeRequest) string {

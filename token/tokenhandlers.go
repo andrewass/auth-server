@@ -1,7 +1,7 @@
 package token
 
 import (
-	"auth-server/token/dto"
+	"auth-server/token/types"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,7 +13,7 @@ func SetUpTokenRoutes(router *gin.Engine) {
 }
 
 func getTokensHandler(context *gin.Context) {
-	var request dto.GetTokenRequest
+	var request types.GetTokenRequest
 	err := context.Bind(&request)
 	if err != nil {
 		panic(err)
@@ -23,7 +23,7 @@ func getTokensHandler(context *gin.Context) {
 }
 
 func introspectTokenHandler(context *gin.Context) {
-	request := dto.IntrospectTokenRequest{}
+	request := types.IntrospectTokenRequest{}
 	err := context.BindJSON(&request)
 	if err != nil {
 		panic(err)
@@ -33,7 +33,7 @@ func introspectTokenHandler(context *gin.Context) {
 }
 
 func revokeTokenHandler(context *gin.Context) {
-	request := dto.RevokeTokenRequest{}
+	request := types.RevokeTokenRequest{}
 	err := context.BindJSON(&request)
 	if err != nil {
 		panic(err)

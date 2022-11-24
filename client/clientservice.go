@@ -59,8 +59,18 @@ func addClient(request dto.AddClientRequest) Client {
 
 func updateClient(request dto.UpdateClientRequest) Client {
 	client := *getClientById(request.ClientID)
+	verifyValidClientAccess(client, request.ClientID, request.ClientSecret)
 	saveUpdatedClient(client)
 	return client
+}
+
+func deleteClient(clientId string, clientSecret string) {
+	client := *getClientById(clientId)
+	verifyValidClientAccess(client, clientId, clientSecret)
+}
+
+func verifyValidClientAccess(client Client, clientId string, clientSecret string) {
+
 }
 
 func generateRandomString() string {

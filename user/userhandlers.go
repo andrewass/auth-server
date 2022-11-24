@@ -9,6 +9,11 @@ import (
 func SetUpUserRoutes(router *gin.Engine) {
 	router.POST("/user/sign-in", signInUserHandler)
 	router.POST("/user/sign-up", signUpUserHandler)
+	router.GET("/user/info", getUserInfo)
+}
+
+func getUserInfo(context *gin.Context) {
+	context.Status(http.StatusOK)
 }
 
 func signInUserHandler(context *gin.Context) {

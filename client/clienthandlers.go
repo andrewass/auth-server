@@ -10,6 +10,7 @@ func SetUpClientRoutes(router *gin.Engine) {
 	router.GET("/clients", getClientsHandler)
 	router.POST("/clients", addClientHandler)
 	router.PATCH("/clients", updateClientHandler)
+	router.DELETE("/clients", deleteClientHandler)
 }
 
 func getClientsHandler(context *gin.Context) {
@@ -38,6 +39,15 @@ func updateClientHandler(context *gin.Context) {
 	}
 	client := updateClient(request)
 	context.JSON(http.StatusOK, mapToClientResponse(client))
+}
+
+func deleteClientHandler(context *gin.Context) {
+	request := dto.DeleteClientRequest{}
+	if err := context.BindJSON(&request); err != nil {
+		panic(err)
+	}
+	deleteClient(request.ClientID, request.ClientSecret)
+	context.Status(http.StatusOK)
 }
 
 func mapToClientResponse(client Client) dto.ClientResponse {

@@ -1,4 +1,4 @@
-package dto
+package types
 
 type GetTokensResponse struct {
 	AccessToken string `json:"access_token"`

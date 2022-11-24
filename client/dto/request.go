@@ -30,3 +30,8 @@ type UpdateClientRequest struct {
 	GrantTypes              []string `json:"grant_types"`
 	PostLogoutRedirectUris  []string `json:"post_logout_redirect_uris"`
 }
+
+type DeleteClientRequest struct {
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+}
