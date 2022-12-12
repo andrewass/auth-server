@@ -1,6 +1,4 @@
-# syntax=docker/dockerfile:1
 
-##Build
 FROM golang:1.19.2-alpine
 
 WORKDIR /app
@@ -12,8 +10,6 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /docker-auth-server
+RUN go build -o /auth-server-backend
 
-EXPOSE 8089
-
-CMD ["/docker-auth-server"]
+CMD ["/auth-server-backend"]

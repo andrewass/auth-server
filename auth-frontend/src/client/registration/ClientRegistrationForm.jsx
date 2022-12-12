@@ -4,14 +4,11 @@ import {useAxiosWrapper} from "../../common/axiosWrapper";
 import {registerClientConfig} from "../api/clientApi";
 import {getSessionEmail} from "../../common/oidcConfig";
 
-export interface RegisterClientData {
-
-}
 
 const ClientRegistrationForm = () => {
     const [clientName, setClientName] = useState("")
     const [applicationType] = useState([])
-    const [redirectUris, setRedirectUris] = useState<string[]>([])
+    const [redirectUris, setRedirectUris] = useState([])
     const [tokenEndpointAuthMethod] = useState()
     const {post} = useAxiosWrapper()
 
@@ -25,12 +22,12 @@ const ClientRegistrationForm = () => {
         )).catch(error => console.log(error))
     }
 
-    const removeRedirectUri = (index: number) => {
+    const removeRedirectUri = (index) => {
         redirectUris.splice(index, 1)
         setRedirectUris([...redirectUris])
     }
 
-    const addUriIfSpaceIsPressed = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const addUriIfSpaceIsPressed = (event) => {
         if (event.key === " " && event.target.value !== "") {
             setRedirectUris([...redirectUris].concat([event.target.value.trim()]))
             event.target.value = "";

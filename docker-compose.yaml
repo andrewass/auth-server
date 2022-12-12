@@ -15,7 +15,6 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword
 
   auth-server:
-    image: auth-server
     container_name: auth-server
     build:
       context: .
@@ -24,6 +23,17 @@ services:
     restart: on-failure
     ports:
       - "8089:8089"
+
+  auth-client:
+    container_name: auth-frontend
+    build:
+      context: ./auth-frontend
+    depends_on:
+      - auth-server
+    restart: on-failure
+    ports:
+      - "8090:8090"
+
 
 networks:
   default:
