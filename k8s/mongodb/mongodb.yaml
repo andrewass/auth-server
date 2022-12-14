@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - image: mongo:5.0
+          name: mongodb
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: "mongoUser"
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "mongoPassword"
+            - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
+              value: "true"
+          volumeMounts:
+            - name: "mongo-data-dir"
+              mountPath: "/data/db"
+      volumes:
+        - name: "mongo-data-dir"
+          persistentVolumeClaim:
+            claimName: "pvc"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017

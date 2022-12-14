@@ -4,3 +4,4 @@ README.md
 auth-frontend.iml
 .gitignore
 docker-compose.yaml
+k8s

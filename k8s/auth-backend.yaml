@@ -15,6 +15,11 @@ spec:
       containers:
         - name: auth-backend
           image: auth-backend-image
+          env:
+            - name: MONGO_DB_USERNAME
+              value: "admin"
+            - name: MONGO_DB_PASSWORD
+              value: "password"
           ports:
             - containerPort: 8089
 
