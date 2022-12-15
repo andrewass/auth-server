@@ -29,8 +29,30 @@ kind: Service
 metadata:
   name: auth-backend-service
 spec:
+  type: NodePort
   selector:
     app: auth-backend
   ports:
     - port: 8089
       targetPort: 8089
+      nodePort: 30356
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-backend
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "authserver.io"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-backend-service
+                port:
+                  number: 8089

@@ -28,9 +28,30 @@ kind: Service
 metadata:
   name: auth-frontend-service
 spec:
+  type: NodePort
   selector:
     app: auth-frontend
   ports:
     - port: 8090
       targetPort: 8090
+      nodePort: 30234
 
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-frontend
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "authfrontend.io"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-frontend-service
+                port:
+                  number: 8090
