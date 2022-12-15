@@ -1,0 +1,16 @@
+apiVersion: skaffold/v4beta1
+kind: Config
+build:
+  artifacts:
+    - image: auth-frontend-image
+      sync:
+        infer:
+          - '**/*.ts'
+          - '**/*.tsx'
+          - '**/*.js'
+          - '**/*.jsx'
+          - '**/*.css'
+portForward:
+  - resourceType: deployment
+    resourceName: auth-frontend-deployment
+    port: 8090

@@ -11,7 +11,7 @@ interface Session {
 }
 
 export const oidcConfig = {
-    authority: "http://localhost:8089",
+    authority: "http://auth-backend-service:8089",
     client_id: "XVlBzgbaiCMRAjWwhTHctcuAxhxKQF",
     redirect_uri: "http://localhost:8090/account"
 };
