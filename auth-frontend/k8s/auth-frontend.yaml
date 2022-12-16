@@ -15,9 +15,6 @@ spec:
       containers:
         - name: auth-frontend
           image: auth-frontend-image
-          env:
-            - name: AUTH_SERVER
-              value: "auth-backend-service"
           ports:
             - containerPort: 8090
 

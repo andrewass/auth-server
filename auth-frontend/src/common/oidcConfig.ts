@@ -11,9 +11,9 @@ interface Session {
 }
 
 export const oidcConfig = {
-    authority: "http://auth-backend-service:8089",
+    authority: "http://authserver.io",
     client_id: "XVlBzgbaiCMRAjWwhTHctcuAxhxKQF",
-    redirect_uri: "http://localhost:8090/account"
+    redirect_uri: "http://authfrontend.io/account"
 };
 
 export const onSignInCallback = (_user: User | void): void => {
