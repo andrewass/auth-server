@@ -23,6 +23,12 @@ func findUserByEmail(email string) *User {
 	return extractUserFromSingleResult(response)
 }
 
+func findUserBySubject(subject string) *User {
+	ctx := context.TODO()
+	response := common.Database.Collection(userCollection).FindOne(ctx, bson.M{"subject": subject})
+	return extractUserFromSingleResult(response)
+}
+
 func existsUserByEmail(email string) bool {
 	ctx := context.TODO()
 	response := common.Database.Collection(userCollection).FindOne(ctx, bson.M{"email": email})

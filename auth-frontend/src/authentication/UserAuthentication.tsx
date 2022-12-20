@@ -1,9 +1,9 @@
-import {useState} from "react";
+import {Fragment, useState} from "react";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import {useSearchParams} from "react-router-dom";
-import {getAuthorizationResponse} from "../api/userApi";
-import {useAxiosWrapper} from "../../common/axiosWrapper";
+import {getAuthorizationResponse} from "./api/authenticationApi";
+import {useAxiosWrapper} from "../config/axiosWrapper";
 
 const UserAuthentication = () => {
     const [searchParams] = useSearchParams()
@@ -28,15 +28,15 @@ const UserAuthentication = () => {
 
     if (displaySignUp) {
         return (
-            <div>
+            <Fragment>
                 <SignUp setDisplaySignUp={setDisplaySignUp} postProcessSignUp={postProcessAuthenticationWithAuthCode}/>
-            </div>
+            </Fragment>
         )
     } else {
         return (
-            <div>
+            <Fragment>
                 <SignIn setDisplaySignUp={setDisplaySignUp} postProcessSignIn={postProcessAuthenticationWithAuthCode}/>
-            </div>
+            </Fragment>
         )
     }
 }

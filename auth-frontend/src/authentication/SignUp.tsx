@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {signUpUser} from "../api/userApi";
+import {signUpUser} from "./api/authenticationApi";
 import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
 interface Props {

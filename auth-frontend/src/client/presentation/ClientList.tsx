@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useAxiosWrapper} from "../../common/axiosWrapper";
+import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {getRegisteredClientsConfig} from "../api/clientApi";
 import {Client, mapToClient} from "./client";
 import {ClientRow} from "./ClientRow";

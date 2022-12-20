@@ -15,5 +15,3 @@
 .idea/dataSources.xml
 
 certs/**
-
-k8s/mongodb/mongodb-secrets.yaml

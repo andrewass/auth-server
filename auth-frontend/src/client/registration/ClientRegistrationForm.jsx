@@ -1,8 +1,8 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
-import {useAxiosWrapper} from "../../common/axiosWrapper";
+import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {registerClientConfig} from "../api/clientApi";
-import {getSessionEmail} from "../../common/oidcConfig";
+import {getSessionEmail} from "../../config/oidcConfig";
 
 
 const ClientRegistrationForm = () => {

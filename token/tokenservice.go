@@ -8,7 +8,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"github.com/golang-jwt/jwt"
-	"github.com/spf13/viper"
 	"time"
 )
 
@@ -24,6 +23,10 @@ func getTokens(request types.GetTokenRequest) types.GetTokensResponse {
 		ExpiresIn:   324355346,
 		Scope:       "email",
 	}
+}
+
+func ExtractSubjectFromToken(token string) string {
+	return ""
 }
 
 func validateClientSecret(clientId string, secret string) {
@@ -50,7 +53,7 @@ func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string
 func createAccessToken() string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-		Issuer:    viper.Get("BASE_URL").(string),
+		Issuer:    "http://auth-backend-service:8089",
 		Subject:   "1234567890",
 		NotBefore: time.Now().Unix(),
 		Audience:  "test-audience",
@@ -64,13 +67,12 @@ func createAccessToken() string {
 }
 
 func createIdToken(email string, clientId string) string {
-
 	claims := types.CustomIdClaims{
 		Email: email,
 		Id:    email,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
-			Issuer:    viper.Get("BASE_URL").(string),
+			Issuer:    "http://auth-backend-service:8089",
 			Subject:   "1234567890-id",
 			NotBefore: time.Now().Unix(),
 			Audience:  clientId,

@@ -1,6 +1,6 @@
-import {AUTH_SERVER_URL} from "../../common/properties";
+import {AUTH_SERVER_URL} from "../../config/properties";
 import {RegisterClientRequest} from "./clientDto";
-import {getSessionEmail} from "../../common/oidcConfig";
+import {getSessionEmail} from "../../config/oidcConfig";
 
 const registerClientConfig = (request: RegisterClientRequest) => {
     return {

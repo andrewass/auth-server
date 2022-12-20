@@ -1,8 +1,8 @@
 import {Route, Routes} from "react-router-dom";
-import ProtectedRoute from "./common/ProtectedRoute";
-import Account from "./user/account/Account";
-import InternalAuthentication from "./user/authentication/InternalAuthentication";
-import ExternalAuthentication from "./user/authentication/ExternalAuthentication";
+import ProtectedRoute from "./config/ProtectedRoute";
+import Account from "./user/Account";
+import InternalAuthentication from "./authentication/InternalAuthentication";
+import ExternalAuthentication from "./authentication/ExternalAuthentication";
 import Clients from "./client/Clients";
 import ClientDetails from "./client/presentation/ClientDetails";
 

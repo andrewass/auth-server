@@ -9,11 +9,17 @@ import (
 func SetUpUserRoutes(router *gin.Engine) {
 	router.POST("/user/sign-in", signInUserHandler)
 	router.POST("/user/sign-up", signUpUserHandler)
-	router.GET("/user/info", getUserInfo)
+	router.GET("/user/info", getUserInfoHandler)
 }
 
-func getUserInfo(context *gin.Context) {
-	context.Status(http.StatusOK)
+func getUserInfoHandler(context *gin.Context) {
+	bearerToken := context.Request.Header["Authorization"]
+	/*
+		subject := context.Query("subject")
+		user := getUserBySubject(subject)
+		userInfo := mapToUserInfo(user)
+	*/
+	context.JSON(http.StatusOK, bearerToken)
 }
 
 func signInUserHandler(context *gin.Context) {
@@ -35,4 +41,10 @@ func signUpUserHandler(context *gin.Context) {
 	}
 	signUpUser(request)
 	context.Status(http.StatusOK)
+}
+
+func mapToUserInfo(user User) dto.UserInfoResponse {
+	return dto.UserInfoResponse{
+		Email: user.Email,
+	}
 }

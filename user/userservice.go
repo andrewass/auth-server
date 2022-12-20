@@ -3,7 +3,14 @@ package user
 import (
 	"auth-server/user/dto"
 	"golang.org/x/crypto/bcrypt"
+	"math/rand"
 )
+
+var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func getUserBySubject(subject string) User {
+	return *findUserBySubject(subject)
+}
 
 func signInUser(request dto.SignInUserRequest) {
 	existingUser := findUserByEmail(request.Email)
@@ -13,12 +20,13 @@ func signInUser(request dto.SignInUserRequest) {
 }
 
 func signUpUser(request dto.SignUpUserRequest) {
+	verifyNotPreviouslyExistingUser(request.Email)
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(request.Password), 8)
 	newUser := User{
 		Email:    request.Email,
 		Password: string(hashedPassword),
+		Subject:  generateRandomString(),
 	}
-	verifyNotPreviouslyExistingUser(newUser)
 	saveUser(newUser)
 }
 
@@ -27,8 +35,16 @@ func matchingPassword(password, hash string) bool {
 	return err == nil
 }
 
-func verifyNotPreviouslyExistingUser(user User) {
-	if existsUserByEmail(user.Email) {
+func verifyNotPreviouslyExistingUser(email string) {
+	if existsUserByEmail(email) {
 		panic("Email already registered")
 	}
+}
+
+func generateRandomString() string {
+	b := make([]rune, 30)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(b)
 }
