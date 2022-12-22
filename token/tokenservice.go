@@ -8,25 +8,35 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"github.com/golang-jwt/jwt"
+	"strings"
 	"time"
 )
 
-func getTokens(request types.GetTokenRequest) types.GetTokensResponse {
+func createTokenResponse(request types.GetTokenRequest) types.GetTokensResponse {
 	persistedCode := authorization.GetPersistedAuthorizationCode(request.Code)
 	authorization.DeleteAuthorizationCode(persistedCode)
-	userEmail := persistedCode.UserEmail
 
 	return types.GetTokensResponse{
-		AccessToken: createAccessToken(),
-		IdToken:     createIdToken(userEmail, persistedCode.ClientId),
+		AccessToken: createAccessToken(persistedCode.UserEmail),
+		IdToken:     createIdToken(persistedCode.UserEmail, persistedCode.ClientId),
 		TokenType:   "Bearer",
 		ExpiresIn:   324355346,
 		Scope:       "email",
 	}
 }
 
-func ExtractSubjectFromToken(token string) string {
-	return ""
+func ExtractSubjectFromToken(bearerToken string) string {
+	splitToken := strings.Split(bearerToken, "Bearer ")
+	var claims jwt.StandardClaims
+	key, _ := jwt.ParseRSAPublicKeyFromPEM(common.GetPublicKey())
+
+	_, err := jwt.ParseWithClaims(splitToken[1], &claims, func(token *jwt.Token) (interface{}, error) {
+		return key, nil
+	})
+	if err != nil {
+		panic("Error extracting claims from token : " + err.Error())
+	}
+	return claims.Subject
 }
 
 func validateClientSecret(clientId string, secret string) {
@@ -50,11 +60,11 @@ func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string
 	}
 }
 
-func createAccessToken() string {
+func createAccessToken(subject string) string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 		Issuer:    "http://auth-backend-service:8089",
-		Subject:   "1234567890",
+		Subject:   subject,
 		NotBefore: time.Now().Unix(),
 		Audience:  "test-audience",
 		IssuedAt:  time.Now().Unix(),
@@ -73,7 +83,7 @@ func createIdToken(email string, clientId string) string {
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(time.Hour * 1).Unix(),
 			Issuer:    "http://auth-backend-service:8089",
-			Subject:   "1234567890-id",
+			Subject:   email,
 			NotBefore: time.Now().Unix(),
 			Audience:  clientId,
 			IssuedAt:  time.Now().Unix(),

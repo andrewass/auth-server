@@ -1,6 +1,7 @@
 package user
 
 import (
+	"auth-server/token"
 	"auth-server/user/dto"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -13,13 +14,12 @@ func SetUpUserRoutes(router *gin.Engine) {
 }
 
 func getUserInfoHandler(context *gin.Context) {
-	bearerToken := context.Request.Header["Authorization"]
-	/*
-		subject := context.Query("subject")
-		user := getUserBySubject(subject)
-		userInfo := mapToUserInfo(user)
-	*/
-	context.JSON(http.StatusOK, bearerToken)
+	bearerToken := context.Request.Header.Get("Authorization")
+	subject := token.ExtractSubjectFromToken(bearerToken)
+	user := getUserBySubject(subject)
+	userInfo := mapToUserInfo(user)
+
+	context.JSON(http.StatusOK, userInfo)
 }
 
 func signInUserHandler(context *gin.Context) {

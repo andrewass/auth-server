@@ -17,11 +17,13 @@ type JWK struct {
 }
 
 var privateKey []byte
+var publicKey []byte
 
 var customJwk JWK
 
 func ConfigureKeys() {
 	configurePrivateKey()
+	configurePublicKey()
 	configureJWK()
 }
 
@@ -30,9 +32,13 @@ func configurePrivateKey() {
 	privateKey = rsaPrivateKey
 }
 
-func configureJWK() {
+func configurePublicKey() {
 	rsaPublicKey, _ := os.ReadFile("certs/public.pem")
-	parsedPublicKey, _ := jwt.ParseRSAPublicKeyFromPEM(rsaPublicKey)
+	publicKey = rsaPublicKey
+}
+
+func configureJWK() {
+	parsedPublicKey, _ := jwt.ParseRSAPublicKeyFromPEM(publicKey)
 	newJwk, _ := jwk.New(parsedPublicKey)
 	publicJwk := newJwk.(jwk.RSAPublicKey)
 	exponent := base64.URLEncoding.EncodeToString(publicJwk.E())
@@ -49,6 +55,10 @@ func configureJWK() {
 
 func GetPrivateKey() []byte {
 	return privateKey
+}
+
+func GetPublicKey() []byte {
+	return publicKey
 }
 
 func GetJwks() []JWK {

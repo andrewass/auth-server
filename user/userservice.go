@@ -3,10 +3,7 @@ package user
 import (
 	"auth-server/user/dto"
 	"golang.org/x/crypto/bcrypt"
-	"math/rand"
 )
-
-var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func getUserBySubject(subject string) User {
 	return *findUserBySubject(subject)
@@ -25,7 +22,7 @@ func signUpUser(request dto.SignUpUserRequest) {
 	newUser := User{
 		Email:    request.Email,
 		Password: string(hashedPassword),
-		Subject:  generateRandomString(),
+		Subject:  request.Email,
 	}
 	saveUser(newUser)
 }
@@ -39,12 +36,4 @@ func verifyNotPreviouslyExistingUser(email string) {
 	if existsUserByEmail(email) {
 		panic("Email already registered")
 	}
-}
-
-func generateRandomString() string {
-	b := make([]rune, 30)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
 }

@@ -1,14 +1,13 @@
 import {Box, VStack} from "@chakra-ui/react";
 import NavigationBar from "../navigation/NavigationBar";
 import {useQuery} from "react-query";
-import {fetchUserInfo} from "./api/userApi";
+import {getUserInfoConfig} from "./api/userApi";
+import {useAxiosWrapper} from "../config/axiosWrapper";
 
 const Account = () => {
+    const {get} = useAxiosWrapper()
 
-    const {isLoading, error, data} = useQuery('getUserInfo', async () => {
-            const response = await fetchUserInfo()
-        }
-    )
+    const {isLoading, error, data} = useQuery('getUserInfo',  () => get(getUserInfoConfig()))
 
     if (isLoading) return <h5>'Loading...'</h5>
 
