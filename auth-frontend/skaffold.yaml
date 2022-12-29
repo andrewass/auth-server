@@ -1,16 +1,22 @@
 apiVersion: skaffold/v4beta1
 kind: Config
+metadata:
+  name: auth-frontend
+
 build:
   artifacts:
     - image: auth-frontend-image
-      sync:
-        infer:
+      sync: #File sync for copying changed files to a deployed container, to avoid rebuild and redeploy pod
+        infer: #The destination for each changed files
           - '**/*.ts'
           - '**/*.tsx'
           - '**/*.js'
           - '**/*.jsx'
           - '**/*.css'
-portForward:
-  - resourceType: deployment
-    resourceName: auth-frontend-deployment
-    port: 8090
+
+manifests:
+  rawYaml:
+    - k8s/auth-frontend.yaml
+
+deploy:
+  kubectl: {}

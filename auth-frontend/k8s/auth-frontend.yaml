@@ -25,13 +25,11 @@ kind: Service
 metadata:
   name: auth-frontend-service
 spec:
-  type: NodePort
   selector:
     app: auth-frontend
   ports:
     - port: 8090
       targetPort: 8090
-      nodePort: 30234
 
 ---
 

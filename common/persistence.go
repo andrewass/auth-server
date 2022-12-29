@@ -17,7 +17,7 @@ func ConnectToDatabase() {
 		Password: os.Getenv("MONGO_DB_PASSWORD"),
 	}
 	ctx := context.TODO()
-	opts := options.Client().ApplyURI("mongodb://mongodb-service:27017").SetAuth(credentials)
+	opts := options.Client().ApplyURI("mongodb://mongodb-service:27017/admin").SetAuth(credentials)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

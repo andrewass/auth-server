@@ -17,9 +17,9 @@ spec:
           image: auth-backend-image
           env:
             - name: MONGO_DB_USERNAME
-              value: "admin"
+              value: "mongoUser"
             - name: MONGO_DB_PASSWORD
-              value: "password"
+              value: "mongoPassword"
           ports:
             - containerPort: 8089
 
@@ -29,13 +29,11 @@ kind: Service
 metadata:
   name: auth-backend-service
 spec:
-  type: NodePort
   selector:
     app: auth-backend
   ports:
     - port: 8089
       targetPort: 8089
-      nodePort: 30356
 
 ---
 
