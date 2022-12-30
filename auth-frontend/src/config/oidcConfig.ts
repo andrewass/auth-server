@@ -13,6 +13,7 @@ interface Session {
 export const oidcConfig = {
     authority: "http://authserver.io",
     client_id: "XVlBzgbaiCMRAjWwhTHctcuAxhxKQF",
+    client_secret: "verySecretSecret",
     redirect_uri: "http://authfrontend.io/account"
 };
 

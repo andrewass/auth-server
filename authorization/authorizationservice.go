@@ -33,7 +33,7 @@ func createFrontendUrl(request dto.AuthorizeRequest) string {
 }
 
 func decideFrontendUrl(clientId string) (*url.URL, error) {
-	requestedClient := client.GetClient(clientId)
+	requestedClient := client.GetClientById(clientId)
 	if requestedClient.ClientType == client.Internal {
 		return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/internal")
 	}

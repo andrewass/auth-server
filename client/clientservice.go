@@ -4,6 +4,7 @@ import (
 	"auth-server/client/dto"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"time"
 )
@@ -25,8 +26,14 @@ func AddAdminClient() {
 	}
 }
 
-func GetClient(clientId string) Client {
+func GetClientById(clientId string) Client {
 	return *getClientById(clientId)
+}
+
+func GetClientByIdAndSecret(clientId string, clientSecret string) Client {
+	client := getClientById(clientId)
+	verifyMatchingSecret(clientSecret, client.ClientSecret)
+	return *client
 }
 
 func getClients(email string) []Client {
@@ -58,19 +65,21 @@ func addClient(request dto.AddClientRequest) Client {
 }
 
 func updateClient(request dto.UpdateClientRequest) Client {
-	client := *getClientById(request.ClientID)
-	verifyValidClientAccess(client, request.ClientID, request.ClientSecret)
+	client := GetClientByIdAndSecret(request.ClientID, request.ClientSecret)
 	saveUpdatedClient(client)
 	return client
 }
 
 func deleteClient(clientId string, clientSecret string) {
 	client := *getClientById(clientId)
-	verifyValidClientAccess(client, clientId, clientSecret)
+	verifyMatchingSecret(clientSecret, client.ClientSecret)
 }
 
-func verifyValidClientAccess(client Client, clientId string, clientSecret string) {
-
+func verifyMatchingSecret(plaintextSecret, hashedSecret string) {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedSecret), []byte(plaintextSecret))
+	if err != nil {
+		panic("Mismatch of client secret")
+	}
 }
 
 func generateRandomString() string {

@@ -18,7 +18,7 @@ func getTokensHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	response := createTokenResponse(request)
+	response := processGetTokensRequest(request)
 	context.JSON(http.StatusOK, response)
 }
 

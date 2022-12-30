@@ -1,6 +1,8 @@
 package types
 
-import "github.com/golang-jwt/jwt"
+import (
+	"github.com/golang-jwt/jwt"
+)
 
 type CustomIdClaims struct {
 	Email string `json:"email"`
@@ -9,8 +11,12 @@ type CustomIdClaims struct {
 }
 
 type TypeHint string
+type GrantType string
 
 const (
 	AccessToken  TypeHint = "AccessToken"
-	RefreshToken          = "RefreshToken"
+	RefreshToken TypeHint = "RefreshToken"
+
+	AuthCodeGrant     GrantType = "authorization_code"
+	RefreshTokenGrant GrantType = "refresh_token"
 )
