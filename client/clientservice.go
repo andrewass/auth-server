@@ -1,10 +1,10 @@
 package client
 
 import (
-	"auth-server/client/dto"
 	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
+	"log"
 	"math/rand"
 	"time"
 )
@@ -14,15 +14,17 @@ var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 // AddAdminClient For testing during development only
 func AddAdminClient() {
 	adminClients := getClients("admin@admin.com")
+	log.Println("Check if admin client exists")
 	if len(adminClients) == 0 {
-		adminClient := addClient(dto.AddClientRequest{
-			UserEmail: "admin@admin.com",
-			ClientUri: viper.Get("FRONTEND_URL").(string),
+		log.Println("Attempting to create new admin client")
+		createNewClient(AddClientRequest{
+			UserEmail:    "admin@admin.com",
+			ClientUri:    viper.Get("FRONTEND_URL").(string),
+			ClientId:     generateRandomString(),
+			ClientSecret: viper.Get("CLIENT_SECRET").(string),
+			Type:         Internal,
 		})
-		adminClient.ClientId = viper.Get("CLIENT_ID").(string)
-		adminClient.ClientSecret = viper.Get("CLIENT_SECRET").(string)
-		adminClient.ClientType = Internal
-		saveUpdatedClient(adminClient)
+		log.Println("New admin client created")
 	}
 }
 
@@ -40,13 +42,18 @@ func getClients(email string) []Client {
 	return getAllClients(email)
 }
 
-func addClient(request dto.AddClientRequest) Client {
+func createNewClient(request AddClientRequest) Client {
+	return persistNewClient(request)
+}
+
+func persistNewClient(request AddClientRequest) Client {
+	hashedSecret, _ := bcrypt.GenerateFromPassword([]byte(request.ClientSecret), 8)
 	client := Client{
 		ID:                      primitive.NewObjectID(),
-		ClientId:                generateRandomString(),
-		ClientSecret:            generateRandomString(),
+		ClientId:                request.ClientId,
+		ClientSecret:            string(hashedSecret),
 		ClientIdIssuedAt:        time.Now(),
-		ClientType:              External,
+		ClientType:              request.Type,
 		UserEmail:               request.UserEmail,
 		LogoUri:                 request.LogoUri,
 		ApplicationType:         request.ApplicationType,
@@ -60,11 +67,12 @@ func addClient(request dto.AddClientRequest) Client {
 		PostLogoutRedirectUris:  request.PostLogoutRedirectUris,
 	}
 	saveNewClient(client)
+	client.ClientSecret = request.ClientSecret
 
 	return client
 }
 
-func updateClient(request dto.UpdateClientRequest) Client {
+func updateClient(request UpdateClientRequest) Client {
 	client := GetClientByIdAndSecret(request.ClientID, request.ClientSecret)
 	saveUpdatedClient(client)
 	return client

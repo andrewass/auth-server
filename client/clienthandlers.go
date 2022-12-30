@@ -1,14 +1,13 @@
 package client
 
 import (
-	"auth-server/client/dto"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func SetUpClientRoutes(router *gin.Engine) {
 	router.GET("/clients", getClientsHandler)
-	router.POST("/clients", addClientHandler)
+	router.POST("/clients", createClientHandler)
 	router.PATCH("/clients", updateClientHandler)
 	router.DELETE("/clients", deleteClientHandler)
 }
@@ -16,24 +15,24 @@ func SetUpClientRoutes(router *gin.Engine) {
 func getClientsHandler(context *gin.Context) {
 	email := context.Query("email")
 	var clients = getClients(email)
-	mappedClients := make([]dto.ClientResponse, len(clients))
+	mappedClients := make([]ClientResponse, len(clients))
 	for i, client := range clients {
 		mappedClients[i] = mapToClientResponse(client)
 	}
 	context.JSON(http.StatusOK, mappedClients)
 }
 
-func addClientHandler(context *gin.Context) {
-	request := dto.AddClientRequest{}
+func createClientHandler(context *gin.Context) {
+	request := AddClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
-	client := addClient(request)
+	client := createNewClient(request)
 	context.JSON(http.StatusOK, mapToClientResponse(client))
 }
 
 func updateClientHandler(context *gin.Context) {
-	request := dto.UpdateClientRequest{}
+	request := UpdateClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
@@ -42,7 +41,7 @@ func updateClientHandler(context *gin.Context) {
 }
 
 func deleteClientHandler(context *gin.Context) {
-	request := dto.DeleteClientRequest{}
+	request := DeleteClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
@@ -50,8 +49,8 @@ func deleteClientHandler(context *gin.Context) {
 	context.Status(http.StatusOK)
 }
 
-func mapToClientResponse(client Client) dto.ClientResponse {
-	return dto.ClientResponse{
+func mapToClientResponse(client Client) ClientResponse {
+	return ClientResponse{
 		ClientId:                client.ClientId,
 		ClientSecret:            client.ClientSecret,
 		ClientIdIssuedAt:        client.ClientIdIssuedAt,

@@ -8,7 +8,6 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"github.com/golang-jwt/jwt"
-	"strings"
 	"time"
 )
 
@@ -40,17 +39,16 @@ func createTokens(subject string, clientId string) types.GetTokensResponse {
 		RefreshToken: createRefreshToken(subject),
 		IdToken:      createIdToken(subject, clientId),
 		TokenType:    "bearer",
-		ExpiresIn:    60,
+		ExpiresIn:    300,
 		Scope:        "subject",
 	}
 }
 
 func ExtractSubjectFromToken(token string) string {
-	splitToken := strings.Split(token, "Bearer ")
 	var claims jwt.StandardClaims
 	key, _ := jwt.ParseRSAPublicKeyFromPEM(common.GetPublicKey())
 
-	_, err := jwt.ParseWithClaims(splitToken[1], &claims, func(token *jwt.Token) (interface{}, error) {
+	_, err := jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
 		return key, nil
 	})
 	if err != nil {
@@ -73,7 +71,7 @@ func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string
 
 func createAccessToken(subject string) string {
 	claims := jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Minute * 1).Unix(),
+		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
 		Issuer:    "http://auth-backend-service:8089",
 		Subject:   subject,
 		NotBefore: time.Now().Unix(),
@@ -107,7 +105,7 @@ func createIdToken(subject string, clientId string) string {
 		Email: subject,
 		Id:    subject,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 1).Unix(),
+			ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
 			Issuer:    "http://auth-backend-service:8089",
 			Subject:   subject,
 			NotBefore: time.Now().Unix(),

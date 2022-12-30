@@ -5,6 +5,7 @@ import (
 	"auth-server/user/dto"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 func SetUpUserRoutes(router *gin.Engine) {
@@ -15,7 +16,8 @@ func SetUpUserRoutes(router *gin.Engine) {
 
 func getUserInfoHandler(context *gin.Context) {
 	bearerToken := context.Request.Header.Get("Authorization")
-	subject := token.ExtractSubjectFromToken(bearerToken)
+	splitToken := strings.Split(bearerToken, "Bearer ")
+	subject := token.ExtractSubjectFromToken(splitToken[1])
 	user := getUserBySubject(subject)
 	userInfo := mapToUserInfo(user)
 
