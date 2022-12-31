@@ -2,7 +2,7 @@ import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCl
 import React, {useState} from "react";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {registerClientConfig} from "../api/clientApi";
-import {getSessionEmail} from "../../config/oidcConfig";
+import {useAuth} from "react-oidc-context";
 
 
 const ClientRegistrationForm = () => {
@@ -11,11 +11,12 @@ const ClientRegistrationForm = () => {
     const [redirectUris, setRedirectUris] = useState([])
     const [tokenEndpointAuthMethod] = useState()
     const {post} = useAxiosWrapper()
+    const {user} = useAuth()
 
 
     const registerClient = () => {
         post(registerClientConfig({
-                userEmail: getSessionEmail(),
+                userEmail: user.profile.email,
                 redirectUris: redirectUris,
                 clientName: clientName
             }

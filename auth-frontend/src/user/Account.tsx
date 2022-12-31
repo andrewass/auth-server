@@ -13,11 +13,13 @@ const Account = () => {
 
     if (error) return <h5>"An error has occurred"</h5>
 
+    const {email} = data
+
     return (
         <VStack margin="auto">
             <NavigationBar/>
             <Box>
-                Account details
+                Account details : email : {email}
             </Box>
         </VStack>
     )

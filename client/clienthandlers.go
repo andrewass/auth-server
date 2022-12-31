@@ -12,12 +12,15 @@ func SetUpClientRoutes(router *gin.Engine) {
 	router.DELETE("/clients", deleteClientHandler)
 }
 
+const includeSecret = true
+const notIncludeSecret = false
+
 func getClientsHandler(context *gin.Context) {
 	email := context.Query("email")
 	var clients = getClients(email)
-	mappedClients := make([]ClientResponse, len(clients))
+	mappedClients := make([]ClientInformationDto, len(clients))
 	for i, client := range clients {
-		mappedClients[i] = mapToClientResponse(client)
+		mappedClients[i] = mapToClientResponse(client, notIncludeSecret)
 	}
 	context.JSON(http.StatusOK, mappedClients)
 }
@@ -28,7 +31,7 @@ func createClientHandler(context *gin.Context) {
 		panic(err)
 	}
 	client := createNewClient(request)
-	context.JSON(http.StatusOK, mapToClientResponse(client))
+	context.JSON(http.StatusOK, mapToClientResponse(client, includeSecret))
 }
 
 func updateClientHandler(context *gin.Context) {
@@ -37,7 +40,7 @@ func updateClientHandler(context *gin.Context) {
 		panic(err)
 	}
 	client := updateClient(request)
-	context.JSON(http.StatusOK, mapToClientResponse(client))
+	context.JSON(http.StatusOK, mapToClientResponse(client, notIncludeSecret))
 }
 
 func deleteClientHandler(context *gin.Context) {
@@ -49,10 +52,9 @@ func deleteClientHandler(context *gin.Context) {
 	context.Status(http.StatusOK)
 }
 
-func mapToClientResponse(client Client) ClientResponse {
-	return ClientResponse{
+func mapToClientResponse(client Client, includeSecret bool) ClientInformationDto {
+	clientDto := ClientInformationDto{
 		ClientId:                client.ClientId,
-		ClientSecret:            client.ClientSecret,
 		ClientIdIssuedAt:        client.ClientIdIssuedAt,
 		LogoUri:                 client.LogoUri,
 		ApplicationType:         client.ApplicationType,
@@ -66,4 +68,8 @@ func mapToClientResponse(client Client) ClientResponse {
 		PostLogoutRedirectUris:  client.PostLogoutRedirectUris,
 		UserEmail:               client.UserEmail,
 	}
+	if includeSecret {
+		clientDto.ClientSecret = client.ClientSecret
+	}
+	return clientDto
 }

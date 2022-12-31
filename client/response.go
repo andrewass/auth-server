@@ -2,7 +2,7 @@ package client
 
 import "time"
 
-type ClientResponse struct {
+type ClientInformationDto struct {
 	ClientId                string    `json:"client_id"`
 	ClientSecret            string    `json:"client_secret"`
 	ClientIdIssuedAt        time.Time `json:"client_id_issued_at"`

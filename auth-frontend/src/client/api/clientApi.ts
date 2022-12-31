@@ -1,6 +1,5 @@
 import {AUTH_SERVER_URL} from "../../config/properties";
 import {RegisterClientRequest} from "./clientDto";
-import {getSessionEmail} from "../../config/oidcConfig";
 
 const registerClientConfig = (request: RegisterClientRequest) => {
     return {
@@ -14,11 +13,11 @@ const registerClientConfig = (request: RegisterClientRequest) => {
     }
 }
 
-const getRegisteredClientsConfig = () => {
+const getRegisteredClientsConfig = (email?: string) => {
     return {
         method: "get",
         url: AUTH_SERVER_URL + "/clients",
-        params: {"email": getSessionEmail()}
+        params: {"email": email}
     }
 }
 

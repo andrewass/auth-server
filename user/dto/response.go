@@ -1,5 +1,5 @@
 package dto
 
 type UserInfoResponse struct {
-	Email string
+	Email string `json:"email"`
 }
