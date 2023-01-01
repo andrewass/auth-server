@@ -20,7 +20,6 @@ func AddAdminClient() {
 		createNewClient(AddClientRequest{
 			UserEmail:    "admin@admin.com",
 			ClientUri:    viper.Get("FRONTEND_URL").(string),
-			ClientId:     generateRandomString(),
 			ClientSecret: viper.Get("CLIENT_SECRET").(string),
 			Type:         Internal,
 		})
@@ -50,7 +49,7 @@ func persistNewClient(request AddClientRequest) Client {
 	hashedSecret, _ := bcrypt.GenerateFromPassword([]byte(request.ClientSecret), 8)
 	client := Client{
 		ID:                      primitive.NewObjectID(),
-		ClientId:                request.ClientId,
+		ClientId:                generateRandomString(),
 		ClientSecret:            string(hashedSecret),
 		ClientIdIssuedAt:        time.Now(),
 		ClientType:              request.Type,
@@ -78,9 +77,8 @@ func updateClient(request UpdateClientRequest) Client {
 	return client
 }
 
-func deleteClient(clientId string, clientSecret string) {
-	client := *getClientById(clientId)
-	verifyMatchingSecret(clientSecret, client.ClientSecret)
+func deleteClient(clientId string) {
+	deleteClientByClientId(clientId)
 }
 
 func verifyMatchingSecret(plaintextSecret, hashedSecret string) {

@@ -9,15 +9,13 @@ import {useAxiosWrapper} from "../../config/axiosWrapper";
 
 interface Props {
     client: Client
-    navigateToDetails: (client: Client) => void
 }
 
-export function ClientRow({client, navigateToDetails}: Props) {
-
+export function ClientRow({client}: Props) {
     const {axiosDelete} = useAxiosWrapper()
 
     const deleteClient = async () => {
-        await axiosDelete(deleteClientConfig("fdfsdf"))
+        await axiosDelete(deleteClientConfig(client.clientId))
     }
 
     const mutation = useMutation(deleteClient, {

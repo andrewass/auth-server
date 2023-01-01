@@ -12,7 +12,6 @@ type AddClientRequest struct {
 	ResponseTypes           []string `json:"response_types"`
 	GrantTypes              []string `json:"grant_types"`
 	PostLogoutRedirectUris  []string `json:"post_logout_redirect_uris"`
-	ClientId                string
 	ClientSecret            string
 	Type                    ClientType
 }

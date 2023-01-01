@@ -1,17 +1,13 @@
-export class Client {
+export interface Client {
     email: string
     name: string
-
-    constructor(email: string, name: string) {
-        this.email = email
-        this.name = name
-    }
+    clientId: string
 }
 
-
-export const mapToClient = (source: any) => {
-    return new Client(
-        source.user_email,
-        source.client_name
-    )
+export const mapToClient = (source: any): Client => {
+    return {
+        clientId: source.client_id,
+        email: source.user_email,
+        name: source.client_name
+    }
 }

@@ -35,7 +35,7 @@ export function ClientList() {
                 </Thead>
                 <Tbody>
                     {data.map((clientData: any) =>
-                        <ClientRow client={mapToClient(clientData)} navigateToDetails={navigateToDetails}/>)}
+                        <ClientRow client={mapToClient(clientData)} />)}
                 </Tbody>
             </Table>
         </TableContainer>

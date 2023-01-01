@@ -30,6 +30,7 @@ func createClientHandler(context *gin.Context) {
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
+	request.ClientSecret = generateRandomString()
 	client := createNewClient(request)
 	context.JSON(http.StatusOK, mapToClientResponse(client, includeSecret))
 }
@@ -44,11 +45,8 @@ func updateClientHandler(context *gin.Context) {
 }
 
 func deleteClientHandler(context *gin.Context) {
-	request := DeleteClientRequest{}
-	if err := context.BindJSON(&request); err != nil {
-		panic(err)
-	}
-	deleteClient(request.ClientID, request.ClientSecret)
+	clientID := context.Query("client_id")
+	deleteClient(clientID)
 	context.Status(http.StatusOK)
 }
 

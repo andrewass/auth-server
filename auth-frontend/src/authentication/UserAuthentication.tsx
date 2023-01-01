@@ -8,11 +8,11 @@ import {useAxiosWrapper} from "../config/axiosWrapper";
 const UserAuthentication = () => {
     const [searchParams] = useSearchParams()
     const [displaySignUp, setDisplaySignUp] = useState(false)
-    const redirectUri = searchParams.axiosGet("redirect_uri")
-    const state = searchParams.axiosGet("state")
-    const clientId = String(searchParams.axiosGet("client_id"))
-    const codeChallenge = String(searchParams.axiosGet("code_challenge"))
-    const codeChallengeMethod = String(searchParams.axiosGet("code_challenge_method"))
+    const redirectUri = searchParams.get("redirect_uri")
+    const state = searchParams.get("state")
+    const clientId = String(searchParams.get("client_id"))
+    const codeChallenge = String(searchParams.get("code_challenge"))
+    const codeChallengeMethod = String(searchParams.get("code_challenge_method"))
 
     const {axiosPost} = useAxiosWrapper()
 

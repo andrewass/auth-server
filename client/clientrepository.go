@@ -45,6 +45,14 @@ func saveUpdatedClient(client Client) {
 	}
 }
 
+func deleteClientByClientId(clientId string) {
+	ctx := context.TODO()
+	_, err := common.Database.Collection(clientCollection).DeleteOne(ctx, bson.M{"client_id": clientId})
+	if err != nil {
+		panic("Unable to delete client document : " + err.Error())
+	}
+}
+
 func extractClientFromSingleResult(result *mongo.SingleResult) *Client {
 	var storedClient Client
 	if err := result.Decode(&storedClient); err != nil {
