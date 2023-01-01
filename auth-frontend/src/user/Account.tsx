@@ -5,9 +5,9 @@ import {getUserInfoConfig} from "./api/userApi";
 import {useAxiosWrapper} from "../config/axiosWrapper";
 
 const Account = () => {
-    const {get} = useAxiosWrapper()
+    const {axiosGet} = useAxiosWrapper()
 
-    const {isLoading, error, data} = useQuery('getUserInfo',  () => get(getUserInfoConfig()))
+    const {isLoading, error, data} = useQuery('getUserInfo',  () => axiosGet(getUserInfoConfig()))
 
     if (isLoading) return <h5>'Loading...'</h5>
 

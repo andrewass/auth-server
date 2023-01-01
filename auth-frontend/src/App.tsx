@@ -4,13 +4,15 @@ import {oidcConfig, onSignInCallback} from "./config/oidcConfig";
 import {AuthProvider} from 'react-oidc-context';
 import BodyRoutes from "./BodyRoutes";
 import {QueryClient, QueryClientProvider} from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools";
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 const App = () => {
     return (
         <Router>
             <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtools initialIsOpen={false} />
                 <AuthProvider {...oidcConfig} onSigninCallback={onSignInCallback}>
                     <ChakraProvider>
                         <BodyRoutes/>

@@ -13,6 +13,14 @@ const registerClientConfig = (request: RegisterClientRequest) => {
     }
 }
 
+const deleteClientConfig = (clientId: string) => {
+    return {
+        method: "delete",
+        url: AUTH_SERVER_URL + "/clients",
+        params: {"client_id" : clientId}
+    }
+}
+
 const getRegisteredClientsConfig = (email?: string) => {
     return {
         method: "get",
@@ -22,5 +30,5 @@ const getRegisteredClientsConfig = (email?: string) => {
 }
 
 export {
-    registerClientConfig, getRegisteredClientsConfig
+    deleteClientConfig, registerClientConfig, getRegisteredClientsConfig
 }

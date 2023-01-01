@@ -13,9 +13,9 @@ export const useAxiosWrapper = () => {
     }
 
     return {
-        get: request(),
-        post: request(),
-        put: request(),
-        delete: request()
+        axiosGet: request(),
+        axiosPost: request(),
+        axiosPut: request(),
+        axiosDelete: request()
     }
 }

@@ -12,4 +12,6 @@ COPY . .
 
 RUN go build -o /auth-server-backend
 
+EXPOSE 8089
+
 CMD ["/auth-server-backend"]

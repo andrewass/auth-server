@@ -2,7 +2,9 @@ apiVersion: skaffold/v4beta1
 kind: Config
 build:
   artifacts:
-    - image: auth-backend-image
+  - image: auth-backend-image
+    docker:
+      dockerfile: Dockerfile
 manifests:
   rawYaml:
-    - k8s/auth-backend.yaml
+  - k8s/auth-backend.yaml

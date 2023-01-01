@@ -1,8 +1,10 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
+import {useMutation} from "react-query";
 import {registerClientConfig} from "../api/clientApi";
 import {useAuth} from "react-oidc-context";
+import {queryClient} from "../../App";
 
 
 const ClientRegistrationForm = () => {
@@ -10,18 +12,25 @@ const ClientRegistrationForm = () => {
     const [applicationType] = useState([])
     const [redirectUris, setRedirectUris] = useState([])
     const [tokenEndpointAuthMethod] = useState()
-    const {post} = useAxiosWrapper()
+    const {axiosPost} = useAxiosWrapper()
     const {user} = useAuth()
 
 
-    const registerClient = () => {
-        post(registerClientConfig({
+    const registerClient = async () => {
+        await axiosPost(registerClientConfig({
                 userEmail: user.profile.email,
                 redirectUris: redirectUris,
                 clientName: clientName
             }
-        )).catch(error => console.log(error))
+        ))
     }
+
+    const mutation = useMutation(registerClient, {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries("getUserClients");
+        },
+        onError: (error) => console.log("Unable to submit new client : " + error)
+    })
 
     const removeRedirectUri = (index) => {
         redirectUris.splice(index, 1)
@@ -36,7 +45,7 @@ const ClientRegistrationForm = () => {
     }
 
     return (
-        <form onSubmit={registerClient}>
+        <form onSubmit={mutation.mutate}>
             <Stack maxWidth={1000} margin="auto" spacing={5} marginTop={15}>
                 <FormControl>
                     <FormLabel>Client name</FormLabel>
