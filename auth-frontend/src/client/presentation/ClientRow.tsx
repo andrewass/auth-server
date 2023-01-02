@@ -16,10 +16,6 @@ export function ClientRow({client}: Props) {
     const {axiosDelete} = useAxiosWrapper()
     const navigate = useNavigate()
 
-    const naviagateToDetails = () => {
-        navigate("/client/details", {state: client})
-    }
-
     const deleteClient = async () => {
         await axiosDelete(deleteClientConfig(client.clientId))
     }
