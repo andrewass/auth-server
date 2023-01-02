@@ -4,7 +4,8 @@ import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {useMutation} from "react-query";
 import {registerClientConfig} from "../api/clientApi";
 import {useAuth} from "react-oidc-context";
-import {queryClient} from "../../App";
+import {useNavigate} from "react-router-dom";
+import {mapToClient} from "../presentation/client";
 
 
 const ClientRegistrationForm = () => {
@@ -14,10 +15,11 @@ const ClientRegistrationForm = () => {
     const [tokenEndpointAuthMethod] = useState()
     const {axiosPost} = useAxiosWrapper()
     const {user} = useAuth()
+    const navigate = useNavigate()
 
 
-    const registerClient = async () => {
-        await axiosPost(registerClientConfig({
+    const registerClient = () => {
+        return axiosPost(registerClientConfig({
                 userEmail: user.profile.email,
                 redirectUris: redirectUris,
                 clientName: clientName
@@ -26,8 +28,8 @@ const ClientRegistrationForm = () => {
     }
 
     const mutation = useMutation(registerClient, {
-        onSuccess: async () => {
-            await queryClient.invalidateQueries("getUserClients");
+        onSuccess: (data) => {
+            navigate("/client/details", {state: mapToClient(data)})
         },
         onError: (error) => console.log("Unable to submit new client : " + error)
     })
@@ -45,7 +47,7 @@ const ClientRegistrationForm = () => {
     }
 
     return (
-        <form onSubmit={mutation.mutate}>
+        <form>
             <Stack maxWidth={1000} margin="auto" spacing={5} marginTop={15}>
                 <FormControl>
                     <FormLabel>Client name</FormLabel>
@@ -77,7 +79,8 @@ const ClientRegistrationForm = () => {
                 </FormControl>
 
                 <FormControl>
-                    <Button variant="outline" type="submit" colorScheme="teal">
+                    <Button variant="outline" type="button" colorScheme="teal"
+                            onClick={() => mutation.mutate()}>
                         Register client
                     </Button>
                 </FormControl>

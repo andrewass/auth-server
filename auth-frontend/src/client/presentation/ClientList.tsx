@@ -1,21 +1,15 @@
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {getRegisteredClientsConfig} from "../api/clientApi";
-import {Client, mapToClient} from "./client";
+import {mapToClient} from "./client";
 import {ClientRow} from "./ClientRow";
-import {Heading, List, Stack, Table, TableCaption, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/react";
-import {useNavigate} from "react-router-dom";
+import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/react";
 import {useAuth} from "react-oidc-context";
 import {useQuery} from "react-query";
 
 
 export function ClientList() {
     const {axiosGet} = useAxiosWrapper()
-    const navigate = useNavigate()
     const {user} = useAuth()
-
-    const navigateToDetails = (client: Client) => {
-        navigate("/client/details")
-    }
 
     const {isLoading, error, data} = useQuery(['getUserClients', user!.profile.email],
         () => axiosGet(getRegisteredClientsConfig(user!.profile.email)))
@@ -35,7 +29,7 @@ export function ClientList() {
                 </Thead>
                 <Tbody>
                     {data.map((clientData: any) =>
-                        <ClientRow client={mapToClient(clientData)} />)}
+                        <ClientRow client={mapToClient(clientData)}/>)}
                 </Tbody>
             </Table>
         </TableContainer>
