@@ -81,6 +81,17 @@ func deleteClient(clientId string) {
 	deleteClientByClientId(clientId)
 }
 
+func rotateClientSecret(clientId string) Client {
+	client := GetClientById(clientId)
+	newSecret := generateRandomString()
+	newHash, _ := bcrypt.GenerateFromPassword([]byte(newSecret), 8)
+	client.ClientSecret = string(newHash)
+	saveUpdatedClient(client)
+	client.ClientSecret = newSecret
+
+	return client
+}
+
 func verifyMatchingSecret(plaintextSecret, hashedSecret string) {
 	err := bcrypt.CompareHashAndPassword([]byte(hashedSecret), []byte(plaintextSecret))
 	if err != nil {

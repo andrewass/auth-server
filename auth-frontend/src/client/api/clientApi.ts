@@ -29,6 +29,15 @@ const getRegisteredClientsConfig = (email?: string) => {
     }
 }
 
+const rotateSecretConfig = (clientId: string) => {
+    return {
+        method: "post",
+        url: AUTH_SERVER_URL + "/client/rotate-secret",
+        params: {"client_id": clientId}
+    }
+}
+
 export {
-    deleteClientConfig, registerClientConfig, getRegisteredClientsConfig
+    deleteClientConfig, registerClientConfig,
+    getRegisteredClientsConfig, rotateSecretConfig
 }

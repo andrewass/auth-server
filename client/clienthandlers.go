@@ -10,6 +10,7 @@ func SetUpClientRoutes(router *gin.Engine) {
 	router.POST("/clients", createClientHandler)
 	router.PATCH("/clients", updateClientHandler)
 	router.DELETE("/clients", deleteClientHandler)
+	router.POST("/client/rotate-secret", rotateClientSecretHandler)
 }
 
 const includeSecret = true
@@ -45,9 +46,15 @@ func updateClientHandler(context *gin.Context) {
 }
 
 func deleteClientHandler(context *gin.Context) {
-	clientID := context.Query("client_id")
-	deleteClient(clientID)
+	clientId := context.Query("client_id")
+	deleteClient(clientId)
 	context.Status(http.StatusOK)
+}
+
+func rotateClientSecretHandler(context *gin.Context) {
+	clientId := context.Query("client_id")
+	client := rotateClientSecret(clientId)
+	context.JSON(http.StatusOK, mapToClientResponse(client, includeSecret))
 }
 
 func mapToClientResponse(client Client, includeSecret bool) ClientInformationDto {
