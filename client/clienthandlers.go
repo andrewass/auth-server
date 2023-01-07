@@ -5,59 +5,67 @@ import (
 	"net/http"
 )
 
-func SetUpClientRoutes(router *gin.Engine) {
-	router.GET("/clients", getClientsHandler)
-	router.POST("/clients", createClientHandler)
-	router.PATCH("/clients", updateClientHandler)
-	router.DELETE("/clients", deleteClientHandler)
-	router.POST("/client/rotate-secret", rotateClientSecretHandler)
+type ClientHandler struct {
+	Service *ClientService
+}
+
+func (h *ClientHandler) SetUpClientRoutes(router *gin.Engine) {
+	router.GET("/clients", h.getClientsHandler)
+	router.POST("/clients", h.createClientHandler)
+	router.PATCH("/clients", h.updateClientHandler)
+	router.DELETE("/clients", h.deleteClientHandler)
+	router.POST("/client/rotate-secret", h.rotateClientSecretHandler)
 }
 
 const includeSecret = true
 const notIncludeSecret = false
 
-func getClientsHandler(context *gin.Context) {
+func (h *ClientHandler) getClientsHandler(context *gin.Context) {
 	email := context.Query("email")
 	var clients = getClients(email)
 	mappedClients := make([]ClientInformationDto, len(clients))
 	for i, client := range clients {
-		mappedClients[i] = mapToClientResponse(client, notIncludeSecret)
+		mappedClients[i] = h.mapToClientResponse(client, notIncludeSecret)
 	}
 	context.JSON(http.StatusOK, mappedClients)
 }
 
-func createClientHandler(context *gin.Context) {
+func (h *ClientHandler) createClientHandler(context *gin.Context) {
 	request := AddClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
 	request.ClientSecret = generateRandomString()
 	client := createNewClient(request)
-	context.JSON(http.StatusOK, mapToClientResponse(client, includeSecret))
+	context.JSON(http.StatusOK, h.mapToClientResponse(client, includeSecret))
 }
 
-func updateClientHandler(context *gin.Context) {
+func (h *ClientHandler) updateClientHandler(context *gin.Context) {
 	request := UpdateClientRequest{}
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
 	client := updateClient(request)
-	context.JSON(http.StatusOK, mapToClientResponse(client, notIncludeSecret))
+	context.JSON(http.StatusOK, h.mapToClientResponse(client, notIncludeSecret))
 }
 
-func deleteClientHandler(context *gin.Context) {
+func (h *ClientHandler) deleteClientHandler(context *gin.Context) {
 	clientId := context.Query("client_id")
 	deleteClient(clientId)
 	context.Status(http.StatusOK)
 }
 
-func rotateClientSecretHandler(context *gin.Context) {
+func (h *ClientHandler) rotateClientSecretHandler(context *gin.Context) {
 	clientId := context.Query("client_id")
 	client := rotateClientSecret(clientId)
-	context.JSON(http.StatusOK, mapToClientResponse(client, includeSecret))
+	context.JSON(http.StatusOK, h.mapToClientResponse(client, includeSecret))
 }
 
-func mapToClientResponse(client Client, includeSecret bool) ClientInformationDto {
+func (h *ClientHandler) AddAdminClient() {
+	h.Service.AddAdminClient()
+}
+
+func (h *ClientHandler) mapToClientResponse(client Client, includeSecret bool) ClientInformationDto {
 	clientDto := ClientInformationDto{
 		ClientId:                client.ClientId,
 		ClientIdIssuedAt:        client.ClientIdIssuedAt,

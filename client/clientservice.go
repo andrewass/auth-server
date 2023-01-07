@@ -11,8 +11,12 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
+type ClientService struct {
+	Repository *ClientRepository
+}
+
 // AddAdminClient For testing during development only
-func AddAdminClient() {
+func (s *ClientService) AddAdminClient() {
 	adminClients := getClients("admin@admin.com")
 	log.Println("Check if admin client exists")
 	if len(adminClients) == 0 {

@@ -6,6 +6,7 @@ import {
     CardHeader,
     Heading,
     HStack,
+    IconButton,
     Input,
     InputGroup,
     InputRightElement,
@@ -59,7 +60,11 @@ const ClientDetails = () => {
                             <InputGroup width="350px">
                                 <Input type="text" value={client.clientId} isDisabled/>
                                 <InputRightElement
-                                    children={<BiCopy/>}
+                                    children={<IconButton
+                                        onClick={() => navigator.clipboard.writeText(client.clientId)}
+                                        aria-label="Copy Client ID"
+                                        size="sm"
+                                        icon={<BiCopy/>}/>}
                                 />
                             </InputGroup>
                         </Box>
@@ -72,7 +77,11 @@ const ClientDetails = () => {
                                 <InputGroup width="350px">
                                     <Input type='text' value={decideSecretDisplay()} isDisabled/>
                                     <InputRightElement
-                                        children={<BiCopy/>}
+                                        children={<IconButton
+                                            onClick={() => navigator.clipboard.writeText(client.clientSecret)}
+                                            aria-label="Copy Client Secret"
+                                            size="sm"
+                                            icon={<BiCopy/>}/>}
                                     />
                                 </InputGroup>
                             </Box>

@@ -7,6 +7,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+type ClientRepository struct {
+	Collection *mongo.Collection
+}
+
 const clientCollection = "client"
 
 func getClientById(clientId string) *Client {

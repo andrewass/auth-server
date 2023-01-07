@@ -39,12 +39,19 @@ func configureRoutes() {
 
 	user.SetUpUserRoutes(router)
 	discovery.SetUpDiscoveryRoutes(router)
+
+	client := &client.ClientHandler{
+		Service: &client.ClientService{
+			Repository: &client.ClientRepository{Collection: common.Database.Collection("client")},
+		},
+	}
 	client.SetUpClientRoutes(router)
+	client.AddAdminClient()
+
 	authorization.SetUpAuthorizationRoutes(router)
 	token.SetUpTokenRoutes(router)
 
 	//For testing during development only
-	client.AddAdminClient()
 
 	if err := router.Run(":8089"); err != nil {
 		panic(err)
