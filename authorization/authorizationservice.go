@@ -11,16 +11,21 @@ import (
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-func DeleteAuthorizationCode(authCode AuthCode) {
-	deleteAuthorizationCode(authCode)
+type AuthorizationService struct {
+	Repository    *AuthorizationRepository
+	ClientService *client.ClientService
 }
 
-func GetPersistedAuthorizationCode(code string) AuthCode {
-	return getAuthorizationCode(code)
+func (s *AuthorizationService) DeleteAuthorizationCode(authCode AuthCode) {
+	s.Repository.deleteAuthorizationCode(authCode)
 }
 
-func createFrontendUrl(request dto.AuthorizeRequest) string {
-	frontendUrl, _ := decideFrontendUrl(request.ClientId)
+func (s *AuthorizationService) GetPersistedAuthorizationCode(code string) AuthCode {
+	return s.Repository.getAuthorizationCode(code)
+}
+
+func (s *AuthorizationService) createFrontendUrl(request dto.AuthorizeRequest) string {
+	frontendUrl, _ := s.decideFrontendUrl(request.ClientId)
 	values := frontendUrl.Query()
 	values.Add("client_id", request.ClientId)
 	values.Add("state", request.State)
@@ -32,15 +37,15 @@ func createFrontendUrl(request dto.AuthorizeRequest) string {
 	return frontendUrl.String()
 }
 
-func decideFrontendUrl(clientId string) (*url.URL, error) {
-	requestedClient := client.GetClientById(clientId)
+func (s *AuthorizationService) decideFrontendUrl(clientId string) (*url.URL, error) {
+	requestedClient := s.ClientService.GetClientById(clientId)
 	if requestedClient.ClientType == client.Internal {
 		return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/internal")
 	}
 	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/external")
 }
 
-func createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string {
+func (s *AuthorizationService) createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string {
 	code := generateRandomString()
 	authorizationCode := AuthCode{
 		Code:                code,
@@ -50,7 +55,7 @@ func createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string
 		UserEmail:           request.Email,
 		ExpirationTime:      time.Now().Add(time.Minute * 10).Unix(),
 	}
-	saveAuthorizationCode(authorizationCode)
+	s.Repository.saveAuthorizationCode(authorizationCode)
 	return code
 }
 

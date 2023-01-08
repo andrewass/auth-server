@@ -8,44 +8,49 @@ import (
 	"strings"
 )
 
-func SetUpUserRoutes(router *gin.Engine) {
-	router.POST("/user/sign-in", signInUserHandler)
-	router.POST("/user/sign-up", signUpUserHandler)
-	router.GET("/user/info", getUserInfoHandler)
+type UserHandlers struct {
+	UserService  *UserService
+	TokenService *token.TokenService
 }
 
-func getUserInfoHandler(context *gin.Context) {
+func (h *UserHandlers) SetUpUserRoutes(router *gin.Engine) {
+	router.POST("/user/sign-in", h.signInUserHandler)
+	router.POST("/user/sign-up", h.signUpUserHandler)
+	router.GET("/user/info", h.getUserInfoHandler)
+}
+
+func (h *UserHandlers) getUserInfoHandler(context *gin.Context) {
 	bearerToken := context.Request.Header.Get("Authorization")
 	splitToken := strings.Split(bearerToken, "Bearer ")
-	subject := token.ExtractSubjectFromToken(splitToken[1])
-	user := getUserBySubject(subject)
-	userInfo := mapToUserInfo(user)
+	subject := h.TokenService.ExtractSubjectFromToken(splitToken[1])
+	user := h.UserService.getUserBySubject(subject)
+	userInfo := h.mapToUserInfo(user)
 
 	context.JSON(http.StatusOK, userInfo)
 }
 
-func signInUserHandler(context *gin.Context) {
+func (h *UserHandlers) signInUserHandler(context *gin.Context) {
 	request := dto.SignInUserRequest{}
 	err := context.BindJSON(&request)
 
 	if err != nil {
 		panic(err)
 	}
-	signInUser(request)
+	h.UserService.signInUser(request)
 	context.Status(http.StatusOK)
 }
 
-func signUpUserHandler(context *gin.Context) {
+func (h *UserHandlers) signUpUserHandler(context *gin.Context) {
 	request := dto.SignUpUserRequest{}
 	err := context.BindJSON(&request)
 	if err != nil {
 		panic(err)
 	}
-	signUpUser(request)
+	h.UserService.signUpUser(request)
 	context.Status(http.StatusOK)
 }
 
-func mapToUserInfo(user User) dto.UserInfoResponse {
+func (h *UserHandlers) mapToUserInfo(user User) dto.UserInfoResponse {
 	return dto.UserInfoResponse{
 		Email: user.Email,
 	}

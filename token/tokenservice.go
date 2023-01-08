@@ -11,40 +11,45 @@ import (
 	"time"
 )
 
-func processGetTokensRequest(request types.GetTokenRequest) types.GetTokensResponse {
+type TokenService struct {
+	AuthorizationService *authorization.AuthorizationService
+	ClientService        *client.ClientService
+}
+
+func (s *TokenService) processGetTokensRequest(request types.GetTokenRequest) types.GetTokensResponse {
 	switch request.GrantType {
 	case types.AuthCodeGrant:
-		return processAuthCodeGrantRequest(request)
+		return s.processAuthCodeGrantRequest(request)
 	case types.RefreshTokenGrant:
-		return processRefreshTokenGrantRequest(request)
+		return s.processRefreshTokenGrantRequest(request)
 	}
 	panic("Illegal state when processing token request")
 }
 
-func processAuthCodeGrantRequest(request types.GetTokenRequest) types.GetTokensResponse {
-	persistedCode := authorization.GetPersistedAuthorizationCode(request.Code)
-	authorization.DeleteAuthorizationCode(persistedCode)
-	return createTokens(persistedCode.UserEmail, persistedCode.ClientId)
+func (s *TokenService) processAuthCodeGrantRequest(request types.GetTokenRequest) types.GetTokensResponse {
+	persistedCode := s.AuthorizationService.GetPersistedAuthorizationCode(request.Code)
+	s.AuthorizationService.DeleteAuthorizationCode(persistedCode)
+	return s.createTokens(persistedCode.UserEmail, persistedCode.ClientId)
 }
 
-func processRefreshTokenGrantRequest(request types.GetTokenRequest) types.GetTokensResponse {
-	persistedClient := client.GetClientByIdAndSecret(request.ClientId, request.ClientSecret)
-	subject := ExtractSubjectFromToken(request.RefreshToken)
-	return createTokens(subject, persistedClient.ClientId)
+func (s *TokenService) processRefreshTokenGrantRequest(request types.GetTokenRequest) types.GetTokensResponse {
+	persistedClient := s.ClientService.GetClientByIdAndSecret(request.ClientId, request.ClientSecret)
+	subject := s.ExtractSubjectFromToken(request.RefreshToken)
+	return s.createTokens(subject, persistedClient.ClientId)
 }
 
-func createTokens(subject string, clientId string) types.GetTokensResponse {
+func (s *TokenService) createTokens(subject string, clientId string) types.GetTokensResponse {
 	return types.GetTokensResponse{
-		AccessToken:  createAccessToken(subject),
-		RefreshToken: createRefreshToken(subject),
-		IdToken:      createIdToken(subject, clientId),
+		AccessToken:  s.createAccessToken(subject),
+		RefreshToken: s.createRefreshToken(subject),
+		IdToken:      s.createIdToken(subject, clientId),
 		TokenType:    "bearer",
 		ExpiresIn:    300,
 		Scope:        "subject",
 	}
 }
 
-func ExtractSubjectFromToken(token string) string {
+func (s *TokenService) ExtractSubjectFromToken(token string) string {
 	var claims jwt.StandardClaims
 	key, _ := jwt.ParseRSAPublicKeyFromPEM(common.GetPublicKey())
 
@@ -57,7 +62,7 @@ func ExtractSubjectFromToken(token string) string {
 	return claims.Subject
 }
 
-func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string) {
+func (s *TokenService) validateCodeChallenge(persistedCode authorization.AuthCode, verifier string) {
 	if verifier != "" {
 		challenge := persistedCode.CodeChallenge
 		hash := sha256.New()
@@ -69,7 +74,7 @@ func validateCodeChallenge(persistedCode authorization.AuthCode, verifier string
 	}
 }
 
-func createAccessToken(subject string) string {
+func (s *TokenService) createAccessToken(subject string) string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
 		Issuer:    "http://auth-backend-service:8089",
@@ -85,7 +90,7 @@ func createAccessToken(subject string) string {
 	return signedString
 }
 
-func createRefreshToken(subject string) string {
+func (s *TokenService) createRefreshToken(subject string) string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 100).Unix(),
 		Issuer:    "http://auth-backend-service:8089",
@@ -100,7 +105,7 @@ func createRefreshToken(subject string) string {
 	return signedString
 }
 
-func createIdToken(subject string, clientId string) string {
+func (s *TokenService) createIdToken(subject string, clientId string) string {
 	claims := types.CustomIdClaims{
 		Email: subject,
 		Id:    subject,
@@ -119,12 +124,12 @@ func createIdToken(subject string, clientId string) string {
 	return signedString
 }
 
-func introspectToken(request types.IntrospectTokenRequest) types.IntrospectTokenResponse {
+func (s *TokenService) introspectToken(request types.IntrospectTokenRequest) types.IntrospectTokenResponse {
 	return types.IntrospectTokenResponse{
 		Active:   true,
 		Username: "testuser",
 	}
 }
 
-func revokeToken(request types.RevokeTokenRequest) {
+func (s *TokenService) revokeToken(request types.RevokeTokenRequest) {
 }

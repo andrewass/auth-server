@@ -37,21 +37,32 @@ func configureRoutes() {
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
 
-	user.SetUpUserRoutes(router)
+	userService := &user.UserService{
+		Repositoy: &user.UserRepository{Collection: common.Database.Collection("user")},
+	}
+	clientService := &client.ClientService{
+		Repository: &client.ClientRepository{Collection: common.Database.Collection("client")},
+	}
+	authorizationService := &authorization.AuthorizationService{
+		Repository: &authorization.AuthorizationRepository{Collection: common.Database.Collection("authorizationCode")},
+	}
+	tokenService := &token.TokenService{AuthorizationService: authorizationService, ClientService: clientService}
+
 	discovery.SetUpDiscoveryRoutes(router)
 
-	client := &client.ClientHandler{
-		Service: &client.ClientService{
-			Repository: &client.ClientRepository{Collection: common.Database.Collection("client")},
-		},
-	}
-	client.SetUpClientRoutes(router)
-	client.AddAdminClient()
+	userHandlers := &user.UserHandlers{UserService: userService, TokenService: tokenService}
+	userHandlers.SetUpUserRoutes(router)
 
-	authorization.SetUpAuthorizationRoutes(router)
-	token.SetUpTokenRoutes(router)
-
+	clientHandlers := &client.ClientHandlers{Service: clientService}
+	clientHandlers.SetUpClientRoutes(router)
 	//For testing during development only
+	clientHandlers.AddAdminClient()
+
+	authorizationHandlers := &authorization.AuthorizationHandler{Service: authorizationService}
+	authorizationHandlers.SetUpAuthorizationRoutes(router)
+
+	tokenHandlers := &token.TokenHandlers{Service: tokenService}
+	tokenHandlers.SetUpTokenRoutes(router)
 
 	if err := router.Run(":8089"); err != nil {
 		panic(err)

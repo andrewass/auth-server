@@ -6,27 +6,31 @@ import (
 	"net/http"
 )
 
-func SetUpAuthorizationRoutes(router *gin.Engine) {
-	router.GET("/authorize", authorizeUserHandler)
-	router.POST("/authorization-response", authorizationCodeResponseHandler)
+type AuthorizationHandler struct {
+	Service *AuthorizationService
 }
 
-func authorizeUserHandler(context *gin.Context) {
+func (h *AuthorizationHandler) SetUpAuthorizationRoutes(router *gin.Engine) {
+	router.GET("/authorize", h.authorizeUserHandler)
+	router.POST("/authorization-response", h.authorizationCodeResponseHandler)
+}
+
+func (h *AuthorizationHandler) authorizeUserHandler(context *gin.Context) {
 	var request dto.AuthorizeRequest
 	err := context.BindQuery(&request)
 	if err != nil {
 		panic(err)
 	}
-	frontendUrl := createFrontendUrl(request)
+	frontendUrl := h.Service.createFrontendUrl(request)
 	context.Redirect(http.StatusFound, frontendUrl)
 }
 
-func authorizationCodeResponseHandler(context *gin.Context) {
+func (h *AuthorizationHandler) authorizationCodeResponseHandler(context *gin.Context) {
 	var request dto.AuthorizationCodeRequest
 	err := context.BindJSON(&request)
 	if err != nil {
 		panic(err)
 	}
-	authorizationCode := createAndSaveAuthorizationCode(request)
+	authorizationCode := h.Service.createAndSaveAuthorizationCode(request)
 	context.JSON(http.StatusOK, gin.H{"code": authorizationCode})
 }

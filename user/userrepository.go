@@ -1,41 +1,42 @@
 package user
 
 import (
-	"auth-server/common"
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-const userCollection = "user"
+type UserRepository struct {
+	Collection *mongo.Collection
+}
 
-func saveUser(user User) {
+func (r *UserRepository) saveUser(user User) {
 	ctx := context.TODO()
-	_, err := common.Database.Collection(userCollection).InsertOne(ctx, user)
+	_, err := r.Collection.InsertOne(ctx, user)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func findUserByEmail(email string) *User {
+func (r *UserRepository) findUserByEmail(email string) *User {
 	ctx := context.TODO()
-	response := common.Database.Collection(userCollection).FindOne(ctx, bson.M{"email": email})
-	return extractUserFromSingleResult(response)
+	response := r.Collection.FindOne(ctx, bson.M{"email": email})
+	return r.extractUserFromSingleResult(response)
 }
 
-func findUserBySubject(subject string) *User {
+func (r *UserRepository) findUserBySubject(subject string) *User {
 	ctx := context.TODO()
-	response := common.Database.Collection(userCollection).FindOne(ctx, bson.M{"subject": subject})
-	return extractUserFromSingleResult(response)
+	response := r.Collection.FindOne(ctx, bson.M{"subject": subject})
+	return r.extractUserFromSingleResult(response)
 }
 
-func existsUserByEmail(email string) bool {
+func (r *UserRepository) existsUserByEmail(email string) bool {
 	ctx := context.TODO()
-	response := common.Database.Collection(userCollection).FindOne(ctx, bson.M{"email": email})
-	return extractUserFromSingleResult(response) != nil
+	response := r.Collection.FindOne(ctx, bson.M{"email": email})
+	return r.extractUserFromSingleResult(response) != nil
 }
 
-func extractUserFromSingleResult(result *mongo.SingleResult) *User {
+func (r *UserRepository) extractUserFromSingleResult(result *mongo.SingleResult) *User {
 	var storedUser User
 	if err := result.Decode(&storedUser); err != nil {
 		if err == mongo.ErrNoDocuments {

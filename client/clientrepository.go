@@ -10,8 +10,6 @@ type ClientRepository struct {
 	Collection *mongo.Collection
 }
 
-const clientCollection = "client"
-
 func (r *ClientRepository) getClientById(clientId string) *Client {
 	ctx := context.TODO()
 	response := r.Collection.FindOne(ctx, bson.M{"client_id": clientId})
