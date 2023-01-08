@@ -22,7 +22,7 @@ const notIncludeSecret = false
 
 func (h *ClientHandler) getClientsHandler(context *gin.Context) {
 	email := context.Query("email")
-	var clients = getClients(email)
+	var clients = h.Service.getClients(email)
 	mappedClients := make([]ClientInformationDto, len(clients))
 	for i, client := range clients {
 		mappedClients[i] = h.mapToClientResponse(client, notIncludeSecret)
@@ -36,7 +36,7 @@ func (h *ClientHandler) createClientHandler(context *gin.Context) {
 		panic(err)
 	}
 	request.ClientSecret = generateRandomString()
-	client := createNewClient(request)
+	client := h.Service.createNewClient(request)
 	context.JSON(http.StatusOK, h.mapToClientResponse(client, includeSecret))
 }
 
@@ -45,19 +45,19 @@ func (h *ClientHandler) updateClientHandler(context *gin.Context) {
 	if err := context.BindJSON(&request); err != nil {
 		panic(err)
 	}
-	client := updateClient(request)
+	client := h.Service.updateClient(request)
 	context.JSON(http.StatusOK, h.mapToClientResponse(client, notIncludeSecret))
 }
 
 func (h *ClientHandler) deleteClientHandler(context *gin.Context) {
 	clientId := context.Query("client_id")
-	deleteClient(clientId)
+	h.Service.deleteClient(clientId)
 	context.Status(http.StatusOK)
 }
 
 func (h *ClientHandler) rotateClientSecretHandler(context *gin.Context) {
 	clientId := context.Query("client_id")
-	client := rotateClientSecret(clientId)
+	client := h.Service.rotateClientSecret(clientId)
 	context.JSON(http.StatusOK, h.mapToClientResponse(client, includeSecret))
 }
 
