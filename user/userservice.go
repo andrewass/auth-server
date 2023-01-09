@@ -6,15 +6,15 @@ import (
 )
 
 type UserService struct {
-	Repositoy *UserRepository
+	Repository *UserRepository
 }
 
 func (s *UserService) getUserBySubject(subject string) User {
-	return *s.Repositoy.findUserBySubject(subject)
+	return *s.Repository.findUserBySubject(subject)
 }
 
 func (s *UserService) signInUser(request dto.SignInUserRequest) {
-	existingUser := s.Repositoy.findUserByEmail(request.Email)
+	existingUser := s.Repository.findUserByEmail(request.Email)
 	if existingUser == nil || !s.matchingPassword(request.Password, existingUser.Password) {
 		panic("User not found or incorrect password")
 	}
@@ -28,7 +28,7 @@ func (s *UserService) signUpUser(request dto.SignUpUserRequest) {
 		Password: string(hashedPassword),
 		Subject:  request.Email,
 	}
-	s.Repositoy.saveUser(newUser)
+	s.Repository.saveUser(newUser)
 }
 
 func (s *UserService) matchingPassword(password, hash string) bool {
@@ -37,7 +37,7 @@ func (s *UserService) matchingPassword(password, hash string) bool {
 }
 
 func (s *UserService) verifyNotPreviouslyExistingUser(email string) {
-	if s.Repositoy.existsUserByEmail(email) {
+	if s.Repository.existsUserByEmail(email) {
 		panic("Email already registered")
 	}
 }

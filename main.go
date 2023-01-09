@@ -37,31 +37,34 @@ func configureRoutes() {
 	config.AllowAllOrigins = true
 	router.Use(cors.New(config))
 
-	userService := &user.UserService{
-		Repositoy: &user.UserRepository{Collection: common.Database.Collection("user")},
+	userService := user.UserService{
+		Repository: &user.UserRepository{Collection: common.Database.Collection("user")},
 	}
-	clientService := &client.ClientService{
+	clientService := client.ClientService{
 		Repository: &client.ClientRepository{Collection: common.Database.Collection("client")},
 	}
-	authorizationService := &authorization.AuthorizationService{
-		Repository: &authorization.AuthorizationRepository{Collection: common.Database.Collection("authorizationCode")},
+	authorizationService := authorization.AuthorizationService{
+		Repository:    &authorization.AuthorizationRepository{Collection: common.Database.Collection("authorizationCode")},
+		ClientService: &clientService,
 	}
-	tokenService := &token.TokenService{AuthorizationService: authorizationService, ClientService: clientService}
+	tokenService := token.TokenService{AuthorizationService: &authorizationService, ClientService: &clientService}
 
 	discovery.SetUpDiscoveryRoutes(router)
 
-	userHandlers := &user.UserHandlers{UserService: userService, TokenService: tokenService}
+	userHandlers := &user.UserHandlers{UserService: &userService, TokenService: &tokenService}
 	userHandlers.SetUpUserRoutes(router)
 
-	clientHandlers := &client.ClientHandlers{Service: clientService}
+	clientHandlers := &client.ClientHandlers{Service: &client.ClientService{
+		Repository: &client.ClientRepository{Collection: common.Database.Collection("client")}},
+	}
 	clientHandlers.SetUpClientRoutes(router)
 	//For testing during development only
 	clientHandlers.AddAdminClient()
 
-	authorizationHandlers := &authorization.AuthorizationHandler{Service: authorizationService}
+	authorizationHandlers := &authorization.AuthorizationHandler{Service: &authorizationService}
 	authorizationHandlers.SetUpAuthorizationRoutes(router)
 
-	tokenHandlers := &token.TokenHandlers{Service: tokenService}
+	tokenHandlers := &token.TokenHandlers{Service: &tokenService}
 	tokenHandlers.SetUpTokenRoutes(router)
 
 	if err := router.Run(":8089"); err != nil {
