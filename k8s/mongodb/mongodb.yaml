@@ -23,12 +23,12 @@ spec:
             - name: ME_CONFIG_MONGODB_ENABLE_ADMIN
               value: "true"
           volumeMounts:
-            - name: "mongo-data-dir"
-              mountPath: "/data/db"
+            - name: mongodb-persistent-storage
+              mountPath: /data/db
       volumes:
-        - name: "mongo-data-dir"
+        - name: mongodb-persistent-storage
           persistentVolumeClaim:
-            claimName: "pvc-mongodb"
+            claimName: pvc-mongodb
 
 ---
 
