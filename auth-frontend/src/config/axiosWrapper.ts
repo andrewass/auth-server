@@ -7,8 +7,8 @@ export const useAxiosWrapper = () => {
     function request() {
         return async (config: AxiosRequestConfig) => {
             config.headers = {Authorization: "Bearer " + auth.user?.access_token}
-            const response = await axios(config)
-            return response.data
+            const response = await axios(config);
+            return response.data;
         }
     }
 

@@ -1,4 +1,4 @@
-import ClientRegistrationForm from "./ClientRegistrationForm";
+import {ClientRegistrationForm} from "./ClientRegistrationForm";
 
 
 const ClientRegistration = () => {
@@ -7,7 +7,7 @@ const ClientRegistration = () => {
         <>
             <ClientRegistrationForm/>
         </>
-    )
+    );
 }
 
 export default ClientRegistration

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {BiLogOut} from "react-icons/bi";
 import {useAuth} from "react-oidc-context";
 
-const NavigationBar = () => {
+export const NavigationBar = () => {
 
     const auth = useAuth()
 
@@ -14,7 +14,5 @@ const NavigationBar = () => {
             <IconButton aria-label="Sign out" as={BiLogOut} variant="ghost"
                         onClick={() => auth.removeUser()}/>
         </HStack>
-    )
+    );
 }
-
-export default NavigationBar

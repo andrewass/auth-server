@@ -23,7 +23,7 @@ import React, {useState} from "react";
 import {BiCopy} from "react-icons/bi";
 
 
-const ClientDetails = () => {
+export const ClientDetails = () => {
     const {state} = useLocation()
     const {axiosPost} = useAxiosWrapper()
     const [client, setClient] = useState(state as ClientTypes)
@@ -104,7 +104,5 @@ const ClientDetails = () => {
                 </CardBody>
             </Card>
         </Box>
-    )
+    );
 }
-
-export default ClientDetails

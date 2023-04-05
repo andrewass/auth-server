@@ -1,10 +1,9 @@
 import {ClientList} from "./presentation/ClientList";
 import {Box, HStack} from "@chakra-ui/react";
 import ClientRegistration from "./registration/ClientRegistration";
-import NavigationBar from "../navigation/NavigationBar";
+import {NavigationBar} from "../navigation/NavigationBar";
 
-const Clients = () => {
-
+export const Clients = () => {
     return (
         <Box>
             <NavigationBar/>
@@ -13,7 +12,5 @@ const Clients = () => {
                 <ClientList/>
             </HStack>
         </Box>
-    )
+    );
 }
-
-export default Clients

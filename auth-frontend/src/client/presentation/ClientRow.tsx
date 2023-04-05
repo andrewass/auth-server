@@ -9,11 +9,11 @@ import {useNavigate} from "react-router-dom";
 
 
 export function ClientRow({client}: { client: ClientTypes }) {
-    const {axiosDelete} = useAxiosWrapper()
-    const navigate = useNavigate()
+    const {axiosDelete} = useAxiosWrapper();
+    const navigate = useNavigate();
 
     const deleteClient = async () => {
-        await axiosDelete(deleteClientConfig(client.clientId))
+        await axiosDelete(deleteClientConfig(client.clientId));
     }
 
     const mutation = useMutation(deleteClient, {
@@ -21,7 +21,7 @@ export function ClientRow({client}: { client: ClientTypes }) {
             await queryClient.invalidateQueries("getUserClients");
         },
         onError: (error) => console.log("Unable to delete client : " + error)
-    })
+    });
 
     return (
         <Tr>
@@ -38,5 +38,5 @@ export function ClientRow({client}: { client: ClientTypes }) {
                     icon={<TiDelete size="25px"/>}/>
             </Td>
         </Tr>
-    )
+    );
 }

@@ -5,12 +5,12 @@ export const oidcConfig = {
     client_id: "XVlBzgbaiCMRAjWwhTHctcuAxhxKQF",
     client_secret: "DaFpLSjFbcXoEFfRsWxPLDnJObCsNV",
     redirect_uri: "http://authfrontend.io/account"
-};
+}
 
 export const onSignInCallback = (_user: User | void): void => {
     window.history.replaceState(
         {},
         document.title,
         window.location.pathname
-    )
+    );
 }
