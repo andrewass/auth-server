@@ -1,7 +1,7 @@
-import UserAuthentication from "./UserAuthentication";
 import {Stack} from "@chakra-ui/react";
+import { UserAuthentication } from "./UserAuthentication";
 
-const ExternalAuthentication = () => {
+export const ExternalAuthentication = () => {
 
     return (
         <Stack maxWidth={500} margin="auto" spacing={5} marginTop={90}>
@@ -9,7 +9,5 @@ const ExternalAuthentication = () => {
             <UserAuthentication/>
             <p>Scope of app</p>
         </Stack>
-    )
+    );
 }
-
-export default ExternalAuthentication

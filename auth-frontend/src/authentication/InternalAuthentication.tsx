@@ -1,10 +1,7 @@
-import UserAuthentication from "./UserAuthentication";
+import {UserAuthentication} from "./UserAuthentication";
 
-const InternalAuthentication = () => {
-
+export const InternalAuthentication = () => {
     return (
         <UserAuthentication/>
-    )
+    );
 }
-
-export default InternalAuthentication

@@ -5,7 +5,7 @@ import {useMutation} from "react-query";
 import {registerClientConfig} from "../api/clientApi";
 import {useAuth} from "react-oidc-context";
 import {useNavigate} from "react-router-dom";
-import {mapToClient} from "../presentation/client";
+import {mapToClient} from "../presentation/clientTypes";
 
 
 const ClientRegistrationForm = () => {

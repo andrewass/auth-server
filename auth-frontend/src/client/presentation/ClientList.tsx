@@ -1,6 +1,6 @@
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {getRegisteredClientsConfig} from "../api/clientApi";
-import {mapToClient} from "./client";
+import {mapToClient} from "./clientTypes";
 import {ClientRow} from "./ClientRow";
 import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/react";
 import {useAuth} from "react-oidc-context";
@@ -33,5 +33,5 @@ export function ClientList() {
                 </Tbody>
             </Table>
         </TableContainer>
-    )
+    );
 }

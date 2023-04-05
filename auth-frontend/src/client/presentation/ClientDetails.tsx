@@ -14,7 +14,7 @@ import {
     Text
 } from "@chakra-ui/react";
 import NavigationBar from "../../navigation/NavigationBar";
-import {Client, mapToClient} from "./client";
+import {ClientTypes, mapToClient} from "./clientTypes";
 import {useLocation} from "react-router-dom";
 import {rotateSecretConfig} from "../api/clientApi";
 import {useMutation} from "react-query";
@@ -26,7 +26,7 @@ import {BiCopy} from "react-icons/bi";
 const ClientDetails = () => {
     const {state} = useLocation()
     const {axiosPost} = useAxiosWrapper()
-    const [client, setClient] = useState(state as Client)
+    const [client, setClient] = useState(state as ClientTypes)
 
     const decideSecretDisplay = () => {
         return client.clientSecret ? client.clientSecret :

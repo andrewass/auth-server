@@ -2,15 +2,14 @@ import React, {useState} from "react";
 import {signUpUser} from "./api/authenticationApi";
 import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
 
-interface Props {
-    setDisplaySignUp: (value: boolean) => void
-    postProcessSignUp: (email: string) => void
-}
 
-const SignUp = ({setDisplaySignUp, postProcessSignUp}: Props) => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmedPassword, setConfirmedPassword] = useState("")
+export const SignUpForm = ({setDisplaySignUp, postProcessSignUp}: {
+    setDisplaySignUp: (value: boolean) => void,
+    postProcessSignUp: (email: string) => void
+}) => {
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
+    const [confirmedPassword, setConfirmedPassword] = useState<string>("")
 
     const submitSignUp = (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault()
@@ -50,7 +49,5 @@ const SignUp = ({setDisplaySignUp, postProcessSignUp}: Props) => {
                 </Button>
             </Stack>
         </form>
-    )
+    );
 }
-
-export default SignUp

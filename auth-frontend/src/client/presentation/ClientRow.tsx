@@ -1,4 +1,4 @@
-import {Client} from "./client";
+import {ClientTypes} from "./clientTypes";
 import {Button, IconButton, Td, Tr} from "@chakra-ui/react";
 import {TiDelete} from "react-icons/ti";
 import {useMutation} from "react-query";
@@ -8,11 +8,7 @@ import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {useNavigate} from "react-router-dom";
 
 
-interface Props {
-    client: Client
-}
-
-export function ClientRow({client}: Props) {
+export function ClientRow({client}: { client: ClientTypes }) {
     const {axiosDelete} = useAxiosWrapper()
     const navigate = useNavigate()
 

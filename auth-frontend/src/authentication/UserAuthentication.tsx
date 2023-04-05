@@ -1,20 +1,21 @@
 import {Fragment, useState} from "react";
-import SignUp from "./SignUp";
-import SignIn from "./SignIn";
 import {useSearchParams} from "react-router-dom";
 import {getAuthorizationResponse} from "./api/authenticationApi";
 import {useAxiosWrapper} from "../config/axiosWrapper";
+import {SignUpForm} from "./SignUpForm";
+import {SignInForm} from "./SignInForm";
 
-const UserAuthentication = () => {
-    const [searchParams] = useSearchParams()
-    const [displaySignUp, setDisplaySignUp] = useState(false)
-    const redirectUri = searchParams.get("redirect_uri")
-    const state = searchParams.get("state")
-    const clientId = String(searchParams.get("client_id"))
-    const codeChallenge = String(searchParams.get("code_challenge"))
-    const codeChallengeMethod = String(searchParams.get("code_challenge_method"))
+export const UserAuthentication = () => {
+    const {axiosPost} = useAxiosWrapper();
+    const [searchParams] = useSearchParams();
 
-    const {axiosPost} = useAxiosWrapper()
+    const [displaySignUp, setDisplaySignUp] = useState(false);
+    const redirectUri = searchParams.get("redirect_uri");
+    const state = searchParams.get("state");
+    const clientId = String(searchParams.get("client_id"));
+    const codeChallenge = String(searchParams.get("code_challenge"));
+
+    const codeChallengeMethod = String(searchParams.get("code_challenge_method"));
 
     const postProcessAuthenticationWithAuthCode = async (email: string) => {
         const url = new URL(String(redirectUri))
@@ -29,16 +30,16 @@ const UserAuthentication = () => {
     if (displaySignUp) {
         return (
             <Fragment>
-                <SignUp setDisplaySignUp={setDisplaySignUp} postProcessSignUp={postProcessAuthenticationWithAuthCode}/>
+                <SignUpForm setDisplaySignUp={setDisplaySignUp}
+                            postProcessSignUp={postProcessAuthenticationWithAuthCode}/>
             </Fragment>
-        )
+        );
     } else {
         return (
             <Fragment>
-                <SignIn setDisplaySignUp={setDisplaySignUp} postProcessSignIn={postProcessAuthenticationWithAuthCode}/>
+                <SignInForm setDisplaySignUp={setDisplaySignUp}
+                            postProcessSignIn={postProcessAuthenticationWithAuthCode}/>
             </Fragment>
-        )
+        );
     }
 }
-
-export default UserAuthentication
