@@ -1,14 +1,14 @@
-import {ClientTypes} from "./clientTypes";
 import {Button, IconButton, Td, Tr} from "@chakra-ui/react";
 import {TiDelete} from "react-icons/ti";
 import {useMutation} from "@tanstack/react-query";
 import {queryClient} from "../../App";
-import {deleteClientConfig} from "../api/clientApi";
+import {deleteClientConfig, GET_ALL_REGISTERED_CLIENTS} from "../api/clientApi";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import {useNavigate} from "react-router-dom";
+import {ClientDetails} from "../clientTypes";
 
 
-export function ClientRow({client}: { client: ClientTypes }) {
+export function ClientRow({client}: { client: ClientDetails }) {
     const {axiosDelete} = useAxiosWrapper();
     const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ export function ClientRow({client}: { client: ClientTypes }) {
 
     const mutation = useMutation(deleteClient, {
         onSuccess: async () => {
-            await queryClient.invalidateQueries("getUserClients");
+            await queryClient.invalidateQueries([GET_ALL_REGISTERED_CLIENTS]);
         },
         onError: (error) => console.log("Unable to delete client : " + error)
     });

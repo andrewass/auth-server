@@ -4,7 +4,7 @@ import {Account} from "./user/Account";
 import {InternalAuthentication} from "./authentication/InternalAuthentication";
 import {ExternalAuthentication} from "./authentication/ExternalAuthentication";
 import {Clients} from "./client/Clients";
-import {ClientDetails} from "./client/presentation/ClientDetails";
+import {ClientInformation} from "./client/presentation/ClientInformation";
 
 export const BodyRoutes = () => {
     return (
@@ -28,7 +28,7 @@ export const BodyRoutes = () => {
             <Route path="/client/details"
                    element={
                        <ProtectedRoute>
-                           <ClientDetails/>
+                           <ClientInformation/>
                        </ProtectedRoute>
                    }
             />

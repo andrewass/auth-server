@@ -14,19 +14,19 @@ import {
     Text
 } from "@chakra-ui/react";
 import {NavigationBar} from "../../navigation/NavigationBar";
-import {ClientTypes, mapToClient} from "./clientTypes";
 import {useLocation} from "react-router-dom";
 import {rotateSecretConfig} from "../api/clientApi";
 import {useMutation} from "@tanstack/react-query";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import React, {useState} from "react";
 import {BiCopy} from "react-icons/bi";
+import {ClientDetails, mapToClientDetails} from "../clientTypes";
 
 
-export const ClientDetails = () => {
-    const {state} = useLocation()
-    const {axiosPost} = useAxiosWrapper()
-    const [client, setClient] = useState(state as ClientTypes)
+export const ClientInformation = () => {
+    const {state} = useLocation();
+    const {axiosPost} = useAxiosWrapper();
+    const [client, setClient] = useState<ClientDetails>(state);
 
     const decideSecretDisplay = () => {
         return client.clientSecret ? client.clientSecret :
@@ -39,7 +39,7 @@ export const ClientDetails = () => {
 
     const mutation = useMutation(rotateSecret, {
         onSuccess: (data) => {
-            setClient(mapToClient(data))
+            setClient(mapToClientDetails(data))
         },
         onError: (error) => console.log("Unable to rotate client secret : " + error)
     })

@@ -5,7 +5,7 @@ import {useMutation} from "@tanstack/react-query";
 import {registerClientConfig} from "../api/clientApi";
 import {useAuth} from "react-oidc-context";
 import {useNavigate} from "react-router-dom";
-import {mapToClient} from "../presentation/clientTypes";
+import {mapToClientDetails} from "../clientTypes";
 
 
 export const ClientRegistrationForm = () => {
@@ -29,7 +29,7 @@ export const ClientRegistrationForm = () => {
 
     const mutation = useMutation(registerClient, {
         onSuccess: (data) => {
-            navigate("/client/details", {state: mapToClient(data)})
+            navigate("/client/details", {state: mapToClientDetails(data)})
         },
         onError: (error) => console.log("Unable to submit new client : " + error)
     })

@@ -2,7 +2,7 @@ import {useAuth} from "react-oidc-context";
 import axios, {AxiosRequestConfig} from "axios";
 
 export const useAxiosWrapper = () => {
-    const auth = useAuth()
+    const auth = useAuth();
 
     function request() {
         return async (config: AxiosRequestConfig) => {

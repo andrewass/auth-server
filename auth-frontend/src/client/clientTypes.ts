@@ -1,11 +1,11 @@
-export type ClientTypes = {
+export type ClientDetails = {
     email: string
     name: string
     clientId: string
     clientSecret: string
 }
 
-export const mapToClient = (source: any): ClientTypes => {
+export const mapToClientDetails = (source: any): ClientDetails => {
     return {
         clientId: source.client_id,
         clientSecret: source.client_secret,

@@ -4,7 +4,7 @@ import {oidcConfig, onSignInCallback} from "./config/oidcConfig";
 import {AuthProvider} from 'react-oidc-context';
 import {BodyRoutes} from "./BodyRoutes";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {ReactQueryDevtools} from "react-query/devtools";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 export const queryClient = new QueryClient()
 

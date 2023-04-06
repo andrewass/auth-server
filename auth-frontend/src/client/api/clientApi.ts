@@ -1,7 +1,9 @@
 import {AUTH_SERVER_URL} from "../../config/properties";
 import {RegisterClientRequest} from "./clientDto";
 
-const registerClientConfig = (request: RegisterClientRequest) => {
+export const GET_ALL_REGISTERED_CLIENTS = "getAllRegisteredClients";
+
+export const registerClientConfig = (request: RegisterClientRequest) => {
     return {
         method: "post",
         url: AUTH_SERVER_URL + "/clients",
@@ -13,7 +15,7 @@ const registerClientConfig = (request: RegisterClientRequest) => {
     }
 }
 
-const deleteClientConfig = (clientId: string) => {
+export const deleteClientConfig = (clientId: string) => {
     return {
         method: "delete",
         url: AUTH_SERVER_URL + "/clients",
@@ -21,7 +23,7 @@ const deleteClientConfig = (clientId: string) => {
     }
 }
 
-const getRegisteredClientsConfig = (email?: string) => {
+export const getRegisteredClientsConfig = (email?: string) => {
     return {
         method: "get",
         url: AUTH_SERVER_URL + "/clients",
@@ -29,15 +31,10 @@ const getRegisteredClientsConfig = (email?: string) => {
     }
 }
 
-const rotateSecretConfig = (clientId: string) => {
+export const rotateSecretConfig = (clientId: string) => {
     return {
         method: "post",
         url: AUTH_SERVER_URL + "/client/rotate-secret",
         params: {"client_id": clientId}
     }
-}
-
-export {
-    deleteClientConfig, registerClientConfig,
-    getRegisteredClientsConfig, rotateSecretConfig
 }
