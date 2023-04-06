@@ -19,6 +19,7 @@ type Client struct {
 	ClientSecret            string             `bson:"client_secret"`
 	ClientIdIssuedAt        time.Time          `bson:"client_id_issued_at"`
 	ClientType              ClientType         `bson:"client_type"`
+	ClientDescription       string             `bson:"client_description"`
 	LogoUri                 string             `bson:"logo_uri"`
 	ApplicationType         string             `bson:"application_type"`
 	ClientName              string             `bson:"client_name"`

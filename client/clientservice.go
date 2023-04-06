@@ -62,6 +62,7 @@ func (s *ClientService) persistNewClient(request AddClientRequest) Client {
 		ApplicationType:         request.ApplicationType,
 		ClientName:              request.ClientName,
 		ClientUri:               request.ClientUri,
+		ClientDescription:       request.ClientDescription,
 		InitiateLoginUri:        request.InitiateLoginUri,
 		TokenEndpointAuthMethod: request.TokenEndpointAuthMethod,
 		RedirectUris:            request.RedirectUris,

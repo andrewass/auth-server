@@ -11,10 +11,10 @@ export const SignInForm = ({setDisplaySignUp, postProcessSignIn}: {
     const [password, setPassword] = useState("")
 
     const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
-        event.preventDefault()
+        event.preventDefault();
         signInUser(email, password)
             .then(() => postProcessSignIn(email))
-            .catch(error => console.log(error))
+            .catch(error => console.log(error));
     }
 
     return (

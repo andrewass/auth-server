@@ -1,6 +1,8 @@
 
-export interface RegisterClientRequest {
-    redirectUris: string[]
-    clientName: string
+export type RegisterClientRequest = {
+    applicationName: string
+    applicationDescription: string
+    homepageUrl: string
+    callbackUrl: string
     userEmail: string
 }

@@ -33,11 +33,8 @@ export const ClientInformation = () => {
             "********************************"
     }
 
-    const rotateSecret = () => {
-        return axiosPost(rotateSecretConfig(client.clientId))
-    }
-
-    const mutation = useMutation(rotateSecret, {
+    const mutation = useMutation({
+        mutationFn: () => axiosPost(rotateSecretConfig(client.clientId)),
         onSuccess: (data) => {
             setClient(mapToClientDetails(data))
         },

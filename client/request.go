@@ -6,6 +6,7 @@ type AddClientRequest struct {
 	ApplicationType         string   `json:"application_type"`
 	ClientName              string   `json:"client_name" binding:"required"`
 	ClientUri               string   `json:"client_uri"`
+	ClientDescription       string   `json:"client_description"`
 	InitiateLoginUri        string   `json:"initiate_login_uri"`
 	TokenEndpointAuthMethod string   `json:"token_endpoint_auth_method"`
 	RedirectUris            []string `json:"redirect_uris"`

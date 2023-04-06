@@ -12,11 +12,8 @@ export function ClientRow({client}: { client: ClientDetails }) {
     const {axiosDelete} = useAxiosWrapper();
     const navigate = useNavigate();
 
-    const deleteClient = async () => {
-        await axiosDelete(deleteClientConfig(client.clientId));
-    }
-
-    const mutation = useMutation(deleteClient, {
+    const mutation = useMutation({
+        mutationFn: async () => await axiosDelete(deleteClientConfig(client.clientId)),
         onSuccess: async () => {
             await queryClient.invalidateQueries([GET_ALL_REGISTERED_CLIENTS]);
         },

@@ -8,8 +8,8 @@ import {mapToClientDetails} from "../clientTypes";
 
 
 export function ClientList() {
-    const {axiosGet} = useAxiosWrapper()
-    const {user} = useAuth()
+    const {axiosGet} = useAxiosWrapper();
+    const {user} = useAuth();
 
     const {isLoading, isError, data} = useQuery({
         queryKey: [GET_ALL_REGISTERED_CLIENTS],

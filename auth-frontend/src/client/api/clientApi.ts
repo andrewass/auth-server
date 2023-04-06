@@ -8,8 +8,10 @@ export const registerClientConfig = (request: RegisterClientRequest) => {
         method: "post",
         url: AUTH_SERVER_URL + "/clients",
         data: {
-            "redirect_uris": request.redirectUris,
-            "client_name": request.clientName,
+            "redirect_uris": Array(1).fill(request.callbackUrl),
+            "client_uri" : request.homepageUrl,
+            "client_name": request.applicationName,
+            "client_description": request.applicationDescription,
             "user_email": request.userEmail
         }
     }
