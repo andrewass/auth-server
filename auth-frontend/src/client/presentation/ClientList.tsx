@@ -4,7 +4,7 @@ import {mapToClient} from "./clientTypes";
 import {ClientRow} from "./ClientRow";
 import {Table, TableContainer, Tbody, Th, Thead, Tr} from "@chakra-ui/react";
 import {useAuth} from "react-oidc-context";
-import {useQuery} from "react-query";
+import {useQuery} from "@tanstack/react-query";
 
 
 export function ClientList() {

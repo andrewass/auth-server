@@ -13,11 +13,11 @@ import {
     Stack,
     Text
 } from "@chakra-ui/react";
-import NavigationBar from "../../navigation/NavigationBar";
+import {NavigationBar} from "../../navigation/NavigationBar";
 import {ClientTypes, mapToClient} from "./clientTypes";
 import {useLocation} from "react-router-dom";
 import {rotateSecretConfig} from "../api/clientApi";
-import {useMutation} from "react-query";
+import {useMutation} from "@tanstack/react-query";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
 import React, {useState} from "react";
 import {BiCopy} from "react-icons/bi";

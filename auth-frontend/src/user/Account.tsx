@@ -1,13 +1,13 @@
 import {Box, VStack} from "@chakra-ui/react";
 import {NavigationBar} from "../navigation/NavigationBar";
-import {useQuery} from "react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getUserInfoConfig} from "./api/userApi";
 import {useAxiosWrapper} from "../config/axiosWrapper";
 
 export const Account = () => {
     const {axiosGet} = useAxiosWrapper();
 
-    const {isLoading, error, data} = useQuery('getUserInfo',  () => axiosGet(getUserInfoConfig()));
+    const {isLoading, error, data} = useQuery(["getUserInfo"], () => axiosGet(getUserInfoConfig()));
 
     if (isLoading) return <h5>'Loading...'</h5>
 

@@ -1,14 +1,14 @@
 import {Button, FormControl, FormLabel, HStack, Input, Select, Stack, Tag, TagCloseButton} from "@chakra-ui/react";
 import React, {useState} from "react";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
-import {useMutation} from "react-query";
+import {useMutation} from "@tanstack/react-query";
 import {registerClientConfig} from "../api/clientApi";
 import {useAuth} from "react-oidc-context";
 import {useNavigate} from "react-router-dom";
 import {mapToClient} from "../presentation/clientTypes";
 
 
-const ClientRegistrationForm = () => {
+export const ClientRegistrationForm = () => {
     const [clientName, setClientName] = useState("")
     const [applicationType] = useState([])
     const [redirectUris, setRedirectUris] = useState([])
@@ -86,7 +86,5 @@ const ClientRegistrationForm = () => {
                 </FormControl>
             </Stack>
         </form>
-    )
+    );
 }
-
-export default ClientRegistrationForm

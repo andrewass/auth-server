@@ -1,6 +1,6 @@
 import {ClientList} from "./presentation/ClientList";
 import {Box, HStack} from "@chakra-ui/react";
-import ClientRegistration from "./registration/ClientRegistration";
+import {ClientRegistration} from "./registration/ClientRegistration";
 import {NavigationBar} from "../navigation/NavigationBar";
 
 export const Clients = () => {

@@ -1,7 +1,7 @@
 import {ClientRegistrationForm} from "./ClientRegistrationForm";
 
 
-const ClientRegistration = () => {
+export const ClientRegistration = () => {
 
     return (
         <>
@@ -9,5 +9,3 @@ const ClientRegistration = () => {
         </>
     );
 }
-
-export default ClientRegistration

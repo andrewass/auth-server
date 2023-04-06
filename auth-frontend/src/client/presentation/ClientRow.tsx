@@ -1,7 +1,7 @@
 import {ClientTypes} from "./clientTypes";
 import {Button, IconButton, Td, Tr} from "@chakra-ui/react";
 import {TiDelete} from "react-icons/ti";
-import {useMutation} from "react-query";
+import {useMutation} from "@tanstack/react-query";
 import {queryClient} from "../../App";
 import {deleteClientConfig} from "../api/clientApi";
 import {useAxiosWrapper} from "../../config/axiosWrapper";
