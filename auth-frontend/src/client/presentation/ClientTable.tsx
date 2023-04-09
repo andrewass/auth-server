@@ -7,7 +7,7 @@ import {useQuery} from "@tanstack/react-query";
 import {mapToClientDetails} from "../clientTypes";
 
 
-export function ClientList() {
+export const ClientTable = () => {
     const {axiosGet} = useAxiosWrapper();
     const {user} = useAuth();
 
@@ -21,8 +21,8 @@ export function ClientList() {
     if (isError) return <h5>"An error has occurred"</h5>
 
     return (
-        <TableContainer>
-            <Table variant="striped" colorScheme="teal">
+        <TableContainer marginTop="10px">
+            <Table variant="simple">
                 <Thead>
                     <Tr>
                         <Th>Client name</Th>

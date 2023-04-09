@@ -1,16 +1,17 @@
-import {ClientList} from "./presentation/ClientList";
-import {Box, HStack} from "@chakra-ui/react";
+import {Box, SimpleGrid} from "@chakra-ui/react";
 import {ClientRegistration} from "./registration/ClientRegistration";
 import {NavigationBar} from "../navigation/NavigationBar";
+import {ClientPresentation} from "./presentation/ClientPresentation";
 
 export const Clients = () => {
     return (
         <Box>
             <NavigationBar/>
-            <HStack spacing="250px" justify="center" marginTop="100px">
+            <SimpleGrid columns={{base: 1, md: 2}} spacing="50px"
+                        marginTop="80px" marginLeft="100px" marginRight="100px">
                 <ClientRegistration/>
-                <ClientList/>
-            </HStack>
+                <ClientPresentation/>
+            </SimpleGrid>
         </Box>
     );
 }

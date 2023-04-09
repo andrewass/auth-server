@@ -23,7 +23,8 @@ export function ClientRow({client}: { client: ClientDetails }) {
     return (
         <Tr>
             <Td>
-                <Button onClick={() => navigate("/client/details", {state: client})}>
+                <Button onClick={() => navigate("/client/details",
+                    {state: client})}>
                     {client.name}
                 </Button>
             </Td>
