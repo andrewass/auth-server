@@ -1,24 +1,34 @@
 import React, {useState} from "react";
-import {signUpUser} from "./api/authenticationApi";
-import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
+import {Button, FormControl, FormErrorMessage, FormLabel, Input, Stack} from "@chakra-ui/react";
+import axios from "axios";
+import toast, {Toaster} from "react-hot-toast";
+import {useAxiosWrapper} from "../config/axiosWrapper";
+import {signUpUserConfig} from "./api/authenticationApi";
 
 
 export const SignUpForm = ({setDisplaySignUp, postProcessSignUp}: {
     setDisplaySignUp: (value: boolean) => void,
     postProcessSignUp: (email: string) => void
 }) => {
-    const [email, setEmail] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
-    const [confirmedPassword, setConfirmedPassword] = useState<string>("")
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmedPassword, setConfirmedPassword] = useState<string>("");
+    const {axiosPost} = useAxiosWrapper();
 
-    const submitSignUp = (event: React.FormEvent<HTMLElement>) => {
-        event.preventDefault()
-        if (password !== confirmedPassword) {
-            console.log("Password mismatch")
-        } else {
-            signUpUser(email, password)
-                .then(() => postProcessSignUp(email))
-                .catch(error => console.log(error))
+    const submitSignUp = async (event: React.FormEvent<HTMLElement>) => {
+        event.preventDefault();
+        try {
+            await axiosPost(signUpUserConfig(email, password));
+            postProcessSignUp(email);
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.status === 409) {
+                    toast.error("Email already registered to an account");
+                    setEmail("");
+                    setPassword("");
+                    setConfirmedPassword("");
+                }
+            }
         }
     }
 
@@ -27,19 +37,25 @@ export const SignUpForm = ({setDisplaySignUp, postProcessSignUp}: {
             <Stack maxWidth={500} margin="auto" spacing={5} marginTop={90}>
                 <FormControl isRequired>
                     <FormLabel>Email</FormLabel>
-                    <Input type="email" placeholder="test@test.com" size="lg" autoComplete="off"
+                    <Input type="email" value={email}
+                           placeholder="test@test.com" size="lg" autoComplete="off"
                            onChange={event => setEmail(event.currentTarget.value)}
                     />
                 </FormControl>
                 <FormControl isRequired mt={6}>
                     <FormLabel>Password</FormLabel>
-                    <Input type="password" placeholder="*******" size="lg" autoComplete="off"
+                    <Input type="password" value={password}
+                           placeholder="*******" size="lg" autoComplete="off"
                            onChange={event => setPassword(event.currentTarget.value)}/>
                 </FormControl>
-                <FormControl isRequired mt={6}>
+                <FormControl isRequired mt={6} isInvalid={password !== confirmedPassword}>
                     <FormLabel>Confirm Password</FormLabel>
-                    <Input type="password" placeholder="*******" size="lg" autoComplete="off"
+                    <Input type="password" value={confirmedPassword}
+                           placeholder="*******" size="lg" autoComplete="off"
                            onChange={event => setConfirmedPassword(event.currentTarget.value)}/>
+                    {password !== confirmedPassword &&
+                        <FormErrorMessage>Confirmed password does not match</FormErrorMessage>
+                    }
                 </FormControl>
                 <Button variant="outline" colorScheme="teal" type="submit" mt={4}>
                     Sign Up
@@ -48,6 +64,7 @@ export const SignUpForm = ({setDisplaySignUp, postProcessSignUp}: {
                     Sign in to existing account
                 </Button>
             </Stack>
+            <Toaster/>
         </form>
     );
 }

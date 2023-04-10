@@ -10,8 +10,8 @@ export const SignInForm = ({setDisplaySignUp, postProcessSignIn}: {
     setDisplaySignUp: (value: boolean) => void,
     postProcessSignIn: (email: string) => void
 }) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     const {axiosPost} = useAxiosWrapper();
 
     const submitSignIn = async (event: React.FormEvent<HTMLElement>) => {
@@ -19,9 +19,9 @@ export const SignInForm = ({setDisplaySignUp, postProcessSignIn}: {
         try {
             await axiosPost(signInUserConfig(email, password));
             postProcessSignIn(email);
-        } catch (error){
-            if(axios.isAxiosError(error) && error.response){
-                if(error.response.status === 401){
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.status === 401) {
                     toast.error("Incorrect email or password");
                     setEmail("");
                     setPassword("");

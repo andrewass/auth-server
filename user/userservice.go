@@ -2,7 +2,6 @@ package user
 
 import (
 	"auth-server/user/dto"
-	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -16,15 +15,16 @@ func (s *UserService) getUserBySubject(subject string) User {
 
 func (s *UserService) signInUser(request dto.SignInUserRequest) error {
 	existingUser := s.Repository.findUserByEmail(request.Email)
-	passwordError := s.matchingPassword(request.Password, existingUser.Password)
-	if existingUser == nil || passwordError != nil {
-		return errors.New("invalid password or username")
+	if existingUser == nil || s.getPasswordMismatchError(request.Password, existingUser.Password) != nil {
+		return &InvalidCredentialsError{msg: "invalid email or password"}
 	}
 	return nil
 }
 
-func (s *UserService) signUpUser(request dto.SignUpUserRequest) {
-	s.verifyNotPreviouslyExistingUser(request.Email)
+func (s *UserService) signUpUser(request dto.SignUpUserRequest) error {
+	if s.Repository.existsUserByEmail(request.Email) {
+		return &CredentialsConflictError{msg: "email already registered to an account"}
+	}
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(request.Password), 8)
 	newUser := User{
 		Email:    request.Email,
@@ -32,14 +32,9 @@ func (s *UserService) signUpUser(request dto.SignUpUserRequest) {
 		Subject:  request.Email,
 	}
 	s.Repository.saveUser(newUser)
+	return nil
 }
 
-func (s *UserService) matchingPassword(password, hash string) error {
+func (s *UserService) getPasswordMismatchError(password, hash string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-}
-
-func (s *UserService) verifyNotPreviouslyExistingUser(email string) {
-	if s.Repository.existsUserByEmail(email) {
-		panic("Email already registered")
-	}
 }

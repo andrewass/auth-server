@@ -1,11 +1,11 @@
 import {AUTH_SERVER_URL} from "../../config/properties";
 
-export const signUpUser = (email: string, password: string): Promise<Response> => {
-    const url = AUTH_SERVER_URL + "/user/sign-up"
-    return fetch(url, {
+export const signUpUserConfig = (email: string, password: string) => {
+    return {
+        url: AUTH_SERVER_URL + "/user/sign-up",
         method: "POST",
-        body: JSON.stringify({email, password})
-    })
+        data: JSON.stringify({email, password})
+    }
 }
 
 export const signInUserConfig = (email: string, password: string) => {

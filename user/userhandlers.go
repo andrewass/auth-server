@@ -3,6 +3,7 @@ package user
 import (
 	"auth-server/token"
 	"auth-server/user/dto"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -31,16 +32,19 @@ func (h *UserHandlers) getUserInfoHandler(context *gin.Context) {
 
 func (h *UserHandlers) signInUserHandler(context *gin.Context) {
 	request := dto.SignInUserRequest{}
-	err := context.BindJSON(&request)
-
-	if err != nil {
-		panic(err)
+	bindError := context.BindJSON(&request)
+	if bindError != nil {
+		panic(bindError)
 	}
 	signInError := h.UserService.signInUser(request)
+
+	var invalidCredentialsError *InvalidCredentialsError
 	if signInError == nil {
 		context.Status(http.StatusOK)
-	} else {
+	} else if errors.As(signInError, &invalidCredentialsError) {
 		context.Status(http.StatusUnauthorized)
+	} else {
+		context.Status(http.StatusInternalServerError)
 	}
 }
 
@@ -50,8 +54,16 @@ func (h *UserHandlers) signUpUserHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	h.UserService.signUpUser(request)
-	context.Status(http.StatusOK)
+	signUpError := h.UserService.signUpUser(request)
+
+	var credentialsConflictError *CredentialsConflictError
+	if signUpError == nil {
+		context.Status(http.StatusOK)
+	} else if errors.As(signUpError, &credentialsConflictError) {
+		context.Status(http.StatusConflict)
+	} else {
+		context.Status(http.StatusInternalServerError)
+	}
 }
 
 func (h *UserHandlers) mapToUserInfo(user User) dto.UserInfoResponse {
