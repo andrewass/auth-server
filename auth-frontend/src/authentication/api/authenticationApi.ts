@@ -8,15 +8,15 @@ export const signUpUser = (email: string, password: string): Promise<Response> =
     })
 }
 
-export const signInUser = (email: string, password: string): Promise<Response> => {
-    const url = AUTH_SERVER_URL + "/user/sign-in"
-    return fetch(url, {
+export const signInUserConfig = (email: string, password: string) => {
+    return {
+        url: AUTH_SERVER_URL + "/user/sign-in",
         method: "POST",
-        body: JSON.stringify({email, password})
-    })
+        data: JSON.stringify({email, password})
+    }
 }
 
-export const getAuthorizationResponse = (
+export const getAuthorizationResponseConfig = (
     email: string, clientId: string, codeChallenge: string, codeChallengeMethod: string
 ) => {
     return {

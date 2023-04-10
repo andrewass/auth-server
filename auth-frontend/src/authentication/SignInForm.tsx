@@ -1,20 +1,21 @@
 import React, {useState} from "react";
-import {signInUser} from "./api/authenticationApi";
+import {signInUserConfig} from "./api/authenticationApi";
 import {Button, FormControl, FormLabel, Input, Stack} from "@chakra-ui/react";
+import {useAxiosWrapper} from "../config/axiosWrapper";
 
 
 export const SignInForm = ({setDisplaySignUp, postProcessSignIn}: {
     setDisplaySignUp: (value: boolean) => void,
     postProcessSignIn: (email: string) => void
 }) => {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const {axiosPost} = useAxiosWrapper();
 
-    const submitSignIn = (event: React.FormEvent<HTMLElement>) => {
+    const submitSignIn = async (event: React.FormEvent<HTMLElement>) => {
         event.preventDefault();
-        signInUser(email, password)
-            .then(() => postProcessSignIn(email))
-            .catch(error => console.log(error));
+        const response = await axiosPost(signInUserConfig(email, password));
+        postProcessSignIn(email);
     }
 
     return (

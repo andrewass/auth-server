@@ -24,16 +24,14 @@ export function ClientRow({client}: { client: ClientDetails }) {
         <Tr>
             <Td>
                 <Button onClick={() => navigate("/client/details",
-                    {state: client})}>
+                    {state: client})} variant="ghost" _hover={{bg: "white"}}>
                     {client.name}
                 </Button>
             </Td>
             <Td>'
                 <IconButton
-                    onClick={() => mutation.mutate()}
-                    aria-label="Delete client"
-                    size="sm"
-                    icon={<TiDelete size="25px"/>}/>
+                    onClick={() => mutation.mutate()} aria-label="Delete client" size="sm"
+                    icon={<TiDelete size="25px"/>} variant="ghost" _hover={{bg: "white"}}/>
             </Td>
         </Tr>
     );

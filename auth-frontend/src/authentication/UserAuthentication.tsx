@@ -1,6 +1,6 @@
 import {Fragment, useState} from "react";
 import {useSearchParams} from "react-router-dom";
-import {getAuthorizationResponse} from "./api/authenticationApi";
+import {getAuthorizationResponseConfig} from "./api/authenticationApi";
 import {useAxiosWrapper} from "../config/axiosWrapper";
 import {SignUpForm} from "./SignUpForm";
 import {SignInForm} from "./SignInForm";
@@ -18,13 +18,13 @@ export const UserAuthentication = () => {
     const codeChallengeMethod = String(searchParams.get("code_challenge_method"));
 
     const postProcessAuthenticationWithAuthCode = async (email: string) => {
-        const url = new URL(String(redirectUri))
-        const response = await axiosPost(getAuthorizationResponse(
+        const url = new URL(String(redirectUri));
+        const response = await axiosPost(getAuthorizationResponseConfig(
             email, clientId, codeChallenge, codeChallengeMethod
-        ))
-        url.searchParams.append("code", response.code)
-        url.searchParams.append("state", String(state))
-        window.location.replace(url)
+        ));
+        url.searchParams.append("code", response.code);
+        url.searchParams.append("state", String(state));
+        window.location.replace(url);
     }
 
     if (displaySignUp) {
