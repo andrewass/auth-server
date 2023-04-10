@@ -2,6 +2,7 @@ package user
 
 import (
 	"auth-server/user/dto"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -13,11 +14,13 @@ func (s *UserService) getUserBySubject(subject string) User {
 	return *s.Repository.findUserBySubject(subject)
 }
 
-func (s *UserService) signInUser(request dto.SignInUserRequest) {
+func (s *UserService) signInUser(request dto.SignInUserRequest) error {
 	existingUser := s.Repository.findUserByEmail(request.Email)
-	if existingUser == nil || !s.matchingPassword(request.Password, existingUser.Password) {
-		panic("User not found or incorrect password")
+	passwordError := s.matchingPassword(request.Password, existingUser.Password)
+	if existingUser == nil || passwordError != nil {
+		return errors.New("invalid password or username")
 	}
+	return nil
 }
 
 func (s *UserService) signUpUser(request dto.SignUpUserRequest) {
@@ -31,9 +34,8 @@ func (s *UserService) signUpUser(request dto.SignUpUserRequest) {
 	s.Repository.saveUser(newUser)
 }
 
-func (s *UserService) matchingPassword(password, hash string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+func (s *UserService) matchingPassword(password, hash string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
 func (s *UserService) verifyNotPreviouslyExistingUser(email string) {

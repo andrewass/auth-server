@@ -36,8 +36,12 @@ func (h *UserHandlers) signInUserHandler(context *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	h.UserService.signInUser(request)
-	context.Status(http.StatusOK)
+	signInError := h.UserService.signInUser(request)
+	if signInError == nil {
+		context.Status(http.StatusOK)
+	} else {
+		context.Status(http.StatusUnauthorized)
+	}
 }
 
 func (h *UserHandlers) signUpUserHandler(context *gin.Context) {
