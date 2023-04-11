@@ -1,25 +1,36 @@
-import {Heading, HStack, IconButton} from "@chakra-ui/react";
-import {NavLink} from "react-router-dom";
-import {BiLogOut} from "react-icons/bi";
+import {Grid, GridItem, Heading, IconButton} from "@chakra-ui/react";
 import {useAuth} from "react-oidc-context";
+import {NavLink} from "react-router-dom";
+import {BiLogOut} from "react-icons/all";
 
 export const NavigationBar = () => {
     const auth = useAuth();
 
     return (
-        <HStack width="100%" spacing="100px" backgroundColor="lightblue" justify="center" height="150px">
-            <NavLink to="/account">
-                <Heading as={"h4"} size="md">
-                    Account
+        <Grid templateColumns="repeat(8,1fr)" minWidth="100%" height="150px" bg="lightblue">
+            <GridItem colSpan={2} style={{margin: "auto"}}>
+                <Heading as="h3" size="lg">
+                    Auth Server
                 </Heading>
-            </NavLink>
-            <NavLink to="/clients">
-                <Heading as={"h4"} size="md">
-                    Clients
-                </Heading>
-            </NavLink>
-            <IconButton aria-label="Sign out" as={BiLogOut} variant="ghost"
-                        onClick={() => auth.removeUser()}/>
-        </HStack>
+            </GridItem>
+            <GridItem colSpan={2} style={{margin: "auto"}}>
+                <NavLink to="/account">
+                    <Heading as="h4" size="md">
+                        Account
+                    </Heading>
+                </NavLink>
+            </GridItem>
+            <GridItem colSpan={2} style={{margin: "auto"}}>
+                <NavLink to="/clients">
+                    <Heading as="h4" size="md">
+                        Clients
+                    </Heading>
+                </NavLink>
+            </GridItem>
+            <GridItem colSpan={2} style={{margin: "auto"}}>
+                <IconButton aria-label="Sign out" as={BiLogOut} variant="ghost"
+                            onClick={() => auth.removeUser()}/>
+            </GridItem>
+        </Grid>
     );
 }

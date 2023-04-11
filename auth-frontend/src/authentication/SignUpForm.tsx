@@ -57,10 +57,12 @@ export const SignUpForm = ({setDisplaySignUp, postProcessSignUp}: {
                         <FormErrorMessage>Confirmed password does not match</FormErrorMessage>
                     }
                 </FormControl>
-                <Button variant="outline" colorScheme="teal" type="submit" mt={4}>
+                <Button variant="outline" colorScheme="teal"
+                        type="submit" mt={4} isDisabled={password !== confirmedPassword}>
                     Sign Up
                 </Button>
-                <Button variant="outline" colorScheme="teal" onClick={() => setDisplaySignUp(false)} mt={4}>
+                <Button variant="outline" colorScheme="teal"
+                        onClick={() => setDisplaySignUp(false)} mt={4}>
                     Sign in to existing account
                 </Button>
             </Stack>
