@@ -1,36 +1,13 @@
-import {Grid, GridItem, Heading, IconButton} from "@chakra-ui/react";
-import {useAuth} from "react-oidc-context";
-import {NavLink} from "react-router-dom";
-import {BiLogOut} from "react-icons/all";
+import React from "react";
+import {NavigationBarDefault} from "./NavigationBarDefault";
+import {NavigationBarMobile} from "./NavigationBarMobile";
 
 export const NavigationBar = () => {
-    const auth = useAuth();
 
     return (
-        <Grid templateColumns="repeat(8,1fr)" minWidth="100%" height="150px" bg="lightblue">
-            <GridItem colSpan={2} style={{margin: "auto"}}>
-                <Heading as="h3" size="lg">
-                    Auth Server
-                </Heading>
-            </GridItem>
-            <GridItem colSpan={2} style={{margin: "auto"}}>
-                <NavLink to="/account">
-                    <Heading as="h4" size="md">
-                        Account
-                    </Heading>
-                </NavLink>
-            </GridItem>
-            <GridItem colSpan={2} style={{margin: "auto"}}>
-                <NavLink to="/clients">
-                    <Heading as="h4" size="md">
-                        Clients
-                    </Heading>
-                </NavLink>
-            </GridItem>
-            <GridItem colSpan={2} style={{margin: "auto"}}>
-                <IconButton aria-label="Sign out" as={BiLogOut} variant="ghost"
-                            onClick={() => auth.removeUser()}/>
-            </GridItem>
-        </Grid>
+        <React.Fragment>
+            <NavigationBarDefault/>
+            <NavigationBarMobile/>
+        </React.Fragment>
     );
 }
