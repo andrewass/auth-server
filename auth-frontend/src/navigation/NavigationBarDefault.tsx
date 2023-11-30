@@ -1,7 +1,7 @@
 import {useAuth} from "react-oidc-context";
 import {Grid, GridItem, Heading, IconButton} from "@chakra-ui/react";
 import {NavLink} from "react-router-dom";
-import {BiLogOut} from "react-icons/all";
+import { BiLogOut } from "react-icons/bi";
 
 export const NavigationBarDefault = () => {
     const auth = useAuth();

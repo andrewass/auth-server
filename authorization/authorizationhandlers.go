@@ -11,8 +11,7 @@ type AuthorizationHandler struct {
 }
 
 func (h *AuthorizationHandler) SetUpAuthorizationRoutes(router *gin.Engine) {
-	router.GET("/authorize", h.authorizeUserHandler)
-	router.POST("/authorization-response", h.authorizationCodeResponseHandler)
+	router.POST("/api/auth/response", h.authorizationCodeResponseHandler)
 }
 
 func (h *AuthorizationHandler) authorizeUserHandler(context *gin.Context) {

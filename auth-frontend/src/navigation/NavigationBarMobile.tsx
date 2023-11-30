@@ -1,6 +1,6 @@
 import {useAuth} from "react-oidc-context";
 import {Grid, GridItem, Heading, IconButton, Menu, MenuButton} from "@chakra-ui/react";
-import {GiHamburgerMenu} from "react-icons/all";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 export const NavigationBarMobile = () => {
     const auth = useAuth();
