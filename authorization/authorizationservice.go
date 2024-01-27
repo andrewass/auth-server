@@ -45,7 +45,7 @@ func (s *AuthorizationService) decideFrontendUrl(clientId string) (*url.URL, err
 	return url.Parse(viper.Get("FRONTEND_URL").(string) + "/authentication/external")
 }
 
-func (s *AuthorizationService) createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) string {
+func (s *AuthorizationService) createAndSaveAuthorizationCode(request dto.AuthorizationCodeRequest) dto.AuthorizationCodeResponse {
 	code := generateRandomString()
 	authorizationCode := AuthCode{
 		Code:                code,
@@ -56,7 +56,10 @@ func (s *AuthorizationService) createAndSaveAuthorizationCode(request dto.Author
 		ExpirationTime:      time.Now().Add(time.Minute * 10).Unix(),
 	}
 	s.Repository.saveAuthorizationCode(authorizationCode)
-	return code
+	return dto.AuthorizationCodeResponse{
+		Code:  code,
+		State: request.State,
+	}
 }
 
 func generateRandomString() string {

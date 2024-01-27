@@ -15,9 +15,9 @@ type UserHandlers struct {
 }
 
 func (h *UserHandlers) SetUpUserRoutes(router *gin.Engine) {
-	router.POST("/api/user/sign-in", h.signInUserHandler)
-	router.POST("/api/user/sign-up", h.signUpUserHandler)
-	router.GET("/api/user/info", h.getUserInfoHandler)
+	router.POST("/server/user/sign-in", h.signInUserHandler)
+	router.POST("/server/user/sign-up", h.signUpUserHandler)
+	router.GET("/server/user/info", h.getUserInfoHandler)
 }
 
 func (h *UserHandlers) getUserInfoHandler(context *gin.Context) {

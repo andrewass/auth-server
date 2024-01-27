@@ -11,7 +11,7 @@ type TokenHandlers struct {
 }
 
 func (h *TokenHandlers) SetUpTokenRoutes(router *gin.Engine) {
-	router.POST("/api/token/token", h.getTokensHandler)
+	router.POST("/server/token/token", h.getTokensHandler)
 	router.POST("/token/introspect", h.introspectTokenHandler)
 	router.POST("token/revoke", h.revokeTokenHandler)
 }

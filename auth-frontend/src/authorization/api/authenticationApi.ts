@@ -2,7 +2,7 @@ import {AUTH_SERVER_URL} from "../../config/properties";
 
 export const signUpUserConfig = (email: string, password: string) => {
     return {
-        url: AUTH_SERVER_URL + "/user/sign-up",
+        url: AUTH_SERVER_URL + "/api/user/sign-up",
         method: "POST",
         data: JSON.stringify({email, password})
     }
@@ -10,7 +10,7 @@ export const signUpUserConfig = (email: string, password: string) => {
 
 export const signInUserConfig = (email: string, password: string) => {
     return {
-        url: AUTH_SERVER_URL + "/user/sign-in",
+        url: AUTH_SERVER_URL + "/api/user/sign-in",
         method: "POST",
         data: JSON.stringify({email, password})
     }

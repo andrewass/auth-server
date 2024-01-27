@@ -16,4 +16,5 @@ type AuthorizationCodeRequest struct {
 	ClientId            string `json:"client_id"`
 	CodeChallenge       string `json:"code_challenge" form:"code_challenge"`
 	CodeChallengeMethod string `json:"code_challenge_method" form:"code_challenge_method"`
+	State               string `json:"state"`
 }

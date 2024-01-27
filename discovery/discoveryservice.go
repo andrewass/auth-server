@@ -21,13 +21,14 @@ func getJwks() dto.JWKResponse {
 }
 
 func getConfig() dto.WellKnownEndpointsResponse {
-	baseUrl := viper.Get("BASE_URL").(string)
+	frontendUrl := viper.Get("FRONTEND_URL").(string)
+	backendUrl := viper.Get("BACKEND_URL").(string)
 	return dto.WellKnownEndpointsResponse{
-		Issuer:                baseUrl,
-		RegistrationEndpoint:  baseUrl + "/clients",
-		AuthorizationEndpoint: baseUrl + "/authorize",
-		TokenEndpoint:         baseUrl + "/token",
-		IntrospectionEndpoint: baseUrl + "/token/introspect",
-		JwksUri:               baseUrl + "/.well-known/jwks.json",
+		Issuer:                backendUrl,
+		RegistrationEndpoint:  backendUrl + "/clients",
+		AuthorizationEndpoint: frontendUrl + "/authentication",
+		TokenEndpoint:         backendUrl + "/server/token/token",
+		IntrospectionEndpoint: backendUrl + "/server/token/introspect",
+		JwksUri:               frontendUrl + "/server/.well-known/jwks.json",
 	}
 }

@@ -44,7 +44,7 @@ func (s *TokenService) createTokens(subject string, clientId string) types.GetTo
 		RefreshToken: s.createRefreshToken(subject),
 		IdToken:      s.createIdToken(subject, clientId),
 		TokenType:    "bearer",
-		ExpiresIn:    300,
+		ExpiresIn:    300000,
 		Scope:        "subject",
 	}
 }
@@ -77,7 +77,7 @@ func (s *TokenService) validateCodeChallenge(persistedCode authorization.AuthCod
 func (s *TokenService) createAccessToken(subject string) string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
-		Issuer:    "http://auth-backend-service:8089",
+		Issuer:    "http://auth-backend-service:80",
 		Subject:   subject,
 		NotBefore: time.Now().Unix(),
 		Audience:  "test-audience",
@@ -93,7 +93,7 @@ func (s *TokenService) createAccessToken(subject string) string {
 func (s *TokenService) createRefreshToken(subject string) string {
 	claims := jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(time.Hour * 100).Unix(),
-		Issuer:    "http://auth-backend-service:8089",
+		Issuer:    "http://auth-backend-service:80",
 		Subject:   subject,
 		NotBefore: time.Now().Unix(),
 		IssuedAt:  time.Now().Unix(),
@@ -110,8 +110,8 @@ func (s *TokenService) createIdToken(subject string, clientId string) string {
 		Email: subject,
 		Id:    subject,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
-			Issuer:    "http://auth-backend-service:8089",
+			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
+			Issuer:    "http://auth-backend-service:80",
 			Subject:   subject,
 			NotBefore: time.Now().Unix(),
 			Audience:  clientId,

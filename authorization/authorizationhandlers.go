@@ -11,7 +11,7 @@ type AuthorizationHandler struct {
 }
 
 func (h *AuthorizationHandler) SetUpAuthorizationRoutes(router *gin.Engine) {
-	router.POST("/api/auth/response", h.authorizationCodeResponseHandler)
+	router.POST("/server/auth/response", h.authorizationCodeResponseHandler)
 }
 
 func (h *AuthorizationHandler) authorizeUserHandler(context *gin.Context) {
@@ -30,6 +30,6 @@ func (h *AuthorizationHandler) authorizationCodeResponseHandler(context *gin.Con
 	if err != nil {
 		panic(err)
 	}
-	authorizationCode := h.Service.createAndSaveAuthorizationCode(request)
-	context.JSON(http.StatusOK, gin.H{"code": authorizationCode})
+	response := h.Service.createAndSaveAuthorizationCode(request)
+	context.JSON(http.StatusOK, response)
 }
