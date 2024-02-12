@@ -5,20 +5,13 @@ import (
 	"time"
 )
 
-type ClientType string
-
-const (
-	Internal ClientType = "INTERNAL"
-	External ClientType = "EXTERNAL"
-)
-
 type Client struct {
 	ID                      primitive.ObjectID `bson:"_id"`
 	UserEmail               string             `bson:"user_email"`
 	ClientId                string             `bson:"client_id"`
 	ClientSecret            string             `bson:"client_secret"`
 	ClientIdIssuedAt        time.Time          `bson:"client_id_issued_at"`
-	ClientType              ClientType         `bson:"client_type"`
+	ClientSecretIssuedAt    time.Time          `bson:"client_secret_issued_at"`
 	ClientDescription       string             `bson:"client_description"`
 	LogoUri                 string             `bson:"logo_uri"`
 	ApplicationType         string             `bson:"application_type"`

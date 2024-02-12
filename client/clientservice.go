@@ -25,7 +25,6 @@ func (s *ClientService) AddAdminClient() {
 			UserEmail:    "admin@admin.com",
 			ClientUri:    viper.Get("FRONTEND_URL").(string),
 			ClientSecret: viper.Get("CLIENT_SECRET").(string),
-			Type:         Internal,
 		})
 		log.Println("New admin client created")
 	}
@@ -50,13 +49,12 @@ func (s *ClientService) createNewClient(request AddClientRequest) Client {
 }
 
 func (s *ClientService) persistNewClient(request AddClientRequest) Client {
-	hashedSecret, _ := bcrypt.GenerateFromPassword([]byte(request.ClientSecret), 8)
 	client := Client{
 		ID:                      primitive.NewObjectID(),
 		ClientId:                generateRandomString(),
-		ClientSecret:            string(hashedSecret),
+		ClientSecret:            generateRandomString(),
 		ClientIdIssuedAt:        time.Now(),
-		ClientType:              request.Type,
+		ClientSecretIssuedAt:    time.Now(),
 		UserEmail:               request.UserEmail,
 		LogoUri:                 request.LogoUri,
 		ApplicationType:         request.ApplicationType,
@@ -71,7 +69,6 @@ func (s *ClientService) persistNewClient(request AddClientRequest) Client {
 		PostLogoutRedirectUris:  request.PostLogoutRedirectUris,
 	}
 	s.Repository.saveNewClient(client)
-	client.ClientSecret = request.ClientSecret
 
 	return client
 }
@@ -88,11 +85,9 @@ func (s *ClientService) deleteClient(clientId string) {
 
 func (s *ClientService) rotateClientSecret(clientId string) Client {
 	client := s.GetClientById(clientId)
-	newSecret := generateRandomString()
-	newHash, _ := bcrypt.GenerateFromPassword([]byte(newSecret), 8)
-	client.ClientSecret = string(newHash)
+	client.ClientSecret = generateRandomString()
+	client.ClientSecretIssuedAt = time.Now()
 	s.Repository.saveUpdatedClient(client)
-	client.ClientSecret = newSecret
 
 	return client
 }

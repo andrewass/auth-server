@@ -6,6 +6,7 @@ type ClientInformationDto struct {
 	ClientId                string    `json:"client_id"`
 	ClientSecret            string    `json:"client_secret"`
 	ClientIdIssuedAt        time.Time `json:"client_id_issued_at"`
+	ClientSecretIssuedAt    time.Time `json:"client_secret_issued_at"`
 	LogoUri                 string    `json:"logo_uri"`
 	ApplicationType         string    `json:"application_type"`
 	ClientName              string    `json:"client_name" binding:"required"`
