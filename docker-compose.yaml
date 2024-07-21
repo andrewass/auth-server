@@ -1,9 +1,8 @@
-version: "3.9"
 
 services:
 
   mongodb:
-    image: mongo:5.0
+    image: mongo:7.0
     container_name: mongodb
     restart: on-failure
     ports:
@@ -23,17 +22,6 @@ services:
     restart: on-failure
     ports:
       - "8089:8089"
-
-  auth-client:
-    container_name: auth-frontend
-    build:
-      context: ./auth-frontend
-    depends_on:
-      - auth-server
-    restart: on-failure
-    ports:
-      - "8090:8090"
-
 
 networks:
   default:

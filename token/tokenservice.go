@@ -28,7 +28,6 @@ func (s *TokenService) processGetTokensRequest(request types.GetTokenRequest) ty
 
 func (s *TokenService) processAuthCodeGrantRequest(request types.GetTokenRequest) types.GetTokensResponse {
 	persistedCode := s.AuthorizationService.GetPersistedAuthorizationCode(request.Code)
-	s.AuthorizationService.DeleteAuthorizationCode(persistedCode)
 	return s.createTokens(persistedCode.UserEmail, persistedCode.ClientId)
 }
 
@@ -76,7 +75,7 @@ func (s *TokenService) validateCodeChallenge(persistedCode authorization.AuthCod
 
 func (s *TokenService) createAccessToken(subject string) string {
 	claims := jwt.StandardClaims{
-		ExpiresAt: time.Now().Add(time.Minute * 5).Unix(),
+		ExpiresAt: time.Now().Add(time.Hour * 60).Unix(),
 		Issuer:    "http://auth-backend-service:80",
 		Subject:   subject,
 		NotBefore: time.Now().Unix(),
@@ -110,7 +109,7 @@ func (s *TokenService) createIdToken(subject string, clientId string) string {
 		Email: subject,
 		Id:    subject,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Minute * 60).Unix(),
+			ExpiresAt: time.Now().Add(time.Hour * 60).Unix(),
 			Issuer:    "http://auth-backend-service:80",
 			Subject:   subject,
 			NotBefore: time.Now().Unix(),
