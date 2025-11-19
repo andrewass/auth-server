@@ -10,11 +10,11 @@ type ClientHandlers struct {
 }
 
 func (h *ClientHandlers) SetUpClientRoutes(router *gin.Engine) {
-	router.GET("/server/clients/all", h.getClientsHandler)
+	router.GET("/server/clients", h.getClientsHandler)
 	router.GET("/server/clients/client", h.getClientHandler)
 	router.POST("/server/clients/create", h.createClientHandler)
-	router.PATCH("/clients", h.updateClientHandler)
-	router.DELETE("/clients", h.deleteClientHandler)
+	router.PATCH("server/clients", h.updateClientHandler)
+	router.DELETE("server/clients", h.deleteClientHandler)
 	router.POST("server/clients/rotate-secret", h.rotateClientSecretHandler)
 }
 
