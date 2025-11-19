@@ -3,21 +3,23 @@ package common
 import (
 	"context"
 	"fmt"
+
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"os"
 )
 
 var Database *mongo.Database
 
 func ConnectToDatabase() {
+	mongoDbUri := viper.Get("MONGO_DB_URI").(string)
 	credentials := options.Credential{
-		Username: os.Getenv("MONGO_DB_USERNAME"),
-		Password: os.Getenv("MONGO_DB_PASSWORD"),
+		Username: viper.Get("MONGO_DB_USERNAME").(string),
+		Password: viper.Get("MONGO_DB_PASSWORD").(string),
 	}
 	ctx := context.TODO()
-	opts := options.Client().ApplyURI("mongodb://mongodb-service:27017/admin").SetAuth(credentials)
+	opts := options.Client().ApplyURI(mongoDbUri).SetAuth(credentials)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

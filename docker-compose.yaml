@@ -2,8 +2,7 @@
 services:
 
   mongodb:
-    image: mongo:7.0
-    container_name: mongodb
+    image: mongo:8.2.1-noble
     restart: on-failure
     ports:
       - "27017:27017"
@@ -12,21 +11,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoUser
       MONGO_INITDB_ROOT_PASSWORD: mongoPassword
-
-  auth-server:
-    container_name: auth-server
-    build:
-      context: .
-    depends_on:
-      - mongodb
-    restart: on-failure
-    ports:
-      - "8089:8089"
-
-networks:
-  default:
-    external: false
-    name: compose_network
 
 volumes:
   mongo-volume:
