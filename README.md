@@ -4,11 +4,7 @@ Create a directory from root to store the keys :</br>
 <code>mkdir cert</code>
 
 Generate private key from within cert folder: </br>
-<code>openssl genrsa -out private.pem 2048</code>
-
-Generate public key within cert folder: </br>
-<code>openssl rsa -in private.pem -pubout -out public.pem</code>
-
+<code>openssl genpkey -out privatekey.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048</code>
 
 <h3>Access apps through Ingress host on Minikube :</h3>
 Add mapping to hosts file : </br>

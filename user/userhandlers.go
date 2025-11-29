@@ -4,9 +4,10 @@ import (
 	"auth-server/token"
 	"auth-server/user/dto"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 type UserHandlers struct {
@@ -64,6 +65,10 @@ func (h *UserHandlers) signUpUserHandler(context *gin.Context) {
 	} else {
 		context.Status(http.StatusInternalServerError)
 	}
+}
+
+func (h *UserHandlers) syncUserHandler(context *gin.Context) {
+
 }
 
 func (h *UserHandlers) mapToUserInfo(user User) dto.UserInfoResponse {

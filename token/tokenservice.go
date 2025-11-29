@@ -7,8 +7,9 @@ import (
 	"auth-server/token/types"
 	"crypto/sha256"
 	"encoding/base64"
-	"github.com/golang-jwt/jwt"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 type TokenService struct {
@@ -50,10 +51,10 @@ func (s *TokenService) createTokens(subject string, clientId string) types.GetTo
 
 func (s *TokenService) ExtractSubjectFromToken(token string) string {
 	var claims jwt.StandardClaims
-	key, _ := jwt.ParseRSAPublicKeyFromPEM(common.GetPublicKey())
+	publicKey := common.GetPublicKey()
 
 	_, err := jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
-		return key, nil
+		return publicKey, nil
 	})
 	if err != nil {
 		panic("Error extracting claims from token : " + err.Error())
@@ -82,9 +83,9 @@ func (s *TokenService) createAccessToken(subject string) string {
 		Audience:  "test-audience",
 		IssuedAt:  time.Now().Unix(),
 	}
-	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
+	privateKey := common.GetPrivateKey()
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	signedString, _ := token.SignedString(key)
+	signedString, _ := token.SignedString(privateKey)
 
 	return signedString
 }
@@ -97,9 +98,9 @@ func (s *TokenService) createRefreshToken(subject string) string {
 		NotBefore: time.Now().Unix(),
 		IssuedAt:  time.Now().Unix(),
 	}
-	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
+	privateKey := common.GetPrivateKey()
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	signedString, _ := token.SignedString(key)
+	signedString, _ := token.SignedString(privateKey)
 
 	return signedString
 }
@@ -116,9 +117,9 @@ func (s *TokenService) createIdToken(subject string, clientId string) string {
 			Audience:  clientId,
 			IssuedAt:  time.Now().Unix(),
 		}}
-	key, _ := jwt.ParseRSAPrivateKeyFromPEM(common.GetPrivateKey())
+	privateKey := common.GetPrivateKey()
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
-	signedString, _ := token.SignedString(key)
+	signedString, _ := token.SignedString(privateKey)
 
 	return signedString
 }
